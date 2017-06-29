@@ -153,6 +153,22 @@ Public Function GetInitialAll(ByVal i_Str As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : isNull
+' Author    : YPN
+' Date      : 2017-06-29 14:51
+' Purpose   : ÅÐ¶Ï×Ö·û´®ÊÇ·ñÎª¿Õ
+' Param     : i_Str ×Ö·û´®
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function isNull(ByVal i_Str As Variant) As Boolean
+
+    isNull = MIsNull(i_Str)
+    
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : MD5
 ' Author    : YPN
 ' Date      : 2017-06-28 17:28

@@ -4,3 +4,4 @@ ModGetInitial = 341, 92, 1429, 595, C
 ModPublic = 88, 116, 1176, 619, C
 ModMD5 = 22, 29, 1110, 533, C
 ModGetFileName = 632, 0, 1264, 736, C
+ModStringUtils = 71, 139, 1159, 643, C
