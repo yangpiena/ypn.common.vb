@@ -76,7 +76,7 @@ Private Sub applyStyle()
         ' 使用图片作为ToolBar的背景
         Picture1.Picture = LoadPicture(p_PicturePath)
         v_BG = CreatePatternBrush(Picture1.Picture.Handle)     ' Creates the background from a Picture Handle
-        Call MChangeTBBack(Me.Toolbar1, v_BG, m_EnuTB_FLAT)      ' 两种样式：m_EnuTB_FLAT 和 m_EnuTB_STANDARD
+        Call MChangeTBBack(Me.Toolbar1, v_BG, m_EnuTB_FLAT)    ' 两种样式：m_EnuTB_FLAT 和 m_EnuTB_STANDARD
     Else
         v_BG = CreateSolidBrush(p_Color)                       ' 根据指定颜色创建一个背景 (Long)
         Call MChangeTBBack(Me.Toolbar1, v_BG, m_EnuTB_FLAT)
