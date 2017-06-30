@@ -24,17 +24,28 @@ Option Explicit
 
 Public Sub Help()
     Debug.Print "过程：GetHardDriveSerialNumber  取得逻辑盘序列号（非唯一）"
-    Debug.Print "参数：i_DiskName  目标逻辑盘名称"
+    Debug.Print "参数：i_DiskName                目标逻辑盘名称"
     Debug.Print "------"
-    Debug.Print "过程：GetHardDiskSerialNumber  获取物理盘的系列号SN（唯一）"
+    Debug.Print "过程：GetHardDiskSerialNumber   获取物理盘的系列号SN（唯一）"
     Debug.Print "------"
-    Debug.Print "过程：GetHardDiskModel  获取物理盘的型号"
+    Debug.Print "过程：GetHardDiskModel          获取物理盘的型号"
     Debug.Print "------"
-    Debug.Print "过程：GetInitialFirst  获取第一个汉字的首字母"
+    Debug.Print "过程：GetInitialFirst           获取第一个汉字的首字母"
     Debug.Print "参数：i_Str 汉字字符串"
     Debug.Print "------"
-    Debug.Print "过程：GetInitialAll  获取所有汉字的首字母"
+    Debug.Print "过程：GetInitialAll             获取所有汉字的首字母"
     Debug.Print "参数：i_Str 汉字字符串"
+    Debug.Print "------"
+    Debug.Print "过程：isNull                    判断变量是否为空"
+    Debug.Print "参数：i_Var 变量"
+    Debug.Print "------"
+    Debug.Print "过程：SetStyleToolBar           设置控件ToolBar的样式"
+    Debug.Print "参数：i_Color       （可选参数）指定背景颜色，默认RGB(188, 210, 233)"
+    Debug.Print "参数：i_PicturePath （可选参数）指定背景图片"
+    Debug.Print "------"
+    Debug.Print "过程：MD5                       MD5加密"
+    Debug.Print "参数：i_Str 加密内容"
+    Debug.Print "参数：i_Bit 加密位数：16位或32位。默认16位"
 End Sub
 
 
@@ -156,17 +167,36 @@ End Function
 ' Procedure : isNull
 ' Author    : YPN
 ' Date      : 2017-06-29 14:51
-' Purpose   : 判断字符串是否为空
-' Param     : i_Str 字符串
+' Purpose   : 判断变量是否为空
+' Param     : i_Var 变量
 ' Return    :
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function isNull(ByVal i_Str As Variant) As Boolean
+Public Function isNull(ByVal i_Var As Variant) As Boolean
 
-    isNull = MIsNull(i_Str)
+    isNull = MIsNull(i_Var)
     
 End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : SetStyleToolBar
+' Author    : YPN
+' Date      : 2017-06-30 14:34
+' Purpose   : 设置控件ToolBar的样式
+' Param     : i_Color       （可选参数）指定背景颜色，默认RGB(188, 210, 233)
+'             i_PicturePath （可选参数）指定背景图片
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Sub SetStyleToolBar(Optional ByVal i_Color As Long = 15323836, Optional ByVal i_PicturePath As String)
+
+    FrmStyleToolBar.p_Color = i_Color
+    FrmStyleToolBar.p_PicturePath = i_PicturePath
+    FrmStyleToolBar.Hide
+    
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : MD5

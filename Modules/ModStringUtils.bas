@@ -14,20 +14,20 @@ Option Explicit
 ' Procedure : MIsNull
 ' Author    : YPN
 ' Date      : 2017-06-29 14:51
-' Purpose   : ÅÐ¶Ï×Ö·û´®ÊÇ·ñÎª¿Õ
-' Param     : i_Str ×Ö·û´®
+' Purpose   : ÅÐ¶Ï±äÁ¿ÊÇ·ñÎª¿Õ
+' Param     : i_Var ±äÁ¿
 ' Return    :
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function MIsNull(ByVal i_Str As Variant) As Boolean
+Public Function MIsNull(ByVal i_Var As Variant) As Boolean
 
-    If isNull(i_Str) Then
+    If isNull(i_Var) Then
         MIsNull = True
         Exit Function
     End If
 
-    If Trim(i_Str) = "" Then
+    If Trim(i_Var) = "" Then
         MIsNull = True
         Exit Function
     End If
