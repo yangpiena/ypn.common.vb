@@ -164,6 +164,38 @@ Public Function GetInitialAll(ByVal i_Str As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : HexToText
+' Author    : YPN
+' Date      : 2017-07-05 15:55
+' Purpose   : 将16进制编码串转换为文本。没有写异常处理，但只要是用 TextToHex() 转换的结果就没问题
+' Param     : i_Code 要转换的16进制编码
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function HexToText(i_Code As String) As String
+
+    HexToText = MHexToText(i_Code)
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : TextToHex
+' Author    : YPN
+' Date      : 2017-07-05 15:54
+' Purpose   : 将文本转换为16进制编码串
+' Param     : i_Text 要转换的文本
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function TextToHex(i_Text As String) As String
+
+    TextToHex = MTextToHex(i_Text)
+    
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : isNull
 ' Author    : YPN
 ' Date      : 2017-06-29 14:51
