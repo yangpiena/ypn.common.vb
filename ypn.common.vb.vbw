@@ -5,3 +5,4 @@ ModMD5 = 22, 29, 1110, 533, C
 ModStringUtils = 80, 73, 1168, 577, C
 ModStyleToolBar = 591, 169, 1679, 673, C
 FrmStyleToolBar = 380, 123, 1348, 627, C, 222, 145, 1310, 649, C
+FrmProgress = 44, 58, 1132, 562, C, 499, 185, 1587, 688, C

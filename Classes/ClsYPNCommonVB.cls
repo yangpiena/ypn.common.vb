@@ -22,44 +22,52 @@ Option Explicit
 
 
 
-Public Sub Help()
-
-    Debug.Print "过程：GetFileNameInPath         从指定全路径中获取文件名"
-    Debug.Print "参数：i_Path       指定全路径"
-    Debug.Print "参数：i_NeedSuffix 文件名是否需要后缀名，默认不需要"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：GetSuffixInFileName       从文件名中获取后缀名"
-    Debug.Print "参数：i_FileName 文件名"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：GetHardDriveSerialNumber  取得逻辑盘序列号（非唯一）"
-    Debug.Print "参数：i_DiskName 目标逻辑盘名称"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：GetHardDiskSerialNumber   获取物理盘的系列号SN（唯一）"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：GetHardDiskModel          获取物理盘的型号"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：GetInitialFirst           获取第一个汉字的首字母"
-    Debug.Print "参数：i_Str 汉字字符串"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：GetInitialAll             获取所有汉字的首字母"
-    Debug.Print "参数：i_Str 汉字字符串"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：HexToText                 将16进制编码串转换为文本。没有写异常处理，但只要是用 TextToHex() 转换的结果就没问题"
-    Debug.Print "参数：i_Code 要转换的16进制编码"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：TextToHex                 将文本转换为16进制编码串"
-    Debug.Print "参数：i_Text 要转换的文本"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：isNull                    判断变量是否为空"
-    Debug.Print "参数：i_Var 变量"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：SetStyleToolBar           设置控件ToolBar的样式"
-    Debug.Print "参数：i_Color       （可选参数）指定背景颜色，默认RGB(188, 210, 233)"
-    Debug.Print "参数：i_PicturePath （可选参数）指定背景图片"
-    Debug.Print "--------------------------------"
-    Debug.Print "过程：MD5                       MD5加密"
-    Debug.Print "参数：i_Str 加密内容"
-    Debug.Print "参数：i_Bit 加密位数：16位或32位。默认16位"
+Public Sub Help(Optional ByVal i_IsMsg As Boolean = False)
+    
+    Dim v_Help As String
+    
+    v_Help = "以下为YPNCommonVB的所有过程：" & vbCrLf
+    
+    v_Help = v_Help & vbCrLf & "过程：GetFileNameInPath         从指定全路径中获取文件名"
+    v_Help = v_Help & vbCrLf & "参数：i_Path       指定全路径"
+    v_Help = v_Help & vbCrLf & "参数：i_NeedSuffix 文件名是否需要后缀名，默认不需要"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：GetSuffixInFileName       从文件名中获取后缀名"
+    v_Help = v_Help & vbCrLf & "参数：i_FileName 文件名"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：GetHardDriveSerialNumber  取得逻辑盘序列号（非唯一）"
+    v_Help = v_Help & vbCrLf & "参数：i_DiskName 目标逻辑盘名称"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：GetHardDiskSerialNumber   获取物理盘的系列号SN（唯一）"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：GetHardDiskModel          获取物理盘的型号"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：GetInitialFirst           获取第一个汉字的首字母"
+    v_Help = v_Help & vbCrLf & "参数：i_Str 汉字字符串"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：GetInitialAll             获取所有汉字的首字母"
+    v_Help = v_Help & vbCrLf & "参数：i_Str 汉字字符串"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：HexToText                 将16进制编码串转换为文本。没有写异常处理，但只要是用 TextToHex() 转换的结果就没问题"
+    v_Help = v_Help & vbCrLf & "参数：i_Code 要转换的16进制编码"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：TextToHex                 将文本转换为16进制编码串"
+    v_Help = v_Help & vbCrLf & "参数：i_Text 要转换的文本"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：isNull                    判断变量是否为空"
+    v_Help = v_Help & vbCrLf & "参数：i_Var 变量"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：SetStyleToolBar           设置控件ToolBar的样式"
+    v_Help = v_Help & vbCrLf & "参数：i_Color       （可选参数）指定背景颜色，默认RGB(188, 210, 233)"
+    v_Help = v_Help & vbCrLf & "参数：i_PicturePath （可选参数）指定背景图片"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：MD5                       MD5加密"
+    v_Help = v_Help & vbCrLf & "参数：i_Str 加密内容"
+    v_Help = v_Help & vbCrLf & "参数：i_Bit 加密位数：16位或32位。默认16位"
+    
+    Debug.Print v_Help
+    
+    If i_IsMsg Then MsgBox v_Help, vbInformation, "提示"
     
 End Sub
 
@@ -77,7 +85,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Function GetFileNameInPath(ByVal i_Path As String, Optional ByVal i_NeedSuffix As Boolean = False) As String
-
+    
     GetFileNameInPath = MGetFileNameInPath(i_Path, i_NeedSuffix)
     
 End Function
@@ -93,7 +101,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetSuffixInFileName(ByVal i_FileName As String) As String
-
+    
     GetSuffixInFileName = MGetSuffixInFileName(i_FileName)
     
 End Function
@@ -109,7 +117,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetHardDriveSerialNumber(Optional ByVal i_DiskName = "C") As String
-
+    
     GetHardDriveSerialNumber = MGetHardDriveSerialNumber(i_DiskName)
     
 End Function
@@ -157,7 +165,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetInitialFirst(ByVal i_Str As String) As String
-
+    
     GetInitialFirst = MGetInitialFirst(i_Str)
     
 End Function
@@ -173,7 +181,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetInitialAll(ByVal i_Str As String) As String
-
+    
     GetInitialAll = MGetInitialAll(i_Str)
     
 End Function
@@ -189,9 +197,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function HexToText(i_Code As String) As String
-
+    
     HexToText = MHexToText(i_Code)
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -205,7 +213,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function TextToHex(i_Text As String) As String
-
+    
     TextToHex = MTextToHex(i_Text)
     
 End Function
@@ -221,7 +229,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function isNull(ByVal i_Var As Variant) As Boolean
-
+    
     isNull = MIsNull(i_Var)
     
 End Function
@@ -238,10 +246,33 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Sub SetStyleToolBar(Optional ByVal i_Color As Long = 15323836, Optional ByVal i_PicturePath As String)
-
+    
     FrmStyleToolBar.p_Color = i_Color
     FrmStyleToolBar.p_PicturePath = i_PicturePath
     FrmStyleToolBar.Hide
+    
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : ShowProgress
+' Author    : 杨东
+' Date      : 2014/01/08
+' Purpose   : 缓冲显示进度窗口
+' Parameter : i_Form 要显示进度条的窗体，传入参数则显示进度窗口，否则不显示
+'             i_Tip  进度条提示内容
+'---------------------------------------------------------------------------------------
+
+Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As String)
+    
+    If Not i_Form Is Nothing Then
+        
+        If Not (TypeOf i_Form Is Form) Then Err.Raise 5
+        
+        If i_Tip <> "" Then FrmProgress.LblContent.Caption = i_Tip
+        FrmProgress.Show vbModeless, i_Form
+    Else
+        Unload FrmProgress
+    End If
     
 End Sub
 
@@ -257,7 +288,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Function MD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) As String
-
+    
     MD5 = MMD5(i_Str, i_Bit)
     
 End Function
