@@ -113,6 +113,7 @@ Private Const LWA_ALPHA = &H2
 
 Private Sub Form_Load()
     
+    Screen.MousePointer = vbHourglass
     Call formTransparent(200)
     
     With WebBrowser1
@@ -133,7 +134,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub formTransparent(Alpha As Integer)
-
+    
     If Alpha >= 0 And Alpha <= 255 Then
         Dim rtn As Long
         rtn = GetWindowLong(hwnd, GWL_EXSTYLE)
@@ -145,22 +146,28 @@ Private Sub formTransparent(Alpha As Integer)
 End Sub
 
 Private Sub Form_Resize()
-
+    
     On Error Resume Next
     
     WebBrowser1.Top = Screen.Height / 4
     WebBrowser1.Left = Screen.Width / 3
-        
+    
     Frame1.Top = WebBrowser1.Top - 90
     Frame1.Left = WebBrowser1.Left
-
+    
     Frame2.Top = WebBrowser1.Top
     Frame2.Left = WebBrowser1.Left + WebBrowser1.Width - 460
-
+    
     Frame3.Top = WebBrowser1.Top + WebBrowser1.Height - 280
     Frame3.Left = WebBrowser1.Left
-
+    
     Frame4.Top = WebBrowser1.Top
     Frame4.Left = WebBrowser1.Left - 150
+    
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+
+    Screen.MousePointer = vbDefault
     
 End Sub

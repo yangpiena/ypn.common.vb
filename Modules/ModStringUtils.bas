@@ -125,6 +125,22 @@ Public Function MGetInitialAll(ByVal i_Str As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : MGetYear2
+' Author    : YPN
+' Date      : 2017-07-10 17:06
+' Purpose   : 获取日期中的年份后2位
+' Param     : i_Date 日期
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MGetYear2(ByVal i_Date As String) As Integer
+
+    MGetYear2 = Right(CStr(Year(i_Date)), 2)
+    
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : MHexToText
 ' Author    : YPN
 ' Date      : 2017-07-05 15:55

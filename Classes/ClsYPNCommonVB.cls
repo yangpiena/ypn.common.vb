@@ -187,6 +187,22 @@ Public Function GetInitialAll(ByVal i_Str As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : GetYear2
+' Author    : YPN
+' Date      : 2017-07-10 17:06
+' Purpose   : 获取日期中的年份后2位
+' Param     : i_Date 日期
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetYear2(ByVal i_Date As String) As Integer
+
+    GetYear2 = MGetYear2(i_Date)
+    
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : HexToText
 ' Author    : YPN
 ' Date      : 2017-07-05 15:55
@@ -264,15 +280,25 @@ End Sub
 
 Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As String)
     
+   On Error GoTo ShowProgress_Error
+
     If Not i_Form Is Nothing Then
         
-        If Not (TypeOf i_Form Is Form) Then Err.Raise 5
+        If Not (TypeOf i_Form Is Form) Then Err.Raise 1, "ypn.common.by", "该类型不是Form类型"
         
         If i_Tip <> "" Then FrmProgress.LblContent.Caption = i_Tip
         FrmProgress.Show vbModeless, i_Form
+        DoEvents
     Else
         Unload FrmProgress
     End If
+
+   On Error GoTo 0
+   Exit Sub
+
+ShowProgress_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowProgress of Class Module ClsYPNCommonVB"
     
 End Sub
 
