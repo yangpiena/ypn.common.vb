@@ -32,6 +32,9 @@ Public Sub Help(Optional ByVal i_IsMsg As Boolean = False)
     v_Help = v_Help & vbCrLf & "参数：i_Path       指定全路径"
     v_Help = v_Help & vbCrLf & "参数：i_NeedSuffix 文件名是否需要后缀名，默认不需要"
     v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：GetGUID                   生成一个GUID"
+    v_Help = v_Help & vbCrLf & "参数：i_Format(可选项) 格式：'B'、'D'"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
     v_Help = v_Help & vbCrLf & "过程：GetSuffixInFileName       从文件名中获取后缀名"
     v_Help = v_Help & vbCrLf & "参数：i_FileName 文件名"
     v_Help = v_Help & vbCrLf & "--------------------------------"
@@ -77,6 +80,62 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
+' Procedure : BarCode128
+' Author    : YPN
+' Date      : 2017-07-18 16:11
+' Purpose   : 生成Code128标准的条形码
+' Param     :
+' Return    :
+' Remark    : 调用实例：Call BarCode128(Picture1, 6, Text1, True)
+'---------------------------------------------------------------------------------------
+'
+Public Function BarCode128(i_Obj As Object, i_BarHeight As Integer, i_BarText As String, Optional ByVal i_HasCaption As Boolean = False)
+    MBarCode128 i_Obj, i_BarHeight, i_BarText, i_HasCaption
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : BarCode39
+' Author    : YPN
+' Date      : 2017-07-18 16:12
+' Purpose   : 生成Code39标准的条形码
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function BarCode39(i_Obj As Object, i_BarHeight As Integer, i_BarText As String, Optional i_WithCheckSum As Boolean = False, Optional ByVal i_HasCaption As Boolean = False)
+    MBarCode39 i_Obj, i_BarHeight, i_BarText, i_WithCheckSum, i_HasCaption
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : BarEAN13
+' Author    : YPN
+' Date      : 2017-07-18 16:12
+' Purpose   : 生成EAN13标准的条形码
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function BarEAN13(i_Obj As Object, i_BarHeight As Integer, i_BarText As String, Optional ByVal i_HasCaption As Boolean = False)
+    MBarEAN13 i_Obj, i_BarHeight, i_BarText, i_HasCaption
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : BarEAN8
+' Author    : YPN
+' Date      : 2017-07-18 16:12
+' Purpose   : 生成EAN8标准的条形码
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function BarEAN8(i_Obj As Object, i_BarHeight As Integer, i_BarText As String, Optional ByVal i_HasCaption As Boolean = False)
+    MBarEAN8 i_Obj, i_BarHeight, i_BarText, i_HasCaption
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : GetFileNameInPath
 ' Author    : YPN
 ' Date      : 2017-06-28 17:45
@@ -90,6 +149,30 @@ End Sub
 Public Function GetFileNameInPath(ByVal i_Path As String, Optional ByVal i_NeedSuffix As Boolean = False) As String
     
     GetFileNameInPath = MGetFileNameInPath(i_Path, i_NeedSuffix)
+    
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : GetGUID
+' Author    : YPN
+' Date      : 2017-07-12 17:24
+' Purpose   : 生成一个GUID
+' Param     : i_Format(可选项) 格式："B"、"D"
+' Return    : 默认为GetGUID(): bf8b9c642ea5426f82499bb60681671b
+'             GetGUID("B"): {903c1236-fe24-43c2-b9b5-bec35d9a43a8}
+'             GetGUID("D"): 17e316f4-3f5b-46a0-ad68-58abb816a969
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetGUID(Optional ByVal i_Format As String) As String
+
+    If UCase$(Trim(i_Format)) = "B" Then
+        GetGUID = MGetGUID2("B")
+    ElseIf UCase$(Trim(i_Format)) = "D" Then
+        GetGUID = MGetGUID2("D")
+    Else
+        GetGUID = MGetGUID
+    End If
     
 End Function
 

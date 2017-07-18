@@ -6,3 +6,7 @@ ModStringUtils = 472, 83, 1560, 587, C
 ModStyleToolBar = 591, 169, 1679, 673, C
 FrmStyleToolBar = 380, 123, 1348, 627, C, 222, 145, 1310, 649, C
 FrmProgress = 304, 86, 1392, 590, C, 499, 185, 1587, 688, C
+ModGUID = 543, 112, 1631, 616, C
+ModBarCode128 = 92, 78, 1060, 582, C
+ModBarCode39 = 154, 203, 1122, 706, C
+ModBarEAN8And13 = 137, 96, 1105, 599, C
