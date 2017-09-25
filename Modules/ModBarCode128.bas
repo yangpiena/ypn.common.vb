@@ -28,20 +28,20 @@ Private xStart   As Integer, posCtr As Integer, xTotal As Long, chkSum         A
 
 
 
-Public Sub MBarCode128(zObj As Object, zBarH As Integer, BarText As String, Optional ByVal HasCaption As Boolean = False)
+Public Function MBarCode128(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
 
-    Set xObj = zObj
+    Set xObj = FrmPublic.Picture1
     init_Table
-    zBarText = BarText
-    zHasCaption = HasCaption
+    zBarText = i_BarText
+    zHasCaption = i_HasCaption
     xObj.Picture = Nothing
-    BarH = zBarH * 10
+    BarH = i_BarHeight * 10
     xtop = 10
     
     xObj.BackColor = vbWhite
     xObj.AutoRedraw = True
     xObj.ScaleMode = 3
-    If HasCaption Then
+    If i_HasCaption Then
         xObj.Height = (xObj.TextHeight(zBarText) + BarH + 25) * Screen.TwipsPerPixelY
     Else
         xObj.Height = (BarH + 20) * Screen.TwipsPerPixelY
@@ -49,10 +49,12 @@ Public Sub MBarCode128(zObj As Object, zBarH As Integer, BarText As String, Opti
     
     'xObj.Height = (xObj.TextHeight(zBarText) + BarH + 25) * Screen.TwipsPerPixelY
     xObj.Width = ((test_String(zBarText) + 3) * 11 + 25) * Screen.TwipsPerPixelX
-    paint_Code zBarText
-    zObj.Picture = zObj.Image
     
-End Sub
+    Call paint_Code(zBarText)
+     
+    Set MBarCode128 = FrmPublic.Picture1.Image
+    
+End Function
 
 Private Function test_String(xstr As String)
 

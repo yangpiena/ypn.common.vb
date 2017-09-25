@@ -8,6 +8,7 @@ Begin VB.Form FrmProgress
    ClientTop       =   330
    ClientWidth     =   7185
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   5760
@@ -93,7 +94,7 @@ Begin VB.Form FrmProgress
       NoFolders       =   0   'False
       Transparent     =   0   'False
       ViewID          =   "{0057D0E0-3573-11CF-AE69-08002B2E1262}"
-      Location        =   ""
+      Location        =   "http:///"
    End
 End
 Attribute VB_Name = "FrmProgress"

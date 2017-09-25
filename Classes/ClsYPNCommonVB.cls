@@ -70,6 +70,13 @@ Public Sub Help(Optional ByVal i_IsMsg As Boolean = False)
     v_Help = v_Help & vbCrLf & "过程：MD5                       MD5加密"
     v_Help = v_Help & vbCrLf & "参数：i_Str 加密内容"
     v_Help = v_Help & vbCrLf & "参数：i_Bit 加密位数：16位或32位。默认16位"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
+    v_Help = v_Help & vbCrLf & "过程：QRCode                    生成QR Code码制的二维码"
+    v_Help = v_Help & vbCrLf & "参数：i_QRText    二维码内容"
+    v_Help = v_Help & vbCrLf & "参数：i_Version  （可选参数）生成版本，支持40种，从1到40，默认自动，即0"
+    v_Help = v_Help & vbCrLf & "参数：i_ECLevel  （可选参数）容错等级，支持4种：L-7%、M-15%、Q-25%、H-30%，默认M（传入首字母L、M、Q、H即可）"
+    v_Help = v_Help & vbCrLf & "参数：i_MaskType （可选参数）模糊类型，支持8种，从0到7，默认自动，即-1"
+    v_Help = v_Help & vbCrLf & "参数：i_Encoding （可选参数）字符编码，支持2种：UTF-8 和 ANSI，默认UTF-8"
     
     Debug.Print v_Help
     
@@ -89,8 +96,8 @@ End Sub
 ' Remark    : 调用实例：Call BarCode128(Picture1, 6, Text1, True)
 '---------------------------------------------------------------------------------------
 '
-Public Function BarCode128(i_Obj As Object, i_BarHeight As Integer, i_BarText As String, Optional ByVal i_HasCaption As Boolean = False)
-    MBarCode128 i_Obj, i_BarHeight, i_BarText, i_HasCaption
+Public Function BarCode128(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
+    Set BarCode128 = MBarCode128(i_BarText, i_BarHeight, i_HasCaption)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -103,8 +110,8 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function BarCode39(i_Obj As Object, i_BarHeight As Integer, i_BarText As String, Optional i_WithCheckSum As Boolean = False, Optional ByVal i_HasCaption As Boolean = False)
-    MBarCode39 i_Obj, i_BarHeight, i_BarText, i_WithCheckSum, i_HasCaption
+Public Function BarCode39(i_BarText As String, i_BarHeight As Integer, Optional i_WithCheckSum As Boolean = False, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
+    Set BarCode39 = MBarCode39(i_BarText, i_BarHeight, i_WithCheckSum, i_HasCaption)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -117,8 +124,8 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function BarEAN13(i_Obj As Object, i_BarHeight As Integer, i_BarText As String, Optional ByVal i_HasCaption As Boolean = False)
-    MBarEAN13 i_Obj, i_BarHeight, i_BarText, i_HasCaption
+Public Function BarEAN13(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
+   Set BarEAN13 = MBarEAN13(i_BarText, i_BarHeight, i_HasCaption)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -131,8 +138,8 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function BarEAN8(i_Obj As Object, i_BarHeight As Integer, i_BarText As String, Optional ByVal i_HasCaption As Boolean = False)
-    MBarEAN8 i_Obj, i_BarHeight, i_BarText, i_HasCaption
+Public Function BarEAN8(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
+    Set BarEAN8 = MBarEAN8(i_BarText, i_BarHeight, i_HasCaption)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -305,22 +312,6 @@ Public Function HexToText(i_Code As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
-' Procedure : TextToHex
-' Author    : YPN
-' Date      : 2017-07-05 15:54
-' Purpose   : 将文本转换为16进制编码串
-' Param     : i_Text 要转换的文本
-' Return    :
-' Remark    :
-'---------------------------------------------------------------------------------------
-'
-Public Function TextToHex(i_Text As String) As String
-    
-    TextToHex = MTextToHex(i_Text)
-    
-End Function
-
-'---------------------------------------------------------------------------------------
 ' Procedure : isNull
 ' Author    : YPN
 ' Date      : 2017-06-29 14:51
@@ -334,6 +325,43 @@ Public Function isNull(ByVal i_Var As Variant) As Boolean
     
     isNull = MIsNull(i_Var)
     
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : MD5
+' Author    : YPN
+' Date      : 2017-06-28 17:28
+' Purpose   : MD5加密
+' Param     : i_Str 加密内容
+'             i_Bit 加密位数：16位或32位。默认16位
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) As String
+    
+    MD5 = MMD5(i_Str, i_Bit)
+    
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : QRCode
+' Author    : YPN
+' Date      : 2017-09-25 14:33
+' Purpose   : 生成QR Code码制的二维码
+' Param     : i_QRText    二维码内容
+'             i_Version  （可选参数）生成版本，支持40种，从1到40，默认自动，即0
+'             i_ECLevel  （可选参数）容错等级，支持4种：L-7%、M-15%、Q-25%、H-30%，默认M（传入首字母L、M、Q、H即可）
+'             i_MaskType （可选参数）模糊类型，支持8种，从0到7，默认自动，即-1
+'             i_Encoding （可选参数）字符编码，支持2种：UTF-8 和 ANSI，默认UTF-8
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function QRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_Encoding As String = "UTF-8") As StdPicture
+
+    Set QRCode = MQRCode(i_QRText, i_Version, i_ECLevel, i_MaskType, i_Encoding)
+
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -389,18 +417,17 @@ ShowProgress_Error:
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : MD5
+' Procedure : TextToHex
 ' Author    : YPN
-' Date      : 2017-06-28 17:28
-' Purpose   : MD5加密
-' Param     : i_Str 加密内容
-'             i_Bit 加密位数：16位或32位。默认16位
+' Date      : 2017-07-05 15:54
+' Purpose   : 将文本转换为16进制编码串
+' Param     : i_Text 要转换的文本
 ' Return    :
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function MD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) As String
+Public Function TextToHex(i_Text As String) As String
     
-    MD5 = MMD5(i_Str, i_Bit)
+    TextToHex = MTextToHex(i_Text)
     
 End Function

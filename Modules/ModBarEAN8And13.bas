@@ -26,15 +26,15 @@ Private xStart As Integer, posCtr As Integer, xTotal   As Long, chkSum As Long
 
 
 
-Public Sub MBarEAN13(zObj As Object, zBarH As Integer, BarText As String, Optional ByVal HasCaption As Boolean = False)
+Public Function MBarEAN13(BarText As String, zBarH As Integer, Optional ByVal HasCaption As Boolean = False) As StdPicture
 
-    Set xObj = zObj
+    Set xObj = FrmPublic.Picture1
     init_Table
     zBarText = BarText
     zHasCaption = HasCaption
     xObj.Picture = Nothing
     
-    If Not CheckCode13 Then Exit Sub
+    If Not checkCode13 Then Exit Function
     
     BarH = zBarH * 10
     xtop = 10
@@ -49,20 +49,21 @@ Public Sub MBarEAN13(zObj As Object, zBarH As Integer, BarText As String, Option
     End If
     xObj.Width = (((Len(zBarText)) * 8)) * 20
     
-    paint_Bar13 zBarText
-    zObj.Picture = zObj.Image
+    Call paint_Bar13(zBarText)
     
-End Sub
+    Set MBarEAN13 = FrmPublic.Picture1.Image
+    
+End Function
 
-Public Sub MBarEAN8(zObj As Object, zBarH As Integer, BarText As String, Optional ByVal HasCaption As Boolean = False)
+Public Function MBarEAN8(BarText As String, zBarH As Integer, Optional ByVal HasCaption As Boolean = False) As StdPicture
 
-    Set xObj = zObj
+    Set xObj = FrmPublic.Picture1
     init_Table
     zBarText = BarText
     zHasCaption = HasCaption
     xObj.Picture = Nothing
     
-    If Not checkCode8 Then Exit Sub
+    If Not checkCode8 Then Exit Function
     
     BarH = zBarH * 10
     xtop = 10
@@ -79,12 +80,13 @@ Public Sub MBarEAN8(zObj As Object, zBarH As Integer, BarText As String, Optiona
     'xObj.Height = (xObj.TextHeight(zBarText) + BarH + 25) * Screen.TwipsPerPixelY
     xObj.Width = (((Len(zBarText)) * 8) + 20) * 20 'Screen.TwipsPerPixelX
     
-    paint_Bar8 zBarText
-    zObj.Picture = zObj.Image
+    Call paint_Bar8(zBarText)
+     
+    Set MBarEAN8 = FrmPublic.Picture1.Image
     
-End Sub
+End Function
 
-Private Function CheckCode13() As Boolean
+Private Function checkCode13() As Boolean
 
     Dim ii As Integer
     
@@ -100,11 +102,11 @@ Private Function CheckCode13() As Boolean
             GoTo Err_Found
         End If
     Next
-    CheckCode13 = True
+    checkCode13 = True
     Exit Function
     
 Err_Found:
-    CheckCode13 = False
+    checkCode13 = False
 End Function
 
 Private Function checkCode8() As Boolean

@@ -22,16 +22,16 @@ Private xStart   As Integer, posCtr As Integer, xTotal   As Long, chkSum As Long
 
 
 
-Public Sub MBarCode39(zObj As Object, zBarH As Integer, BarText As String, Optional zWithCheckSum As Boolean = False, Optional ByVal HasCaption As Boolean = False)
+Public Function MBarCode39(BarText As String, zBarH As Integer, Optional zWithCheckSum As Boolean = False, Optional ByVal HasCaption As Boolean = False) As StdPicture
     
-    Set xObj = zObj
+    Set xObj = FrmPublic.Picture1
     WithCheckSum = zWithCheckSum
     init_Table
     zBarText = BarText
     zHasCaption = HasCaption
     xObj.Picture = Nothing
     
-    If Not checkCode Then Exit Sub
+    If Not checkCode Then Exit Function
     
     BarH = zBarH * 10
     xtop = 10
@@ -48,10 +48,11 @@ Public Sub MBarCode39(zObj As Object, zBarH As Integer, BarText As String, Optio
     'xObj.Height = (xObj.TextHeight(zBarText) + BarH + 25) * Screen.TwipsPerPixelY
     xObj.Width = (((Len(zBarText) + IIf(WithCheckSum, 3, 2)) * 12 + 20)) * 16
     
-    paint_Bar zBarText
-    zObj.Picture = zObj.Image
+    Call paint_Bar(zBarText)
     
-End Sub
+    Set MBarCode39 = FrmPublic.Picture1.Image
+    
+End Function
 
 Private Function checkCode() As Boolean
 
