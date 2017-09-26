@@ -29,10 +29,12 @@ Private xStart   As Integer, posCtr As Integer, xTotal As Long, chkSum         A
 
 
 Public Function MBarCode128(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
-
+    
+    On Error GoTo MBarCode128_Error
+    
     Set xObj = FrmPublic.Picture1
     init_Table
-    zBarText = i_BarText
+    zBarText = Replace(Trim(i_BarText), Chr(13) + Chr(10), "")  '去空格、回车符CHAR(13)、换行符CHAR(10)
     zHasCaption = i_HasCaption
     xObj.Picture = Nothing
     BarH = i_BarHeight * 10
@@ -51,13 +53,20 @@ Public Function MBarCode128(i_BarText As String, i_BarHeight As Integer, Optiona
     xObj.Width = ((test_String(zBarText) + 3) * 11 + 25) * Screen.TwipsPerPixelX
     
     Call paint_Code(zBarText)
-     
+    
     Set MBarCode128 = FrmPublic.Picture1.Image
+    
+    On Error GoTo 0
+    Exit Function
+    
+MBarCode128_Error:
+    
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MBarCode128 of Module ModBarCode128"
     
 End Function
 
 Private Function test_String(xstr As String)
-
+    
     Dim ii As Long, jj As Integer, ctr As Integer
     
     ctr = 0
@@ -84,7 +93,7 @@ Private Function test_String(xstr As String)
 End Function
 
 Private Sub paint_Code(xstr As String)
-
+    
     Dim ii As Long, jj As Integer, ctr As Integer
     
     xTotal = 0
@@ -126,7 +135,7 @@ Private Sub paint_Code(xstr As String)
 End Sub
 
 Private Sub printB(xstr As String)
-
+    
     posCtr = posCtr + 1
     xTotal = xTotal + ((InStr(Code_A, xstr) - 1) * posCtr)
     If xStart <> StartB Then
@@ -141,12 +150,12 @@ Private Sub printB(xstr As String)
             xTotal = xTotal + (CodeB * posCtr)
         End If
     End If
-    draw_Bar CStr(Code_B(InStr(Code_A, xstr) - 1))
+    Call draw_Bar(CStr(Code_B(InStr(Code_A, xstr) - 1)))
     
 End Sub
 
 Private Sub printC(xstr As String)
-
+    
     Dim jj As Integer
     
     If xStart <> StartC Then
@@ -170,7 +179,7 @@ Private Sub printC(xstr As String)
 End Sub
 
 Private Sub setC(xstr As String)
-
+    
     Dim ii As Integer
     
     For ii = 1 To Len(xstr) Step 2
@@ -181,7 +190,7 @@ Private Sub setC(xstr As String)
 End Sub
 
 Private Sub draw_Bar(Encoding As String)
-
+    
     Dim ii As Integer
     
     For ii = 1 To Len(Encoding)
@@ -193,7 +202,7 @@ Private Sub draw_Bar(Encoding As String)
 End Sub
 
 Private Sub init_Table()
-
+    
     Code_A = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
     Code_B = Array( _
     "11011001100", "11001101100", "11001100110", "10010011000", "10010001100", "10001001100", _
