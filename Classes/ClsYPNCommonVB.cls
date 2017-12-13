@@ -85,7 +85,11 @@ Public Sub Help(Optional ByVal i_IsMsg As Boolean = False)
 End Sub
 
 
+Public Sub ApendText(ByVal i_TextFile As String, ByVal i_ApendContent As String)
 
+    Call MApendText(i_TextFile, i_ApendContent)
+
+End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : BarCode128
 ' Author    : YPN
@@ -198,6 +202,23 @@ Public Function GetSuffixInFileName(ByVal i_FileName As String) As String
     GetSuffixInFileName = MGetSuffixInFileName(i_FileName)
     
 End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : GetTextMaxLine
+' Author    : YPN
+' Date      : 2017-12-12 17:28
+' Purpose   : 获取text文件最大行数（二进制方式）
+' Param     : i_TextFile     指定文件
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetTextMaxLine(ByVal i_TextFile As String) As Long
+
+    GetTextMaxLine = MGetTextMaxLine(i_TextFile)
+
+End Function
+
 
 '---------------------------------------------------------------------------------------
 ' Procedure : MGetHardDriveSerialNumber

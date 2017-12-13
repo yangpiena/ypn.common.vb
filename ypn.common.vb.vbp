@@ -19,6 +19,7 @@ Class=ClsReedSolomon; Classes\ClsReedSolomon.cls
 Class=ClsFiniteField; Classes\ClsFiniteField.cls
 Module=ModQRCode; Modules\ModQRCode.bas
 Form=Forms\FrmPublic.frm
+Module=ModFileUtils; Modules\ModFileUtils.bas
 Startup="(None)"
 HelpFile=""
 Title="ypn.common.vb"
