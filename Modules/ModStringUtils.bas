@@ -8,6 +8,56 @@ Attribute VB_Name = "ModStringUtils"
 
 Option Explicit
 
+
+'---------------------------------------------------------------------------------------
+' Procedure : MBase64ToText
+' Author    : YPN
+' Date      : 2017-12-13 11:29
+' Purpose   : 将Base64位编码字符串转换为文本
+' Param     : i_Text 要转换的文本
+' Return    :
+' Remark    : Base64 解码
+'---------------------------------------------------------------------------------------
+'
+Public Function MBase64ToText(ByVal i_Base64 As String) As String
+    
+    Dim v_OutStr() As Byte
+    Dim v_Length   As Long, v_Mods As Long
+    Const B64_CHAR_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+    
+    On Error GoTo Base64Decode_Error
+    
+    If InStr(1, i_Base64, "=") <> 0 Then i_Base64 = Left(i_Base64, InStr(1, i_Base64, "=") - 1)     '判断Base64真实长度,除去补位
+    v_Mods = Len(i_Base64) Mod 4
+    v_Length = Len(i_Base64) - v_Mods
+    ReDim v_OutStr(v_Length / 4 * 3 - 1 + Switch(v_Mods = 0, 0, v_Mods = 2, 1, v_Mods = 3, 2))
+    
+    For i = 1 To v_Length Step 4
+        Dim buf(3) As Byte
+        For j = 0 To 3
+            buf(j) = InStr(1, B64_CHAR_DICT, Mid(i_Base64, i + j, 1)) - 1                           '根据字符的位置取得索引值
+        Next
+        v_OutStr((i - 1) / 4 * 3) = buf(0) * &H4 + (buf(1) And &H30) / &H10
+        v_OutStr((i - 1) / 4 * 3 + 1) = (buf(1) And &HF) * &H10 + (buf(2) And &H3C) / &H4
+        v_OutStr((i - 1) / 4 * 3 + 2) = (buf(2) And &H3) * &H40 + buf(3)
+    Next
+    If v_Mods = 2 Then
+        v_OutStr(v_Length / 4 * 3) = (InStr(1, B64_CHAR_DICT, Mid(i_Base64, v_Length + 1, 1)) - 1) * &H4 + ((InStr(1, B64_CHAR_DICT, Mid(i_Base64, v_Length + 2, 1)) - 1) And &H30) / 16
+    ElseIf v_Mods = 3 Then
+        v_OutStr(v_Length / 4 * 3) = (InStr(1, B64_CHAR_DICT, Mid(i_Base64, v_Length + 1, 1)) - 1) * &H4 + ((InStr(1, B64_CHAR_DICT, Mid(i_Base64, v_Length + 2, 1)) - 1) And &H30) / 16
+        v_OutStr(v_Length / 4 * 3 + 1) = ((InStr(1, B64_CHAR_DICT, Mid(i_Base64, v_Length + 2, 1)) - 1) And &HF) * &H10 + ((InStr(1, B64_CHAR_DICT, Mid(i_Base64, v_Length + 3, 1)) - 1) And &H3C) / &H4
+    End If
+    MBase64ToText = StrConv(v_OutStr, vbUnicode)                                                    '读取解码结果
+    
+    On Error GoTo 0
+    Exit Function
+    
+Base64Decode_Error:
+    
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Base64Decode of Module ModStringUtils"
+    
+End Function
+
 '---------------------------------------------------------------------------------------
 ' Procedure : MIsNull
 ' Author    : YPN
@@ -19,12 +69,12 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 '
 Public Function MIsNull(ByVal i_Var As Variant) As Boolean
-
+    
     If isNull(i_Var) Then
         MIsNull = True
         Exit Function
     End If
-
+    
     If Trim(i_Var) = "" Then
         MIsNull = True
         Exit Function
@@ -46,7 +96,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetFileNameInPath(ByVal i_Path As String, Optional ByVal i_NeedSuffix As Boolean = False) As String
-
+    
     Dim v_FileName As String, v_FileNameNoSuffix As String
     
     i_Path = Trim(i_Path)
@@ -81,9 +131,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetSuffixInFileName(ByVal i_FileName As String) As String
-
+    
     MGetSuffixInFileName = IIf(InStr(i_FileName, "."), Right(i_FileName, Len(i_FileName) - InStrRev(i_FileName, ".")), vbNullString)
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -97,7 +147,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetInitialFirst(ByVal i_Str As String) As String
-
+    
     If i_Str = "" Then Exit Function
     
     MGetInitialFirst = getPinyin(Left(i_Str, 1))
@@ -115,9 +165,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetInitialAll(ByVal i_Str As String) As String
-
+    
     If i_Str = "" Then Exit Function
-        
+    
     For i = 1 To Len(i_Str)
         MGetInitialAll = MGetInitialAll & getPinyin(Mid(i_Str, i, 1))
     Next i
@@ -135,7 +185,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetYear2(ByVal i_Date As String) As Integer
-
+    
     MGetYear2 = Right(CStr(Year(i_Date)), 2)
     
 End Function
@@ -151,7 +201,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MHexToText(i_Code As String) As String
-
+    
     Dim aBuffer() As Byte
     Dim i As Long, n As Long
     
@@ -165,6 +215,58 @@ Public Function MHexToText(i_Code As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : MTextToBase64
+' Author    : YPN
+' Date      : 2017-12-13 11:19
+' Purpose   : 将文本转换为Base64位编码字符串
+' Param     : i_Text 要转换的文本
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MTextToBase64(ByVal i_Text As String) As String
+    
+    Dim v_Str()  As Byte, v_Buf() As Byte
+    Dim v_Length As Long, v_Mods  As Long
+    Const B64_CHAR_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+    
+    On Error GoTo MTextToBase64_Error
+    
+    v_Str() = StrConv(i_Text, vbFromUnicode)
+    v_Mods = (UBound(v_Str) + 1) Mod 3    '除以3的余数
+    v_Length = UBound(v_Str) + 1 - v_Mods
+    ReDim v_Buf(v_Length / 3 * 4 + IIf(v_Mods <> 0, 4, 0) - 1)
+    
+    For i = 0 To v_Length - 1 Step 3
+        v_Buf(i / 3 * 4) = (v_Str(i) And &HFC) / &H4
+        v_Buf(i / 3 * 4 + 1) = (v_Str(i) And &H3) * &H10 + (v_Str(i + 1) And &HF0) / &H10
+        v_Buf(i / 3 * 4 + 2) = (v_Str(i + 1) And &HF) * &H4 + (v_Str(i + 2) And &HC0) / &H40
+        v_Buf(i / 3 * 4 + 3) = v_Str(i + 2) And &H3F
+    Next
+    If v_Mods = 1 Then
+        v_Buf(v_Length / 3 * 4) = (v_Str(v_Length) And &HFC) / &H4
+        v_Buf(v_Length / 3 * 4 + 1) = (v_Str(v_Length) And &H3) * &H10
+        v_Buf(v_Length / 3 * 4 + 2) = 64
+        v_Buf(v_Length / 3 * 4 + 3) = 64
+    ElseIf v_Mods = 2 Then
+        v_Buf(v_Length / 3 * 4) = (v_Str(v_Length) And &HFC) / &H4
+        v_Buf(v_Length / 3 * 4 + 1) = (v_Str(v_Length) And &H3) * &H10 + (v_Str(v_Length + 1) And &HF0) / &H10
+        v_Buf(v_Length / 3 * 4 + 2) = (v_Str(v_Length + 1) And &HF) * &H4
+        v_Buf(v_Length / 3 * 4 + 3) = 64
+    End If
+    For i = 0 To UBound(v_Buf)
+        MTextToBase64 = MTextToBase64 + Mid(B64_CHAR_DICT, v_Buf(i) + 1, 1)
+    Next
+    
+    On Error GoTo 0
+    Exit Function
+    
+MTextToBase64_Error:
+    
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MTextToBase64 of Module ModStringUtils"
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : MTextToHex
 ' Author    : YPN
 ' Date      : 2017-07-05 15:54
@@ -175,7 +277,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTextToHex(i_Text As String) As String
-
+    
     Dim aBuffer() As Byte
     Dim strOut As String
     Dim i As Long, p As Long
@@ -203,7 +305,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Private Function getPinyin(ByVal i_Str As String) As String
-
+    
     Dim v_Pinyin As String
     
     i_Str = Hex(Asc(i_Str))  ' 将汉字转换为其内码的十六进制字符串

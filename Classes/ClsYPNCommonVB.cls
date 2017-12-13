@@ -147,6 +147,22 @@ Public Function BarEAN8(i_BarText As String, i_BarHeight As Integer, Optional By
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : Base64ToText
+' Author    : YPN
+' Date      : 2017-12-13 11:29
+' Purpose   : 将Base64位编码字符串转换为文本
+' Param     : i_Text 要转换的文本
+' Return    :
+' Remark    : Base64 解码
+'---------------------------------------------------------------------------------------
+'
+Public Function Base64ToText(ByVal i_Base64 As String) As String
+
+    Base64ToText = MBase64ToText(i_Base64)
+
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : GetFileNameInPath
 ' Author    : YPN
 ' Date      : 2017-06-28 17:45
@@ -436,6 +452,22 @@ ShowProgress_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowProgress of Class Module ClsYPNCommonVB"
     
 End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : TextToBase64
+' Author    : YPN
+' Date      : 2017-12-13 11:19
+' Purpose   : 将文本转换为Base64位编码字符串
+' Param     : i_Text 要转换的文本
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function TextToBase64(ByVal i_Text As String) As String
+
+    TextToBase64 = MTextToBase64(i_Text)
+
+End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : TextToHex

@@ -20,11 +20,8 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 '
 Public Sub MApendText(ByVal i_TextFile As String, ByVal i_ApendContent As String)
-
     
-
-   On Error GoTo MApendText_Error
-
+    On Error GoTo MApendText_Error
     
     If Dir(i_TextFile) <> "" Then          ' 如果文件存在
         Open i_TextFile For Append As #1   ' 以追加方式打开文件
@@ -35,12 +32,12 @@ Public Sub MApendText(ByVal i_TextFile As String, ByVal i_ApendContent As String
         MsgBox "指定文件不存在：" & i_TextFile, vbExclamation, TS
         Exit Sub
     End If
-
-   On Error GoTo 0
-   Exit Sub
-
+    
+    On Error GoTo 0
+    Exit Sub
+    
 MApendText_Error:
-
+    
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MApendText of Module ModFileUtils"
 End Sub
 
@@ -55,12 +52,12 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetTextMaxLine(ByVal i_TextFile As String) As Long
-
+    
     Dim v_Str()       As Byte
     Dim v_TextContent As String
     
-   On Error GoTo MGetTextMaxLine_Error
-
+    On Error GoTo MGetTextMaxLine_Error
+    
     If Dir(i_TextFile) <> "" Then          ' 如果文件存在
         Open i_TextFile For Binary As #1
         ReDim v_Str(LOF(1) - 1) As Byte
@@ -73,12 +70,12 @@ Public Function MGetTextMaxLine(ByVal i_TextFile As String) As Long
         Exit Function
     End If
     
-
-   On Error GoTo 0
-   Exit Function
-
+    
+    On Error GoTo 0
+    Exit Function
+    
 MGetTextMaxLine_Error:
-
+    
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetTextMaxLine of Module ModFileUtils"
-
+    
 End Function
