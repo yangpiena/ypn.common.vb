@@ -28,6 +28,10 @@ Public Sub Help(Optional ByVal i_IsMsg As Boolean = False)
     
     v_Help = "以下为YPNCommonVB的所有过程：" & vbCrLf
     
+    v_Help = v_Help & vbCrLf & "过程：ApendText                 追加内容到指定文件"
+    v_Help = v_Help & vbCrLf & "参数：i_TextFile     指定文件"
+    v_Help = v_Help & vbCrLf & "参数：i_ApendContent 追加内容"
+    v_Help = v_Help & vbCrLf & "--------------------------------"
     v_Help = v_Help & vbCrLf & "过程：GetFileNameInPath         从指定全路径中获取文件名"
     v_Help = v_Help & vbCrLf & "参数：i_Path       指定全路径"
     v_Help = v_Help & vbCrLf & "参数：i_NeedSuffix 文件名是否需要后缀名，默认不需要"
@@ -80,11 +84,21 @@ Public Sub Help(Optional ByVal i_IsMsg As Boolean = False)
     
     Debug.Print v_Help
     
-    If i_IsMsg Then MsgBox v_Help, vbInformation, "提示"
+    If i_IsMsg Then MsgBox v_Help, vbInformation, TS
     
 End Sub
 
-
+'---------------------------------------------------------------------------------------
+' Procedure : ApendText
+' Author    : YPN
+' Date      : 2017-12-12 16:20
+' Purpose   : 追加内容到指定文件
+' Param     : i_TextFile     指定文件
+'             i_ApendContent 追加内容
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
 Public Sub ApendText(ByVal i_TextFile As String, ByVal i_ApendContent As String)
 
     Call MApendText(i_TextFile, i_ApendContent)
@@ -97,7 +111,7 @@ End Sub
 ' Purpose   : 生成Code128标准的条形码
 ' Param     :
 ' Return    :
-' Remark    : 调用实例：Call BarCode128(Picture1, 6, Text1, True)
+' Remark    : 调用实例：Set Picture1 = BarCode128(Text1, 6, True)
 '---------------------------------------------------------------------------------------
 '
 Public Function BarCode128(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
@@ -285,6 +299,22 @@ Public Function GetHardDiskModel() As String
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : GetInitialAll
+' Author    : YPN
+' Date      : 2017-06-28 17:04
+' Purpose   : 获取所有汉字的首字母
+' Param     : i_Str 汉字字符串
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetInitialAll(ByVal i_Str As String) As String
+    
+    GetInitialAll = MGetInitialAll(i_Str)
+    
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : GetInitialFirst
 ' Author    : YPN
 ' Date      : 2017-06-28 17:07
@@ -301,19 +331,21 @@ Public Function GetInitialFirst(ByVal i_Str As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
-' Procedure : GetInitialAll
+' Procedure : GetIniValue
 ' Author    : YPN
-' Date      : 2017-06-28 17:04
-' Purpose   : 获取所有汉字的首字母
-' Param     : i_Str 汉字字符串
+' Date      : 2017-12-15 11:23
+' Purpose   : 获取初始化文件（.ini）指定键（Key）的值（Value）
+' Param     : i_Section    节
+'             i_Key        键
+'             i_FileName   完整的INI文件名
 ' Return    :
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function GetInitialAll(ByVal i_Str As String) As String
-    
-    GetInitialAll = MGetInitialAll(i_Str)
-    
+Public Function GetIniValue(ByVal i_Section As String, ByVal i_Key As String, ByVal i_FileName As String) As String
+
+    GetIniValue = MGetIniValue(i_Section, i_Key, i_FileName)
+
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -398,6 +430,25 @@ End Function
 Public Function QRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_Encoding As String = "UTF-8") As StdPicture
 
     Set QRCode = MQRCode(i_QRText, i_Version, i_ECLevel, i_MaskType, i_Encoding)
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : SetIniValue
+' Author    : YPN
+' Date      : 2017-12-15 12:19
+' Purpose   : 写入初始化文件（.ini）指定键（Key）和值（Value）
+' Param     : i_Section    节
+'             i_Key        键
+'             i_Value      值
+'             i_FileName   完整的INI文件名
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function SetIniValue(ByVal i_Section As String, ByVal i_Key As String, ByVal i_Value As String, ByVal i_FileName As String) As Boolean
+
+    SetIniValue = MSetIniValue(i_Section, i_Key, i_Value, i_FileName)
 
 End Function
 
