@@ -1,5 +1,5 @@
 ModGetHardDiskInfo = 0, 0, 632, 736, C
-ClsYPNCommonVB = 632, 0, 1264, 736, C
+ClsYPNCommonVB = 266, 15, 1530, 383, C
 ModPublic = 82, 145, 1170, 648, C
 ModMD5 = 22, 29, 1110, 533, C
 ModStringUtils = 110, 44, 1198, 548, C
@@ -16,3 +16,4 @@ ClsFiniteField = 176, 232, 1264, 735, C
 ModQRCode = 0, 368, 1264, 736, C
 FrmPublic = 0, 0, 1088, 503, C, 76, 220, 1164, 724, C
 ModFileUtils = 0, 0, 632, 736, C
+FrmMessage = 102, 220, 1366, 588, C, 88, 116, 1176, 620, C

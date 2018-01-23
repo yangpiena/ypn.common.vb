@@ -100,9 +100,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub ApendText(ByVal i_TextFile As String, ByVal i_ApendContent As String)
-
+    
     Call MApendText(i_TextFile, i_ApendContent)
-
+    
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : BarCode128
@@ -143,7 +143,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function BarEAN13(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
-   Set BarEAN13 = MBarEAN13(i_BarText, i_BarHeight, i_HasCaption)
+    Set BarEAN13 = MBarEAN13(i_BarText, i_BarHeight, i_HasCaption)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -171,9 +171,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function Base64ToText(ByVal i_Base64 As String) As String
-
+    
     Base64ToText = MBase64ToText(i_Base64)
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -206,7 +206,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetGUID(Optional ByVal i_Format As String) As String
-
+    
     If UCase$(Trim(i_Format)) = "B" Then
         GetGUID = MGetGUID2("B")
     ElseIf UCase$(Trim(i_Format)) = "D" Then
@@ -244,9 +244,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetTextMaxLine(ByVal i_TextFile As String) As Long
-
+    
     GetTextMaxLine = MGetTextMaxLine(i_TextFile)
-
+    
 End Function
 
 
@@ -343,9 +343,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetIniValue(ByVal i_Section As String, ByVal i_Key As String, ByVal i_FileName As String) As String
-
+    
     GetIniValue = MGetIniValue(i_Section, i_Key, i_FileName)
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -359,7 +359,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetYear2(ByVal i_Date As String) As Integer
-
+    
     GetYear2 = MGetYear2(i_Date)
     
 End Function
@@ -428,9 +428,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function QRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_Encoding As String = "UTF-8") As StdPicture
-
+    
     Set QRCode = MQRCode(i_QRText, i_Version, i_ECLevel, i_MaskType, i_Encoding)
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -447,9 +447,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function SetIniValue(ByVal i_Section As String, ByVal i_Key As String, ByVal i_Value As String, ByVal i_FileName As String) As Boolean
-
+    
     SetIniValue = MSetIniValue(i_Section, i_Key, i_Value, i_FileName)
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -472,6 +472,41 @@ Public Sub SetStyleToolBar(Optional ByVal i_Color As Long = 15323836, Optional B
 End Sub
 
 '---------------------------------------------------------------------------------------
+' Procedure : ShowMessage
+' Author    : YPN
+' Date      : 2018/01/23 14:31
+' Purpose   : 显示右下角的弹出窗口消息
+' Param     : i_MsgSource  消息来源
+'             i_FrmIcon    窗口图标
+'             i_FrmCaption 窗口标题
+'             i_MsgTitle   消息标题
+'             i_MsgContent 消息内容
+'             i_WiteTime   窗口关闭等等时间
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Sub ShowMessage(ByVal i_MsgSource As String, ByVal i_FrmIcon As StdPicture, ByVal i_FrmCaption As String, ByVal i_MsgTitle As String, ByVal i_MsgContent As String, Optional ByVal i_WiteTime As Integer)
+    
+    On Error GoTo ShowMessage_Error
+    
+    FrmMessage.Icon = i_FrmIcon
+    FrmMessage.Caption = i_FrmCaption
+    FrmMessage.lbl_MsgTitle = i_MsgTitle
+    FrmMessage.lbl_MsgContent = i_MsgContent
+    FrmMessage.lbl_MsgSource = i_MsgSource
+    FrmMessage.f_WaitTime = i_WiteTime
+    FrmMessage.Show
+    
+    On Error GoTo 0
+    Exit Sub
+    
+ShowMessage_Error:
+    
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowMessage of Class Module ClsYPNCommonVB"
+End Sub
+
+'---------------------------------------------------------------------------------------
 ' Procedure : ShowProgress
 ' Author    : 杨东
 ' Date      : 2014/01/08
@@ -482,8 +517,8 @@ End Sub
 
 Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As String)
     
-   On Error GoTo ShowProgress_Error
-
+    On Error GoTo ShowProgress_Error
+    
     If Not i_Form Is Nothing Then
         
         If Not (TypeOf i_Form Is Form) Then Err.Raise 1, "ypn.common.by", "该类型不是Form类型"
@@ -494,12 +529,12 @@ Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As
     Else
         Unload FrmProgress
     End If
-
-   On Error GoTo 0
-   Exit Sub
-
+    
+    On Error GoTo 0
+    Exit Sub
+    
 ShowProgress_Error:
-
+    
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowProgress of Class Module ClsYPNCommonVB"
     
 End Sub
@@ -515,9 +550,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Function TextToBase64(ByVal i_Text As String) As String
-
+    
     TextToBase64 = MTextToBase64(i_Text)
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------

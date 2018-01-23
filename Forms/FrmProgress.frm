@@ -103,9 +103,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 Private Const WS_EX_LAYERED = &H80000
 Private Const GWL_EXSTYLE = (-20)
@@ -138,10 +138,10 @@ Private Sub formTransparent(Alpha As Integer)
     
     If Alpha >= 0 And Alpha <= 255 Then
         Dim rtn As Long
-        rtn = GetWindowLong(hwnd, GWL_EXSTYLE)
+        rtn = GetWindowLong(hWnd, GWL_EXSTYLE)
         rtn = rtn Or WS_EX_LAYERED
-        SetWindowLong hwnd, GWL_EXSTYLE, rtn
-        SetLayeredWindowAttributes hwnd, 0, Alpha, LWA_ALPHA
+        SetWindowLong hWnd, GWL_EXSTYLE, rtn
+        SetLayeredWindowAttributes hWnd, 0, Alpha, LWA_ALPHA
     End If
     
 End Sub
