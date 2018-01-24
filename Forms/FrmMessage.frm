@@ -10,6 +10,7 @@ Begin VB.Form FrmMessage
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   Moveable        =   0   'False
    ScaleHeight     =   3090
    ScaleWidth      =   4680
    ShowInTaskbar   =   0   'False
