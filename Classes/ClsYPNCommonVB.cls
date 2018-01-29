@@ -381,7 +381,7 @@ Public Function HexToText(i_Code As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
-' Procedure : isNull
+' Procedure : IsNull
 ' Author    : YPN
 ' Date      : 2017-06-29 14:51
 ' Purpose   : 判断变量是否为空
@@ -390,9 +390,9 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function isNull(ByVal i_Var As Variant) As Boolean
+Public Function IsNull(ByVal i_Var As Variant) As Boolean
     
-    isNull = MIsNull(i_Var)
+    IsNull = MIsNull(i_Var)
     
 End Function
 
@@ -569,4 +569,20 @@ Public Function TextToHex(i_Text As String) As String
     
     TextToHex = MTextToHex(i_Text)
     
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : TrimText
+' Author    : YPN
+' Date      : 2018/01/29 11:50
+' Purpose   : 去除字符串两边空格，支持去除两边空的换行符
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function TrimText(i_Text As String) As String
+
+    TrimText = MTrimText(i_Text)
+
 End Function

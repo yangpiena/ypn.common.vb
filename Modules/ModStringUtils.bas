@@ -70,7 +70,7 @@ End Function
 '
 Public Function MIsNull(ByVal i_Var As Variant) As Boolean
     
-    If isNull(i_Var) Then
+    If IsNull(i_Var) Then
         MIsNull = True
         Exit Function
     End If
@@ -292,6 +292,31 @@ Public Function MTextToHex(i_Text As String) As String
     Next
     MTextToHex = strOut
     
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : MTrimText
+' Author    : YPN
+' Date      : 2018/01/29 11:37
+' Purpose   : 去除字符串两边空格，支持去除两边空的换行符
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MTrimText(i_Text As String) As String
+
+    '去除两边换行符
+    i_Text = Replace(i_Text, " ", "YPN_TmpValue")
+    i_Text = Replace(i_Text, vbCrLf, " ")
+    i_Text = Trim(i_Text)
+    i_Text = Replace(i_Text, " ", vbCrLf)
+    i_Text = Replace(i_Text, "YPN_TmpValue", " ")
+    '去除两边空格
+    i_Text = Trim(i_Text)
+    
+    MTrimText = i_Text
+
 End Function
 
 '---------------------------------------------------------------------------------------
