@@ -2,17 +2,17 @@ VERSION 5.00
 Begin VB.Form FrmMessage 
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   3  'Fixed Dialog
-   ClientHeight    =   3090
+   ClientHeight    =   2160
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   4680
+   ClientWidth     =   5085
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    Moveable        =   0   'False
-   ScaleHeight     =   3090
-   ScaleWidth      =   4680
+   ScaleHeight     =   2160
+   ScaleWidth      =   5085
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  '¥∞ø⁄»± °
    Begin VB.Timer Timer2 
@@ -28,9 +28,9 @@ Begin VB.Form FrmMessage
       BackColor       =   &H00FFFFFF&
       Caption         =   "2018-01-23 14:59:00"
       Height          =   255
-      Left            =   2760
+      Left            =   3120
       TabIndex        =   3
-      Top             =   2760
+      Top             =   1800
       Width           =   1815
    End
    Begin VB.Label lbl_MsgSource 
@@ -39,18 +39,18 @@ Begin VB.Form FrmMessage
       Height          =   255
       Left            =   120
       TabIndex        =   2
-      Top             =   2760
-      Width           =   2535
+      Top             =   1800
+      Width           =   2895
    End
    Begin VB.Label lbl_MsgContent 
       BackColor       =   &H00FFFFFF&
       Caption         =   "≤‚ ‘ƒ⁄»›"
       ForeColor       =   &H8000000D&
-      Height          =   1935
+      Height          =   855
       Left            =   120
       TabIndex        =   1
       Top             =   600
-      Width           =   4455
+      Width           =   4935
    End
    Begin VB.Label lbl_MsgTitle 
       Alignment       =   2  'Center
@@ -70,7 +70,7 @@ Begin VB.Form FrmMessage
       Left            =   120
       TabIndex        =   0
       Top             =   120
-      Width           =   4455
+      Width           =   4935
    End
 End
 Attribute VB_Name = "FrmMessage"
