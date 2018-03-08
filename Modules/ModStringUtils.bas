@@ -191,6 +191,38 @@ Public Function MGetYear2(ByVal i_Date As String) As Integer
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : MGetMonthBegin
+' Author    : YPN
+' Date      : 2018/03/08 16:51
+' Purpose   : 获取指定日期的月初日期
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MGetMonthBegin(ByVal i_Date As String) As String
+
+    MGetMonthBegin = DateSerial(Year(i_Date), Month(i_Date), 1)
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : MGetMonthEnd
+' Author    : YPN
+' Date      : 2018/03/08 16:52
+' Purpose   : 获取指定日期的月末日期
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MGetMonthEnd(ByVal i_Date As String) As String
+
+    MGetMonthEnd = DateAdd("d", -1, DateSerial(Year(i_Date), Month(i_Date) + 1, 1))
+
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : MHexToText
 ' Author    : YPN
 ' Date      : 2017-07-05 15:55
@@ -212,6 +244,24 @@ Public Function MHexToText(i_Code As String) As String
     Next
     MHexToText = StrConv(aBuffer, vbUnicode)
     
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : MRndInt
+' Author    : YPN
+' Date      : 2018/03/05 16:55
+' Purpose   : 生成指定范围内的随机整数
+' Param     : i_Min 最小数
+'             i_Max 最大数
+' Return    : 随机整数
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MRndInt(ByVal i_Min As Long, ByVal i_Max As Long) As Integer
+
+    Randomize
+    MRndInt = Int(Rnd() * (i_Max - i_Min + 1)) + i_Min
+
 End Function
 
 '---------------------------------------------------------------------------------------

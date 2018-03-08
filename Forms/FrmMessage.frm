@@ -201,7 +201,10 @@ Private Sub Timer2_Timer()
     
     v_NL = v_NL + 1
     
-    If v_NL >= f_WaitTime Then Unload Me
+    If v_NL >= f_WaitTime Then
+        v_NL = 0
+        Unload Me
+    End If
     
 End Sub
 

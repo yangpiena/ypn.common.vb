@@ -365,6 +365,38 @@ Public Function GetYear2(ByVal i_Date As String) As Integer
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : GetMonthBegin
+' Author    : YPN
+' Date      : 2018/03/08 16:51
+' Purpose   : 获取指定日期的月初日期
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetMonthBegin(ByVal i_Date As String) As String
+
+    GetMonthBegin = MGetMonthBegin(i_Date)
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : GetMonthEnd
+' Author    : YPN
+' Date      : 2018/03/08 16:52
+' Purpose   : 获取指定日期的月末日期
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetMonthEnd(ByVal i_Date As String) As String
+
+    GetMonthEnd = MGetMonthEnd(i_Date)
+
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : HexToText
 ' Author    : YPN
 ' Date      : 2017-07-05 15:55
@@ -431,6 +463,23 @@ Public Function QRCode(ByVal i_QRText As String, Optional ByVal i_Version As Lon
     
     Set QRCode = MQRCode(i_QRText, i_Version, i_ECLevel, i_MaskType, i_Encoding)
     
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : RndInt
+' Author    : YPN
+' Date      : 2018/03/05 16:55
+' Purpose   : 生成指定范围内的随机整数
+' Param     : i_Min 最小数
+'             i_Max 最大数
+' Return    : 随机整数
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function RndInt(ByVal i_Min As Long, ByVal i_Max As Long) As Integer
+
+    RndInt = MRndInt(i_Min, i_Max)
+
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -503,7 +552,7 @@ Public Sub ShowMessage(ByVal i_MsgSource As String, ByVal i_FrmIcon As StdPictur
     
 ShowMessage_Error:
     
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowMessage of Class Module ClsYPNCommonVB"
+    ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowMessage of Class Module ClsYPNCommonVB"
 End Sub
 
 '---------------------------------------------------------------------------------------
