@@ -1,16 +1,38 @@
 VERSION 5.00
-Begin VB.Form Form1 
-   Caption         =   "Form1"
+Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
+Begin VB.Form frmMain 
+   Caption         =   "Main"
    ClientHeight    =   8205
    ClientLeft      =   60
    ClientTop       =   450
    ClientWidth     =   13845
-   LinkTopic       =   "Form1"
+   LinkTopic       =   "frmMain"
    ScaleHeight     =   8205
    ScaleWidth      =   13845
    StartUpPosition =   3  '´°¿ÚÈ±Ê¡
+   Begin TabDlg.SSTab SSTab1 
+      Height          =   1815
+      Left            =   7320
+      TabIndex        =   34
+      Top             =   5160
+      Width           =   4815
+      _ExtentX        =   8493
+      _ExtentY        =   3201
+      _Version        =   393216
+      TabHeight       =   520
+      TabCaption(0)   =   "Tab 0"
+      TabPicture(0)   =   "frmMain.frx":0000
+      Tab(0).ControlEnabled=   -1  'True
+      Tab(0).ControlCount=   0
+      TabCaption(1)   =   "Tab 1"
+      Tab(1).ControlEnabled=   0   'False
+      Tab(1).ControlCount=   0
+      TabCaption(2)   =   "Tab 2"
+      Tab(2).ControlEnabled=   0   'False
+      Tab(2).ControlCount=   0
+   End
    Begin VB.CommandButton Command4 
-      Caption         =   "Form2"
+      Caption         =   "SSTab"
       Height          =   375
       Left            =   240
       TabIndex        =   33
@@ -47,7 +69,7 @@ Begin VB.Form Form1
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
       TabIndex        =   27
-      Text            =   "Form1.frx":0000
+      Text            =   "frmMain.frx":001C
       Top             =   3360
       Width           =   4215
    End
@@ -103,7 +125,7 @@ Begin VB.Form Form1
       MultiLine       =   -1  'True
       ScrollBars      =   3  'Both
       TabIndex        =   20
-      Text            =   "Form1.frx":0007
+      Text            =   "frmMain.frx":0023
       Top             =   840
       Width           =   2655
    End
@@ -321,7 +343,7 @@ Begin VB.Form Form1
       Width           =   1260
    End
 End
-Attribute VB_Name = "Form1"
+Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -378,7 +400,7 @@ Private Sub Command3_Click()
 End Sub
 
 Private Sub Command4_Click()
-    Form2.Show
+    frmSSTab.Show
 End Sub
 
 Private Sub Form_Load()
@@ -389,7 +411,7 @@ Private Sub Form_Load()
     Me.Text4.Text = YPN.MD5(Me.Text2.Text, 32)
     Me.Text5.Text = YPN.GetInitialAll(Me.Label5.Caption)
     Me.Text6.Text = YPN.GetInitialFirst(Me.Label6.Caption)
-    Me.Label71.Caption = App.Path + "\Form1.frm"
+    Me.Label71.Caption = App.Path + "\frmMain.frm"
     Me.Text7.Text = YPN.GetFileNameInPath(Me.Label71.Caption, True)
     Me.Text8.Text = YPN.GetSuffixInFileName(Me.Text7.Text)
     Me.Text9.Text = YPN.GetGUID()
@@ -419,6 +441,8 @@ Private Sub Form_Load()
     cmb1(3).ListIndex = 1
     
     Call Command1_Click
+    
+    Call YPN.SSTabInit(Me.SSTab1, 2)
 End Sub
 
 Private Sub Image1_Click()

@@ -17,13 +17,10 @@ Attribute VB_Exposed = True
 ' Date      : 2017-06-28 12:06
 ' Purpose   : 公共类
 '---------------------------------------------------------------------------------------
-
 Option Explicit
 
 
-
 Public Sub Help(Optional ByVal i_IsMsg As Boolean = False)
-    
     Dim v_Help As String
     
     v_Help = "以下为YPNCommonVB的所有过程：" & vbCrLf
@@ -85,7 +82,6 @@ Public Sub Help(Optional ByVal i_IsMsg As Boolean = False)
     Debug.Print v_Help
     
     If i_IsMsg Then MsgBox v_Help, vbInformation, TS
-    
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -100,9 +96,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub ApendText(ByVal i_TextFile As String, ByVal i_ApendContent As String)
-    
     Call MApendText(i_TextFile, i_ApendContent)
-    
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : BarCode128
@@ -171,9 +165,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function Base64ToText(ByVal i_Base64 As String) As String
-    
     Base64ToText = MBase64ToText(i_Base64)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -188,9 +180,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetFileNameInPath(ByVal i_Path As String, Optional ByVal i_NeedSuffix As Boolean = False) As String
-    
     GetFileNameInPath = MGetFileNameInPath(i_Path, i_NeedSuffix)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -206,7 +196,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetGUID(Optional ByVal i_Format As String) As String
-    
     If UCase$(Trim(i_Format)) = "B" Then
         GetGUID = MGetGUID2("B")
     ElseIf UCase$(Trim(i_Format)) = "D" Then
@@ -214,7 +203,6 @@ Public Function GetGUID(Optional ByVal i_Format As String) As String
     Else
         GetGUID = MGetGUID
     End If
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -228,9 +216,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetSuffixInFileName(ByVal i_FileName As String) As String
-    
     GetSuffixInFileName = MGetSuffixInFileName(i_FileName)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -244,11 +230,8 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetTextMaxLine(ByVal i_TextFile As String) As Long
-    
     GetTextMaxLine = MGetTextMaxLine(i_TextFile)
-    
 End Function
-
 
 '---------------------------------------------------------------------------------------
 ' Procedure : MGetHardDriveSerialNumber
@@ -261,9 +244,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetHardDriveSerialNumber(Optional ByVal i_DiskName = "C") As String
-    
     GetHardDriveSerialNumber = MGetHardDriveSerialNumber(i_DiskName)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -277,9 +258,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetHardDiskSerialNumber() As String
-    
     GetHardDiskSerialNumber = MGetHardDiskSerialNumber
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -293,9 +272,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetHardDiskModel() As String
-    
     GetHardDiskModel = MGetHardDiskModel
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -309,9 +286,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetInitialAll(ByVal i_Str As String) As String
-    
     GetInitialAll = MGetInitialAll(i_Str)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -325,9 +300,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetInitialFirst(ByVal i_Str As String) As String
-    
     GetInitialFirst = MGetInitialFirst(i_Str)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -343,9 +316,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetIniValue(ByVal i_Section As String, ByVal i_Key As String, ByVal i_FileName As String) As String
-    
     GetIniValue = MGetIniValue(i_Section, i_Key, i_FileName)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -359,9 +330,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetYear2(ByVal i_Date As String) As Integer
-    
     GetYear2 = MGetYear2(i_Date)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -375,9 +344,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetMonthBegin(ByVal i_Date As String) As String
-
     GetMonthBegin = MGetMonthBegin(i_Date)
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -391,9 +358,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetMonthEnd(ByVal i_Date As String) As String
-
     GetMonthEnd = MGetMonthEnd(i_Date)
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -407,9 +372,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function HexToText(i_Code As String) As String
-    
     HexToText = MHexToText(i_Code)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -423,9 +386,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function IsNull(ByVal i_Var As Variant) As Boolean
-    
     IsNull = MIsNull(i_Var)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -440,9 +401,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) As String
-    
     MD5 = MMD5(i_Str, i_Bit)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -460,9 +419,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function QRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_Encoding As String = "UTF-8") As StdPicture
-    
     Set QRCode = MQRCode(i_QRText, i_Version, i_ECLevel, i_MaskType, i_Encoding)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -477,9 +434,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function RndInt(ByVal i_Min As Long, ByVal i_Max As Long) As Integer
-
     RndInt = MRndInt(i_Min, i_Max)
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -496,9 +451,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function SetIniValue(ByVal i_Section As String, ByVal i_Key As String, ByVal i_Value As String, ByVal i_FileName As String) As Boolean
-    
     SetIniValue = MSetIniValue(i_Section, i_Key, i_Value, i_FileName)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -513,11 +466,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Sub SetStyleToolBar(Optional ByVal i_Color As Long = 15323836, Optional ByVal i_PicturePath As String)
-    
     FrmStyleToolBar.p_Color = i_Color
     FrmStyleToolBar.p_PicturePath = i_PicturePath
     FrmStyleToolBar.Hide
-    
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -536,7 +487,6 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub ShowMessage(ByVal i_MsgSource As String, ByVal i_FrmIcon As StdPicture, ByVal i_FrmCaption As String, ByVal i_MsgTitle As String, ByVal i_MsgContent As String, Optional ByVal i_WiteTime As Integer)
-    
     On Error GoTo ShowMessage_Error
     
     FrmMessage.Icon = i_FrmIcon
@@ -551,7 +501,6 @@ Public Sub ShowMessage(ByVal i_MsgSource As String, ByVal i_FrmIcon As StdPictur
     Exit Sub
     
 ShowMessage_Error:
-    
     ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowMessage of Class Module ClsYPNCommonVB"
 End Sub
 
@@ -565,7 +514,6 @@ End Sub
 '---------------------------------------------------------------------------------------
 
 Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As String)
-    
     On Error GoTo ShowProgress_Error
     
     If Not i_Form Is Nothing Then
@@ -583,9 +531,22 @@ Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As
     Exit Sub
     
 ShowProgress_Error:
-    
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowProgress of Class Module ClsYPNCommonVB"
-    
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : SSTabInit
+' Author    : YPN
+' Date      : 2018-03-24 22:59
+' Purpose   : 初始化SSTab（重绘SSTab）
+' Param     : i_SSTab             SSTab类型
+'             i_Style （可选参数）样式类型：0 XP样式；1 QQ样式；2 Office样式
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Sub SSTabInit(ByVal i_SSTab As Object, Optional ByVal i_Style As Integer = 0)
+    Call FrmSSTab.FSSTabInit(i_SSTab, i_Style)
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -599,9 +560,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Function TextToBase64(ByVal i_Text As String) As String
-    
     TextToBase64 = MTextToBase64(i_Text)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -615,9 +574,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function TextToHex(i_Text As String) As String
-    
     TextToHex = MTextToHex(i_Text)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -631,7 +588,5 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function TrimText(i_Text As String) As String
-
     TrimText = MTrimText(i_Text)
-
 End Function

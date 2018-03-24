@@ -20,7 +20,6 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 '
 Public Function MBase64ToText(ByVal i_Base64 As String) As String
-    
     Dim v_OutStr() As Byte
     Dim v_Length   As Long, v_Mods As Long
     Const B64_CHAR_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
@@ -53,9 +52,7 @@ Public Function MBase64ToText(ByVal i_Base64 As String) As String
     Exit Function
     
 Base64Decode_Error:
-    
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Base64Decode of Module ModStringUtils"
-    
 End Function
 
 '---------------------------------------------------------------------------------------
