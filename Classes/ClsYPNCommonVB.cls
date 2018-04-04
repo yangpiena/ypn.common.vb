@@ -390,6 +390,21 @@ Public Function IsNull(ByVal i_Var As Variant) As Boolean
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : JSONAnalyze
+' Author    : YPN
+' Date      : 2018-4-5
+' Purpose   : JSON解析
+' Param     : i_JSONString 待解析的JSON字符串
+'           : i_JSONKey    解析的关键字
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function JSONAnalyze(ByVal i_JSONString As String, ByVal i_JSONKey As String) As String
+    JSONAnalyze = ModJSON.MJSONAnalyze(i_JSONString, i_JSONKey)
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : MD5
 ' Author    : YPN
 ' Date      : 2017-06-28 17:28
@@ -420,6 +435,21 @@ End Function
 '
 Public Function QRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_Encoding As String = "UTF-8") As StdPicture
     Set QRCode = MQRCode(i_QRText, i_Version, i_ECLevel, i_MaskType, i_Encoding)
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : RequestREST
+' Author    : YPN
+' Date      : 2018-4-5
+' Purpose   : 请求/调用REST接口
+' Param     : i_RequstURL        请求地址
+'           : i_RequestParameter 请求参数
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function RequestREST(ByVal i_RequstURL As String, ByVal i_RequestParameter As String) As String
+    RequestREST = ModNetUtils.MRequestREST(i_RequstURL, i_RequestParameter)
 End Function
 
 '---------------------------------------------------------------------------------------
