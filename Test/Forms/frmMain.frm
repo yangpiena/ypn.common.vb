@@ -10,6 +10,14 @@ Begin VB.Form frmMain
    ScaleHeight     =   8205
    ScaleWidth      =   13845
    StartUpPosition =   3  '´°¿ÚÈ±Ê¡
+   Begin VB.CommandButton Command5 
+      Caption         =   "JSON"
+      Height          =   375
+      Left            =   1680
+      TabIndex        =   35
+      Top             =   120
+      Width           =   1335
+   End
    Begin TabDlg.SSTab SSTab1 
       Height          =   1815
       Left            =   7320
@@ -401,6 +409,10 @@ End Sub
 
 Private Sub Command4_Click()
     frmSSTab.Show
+End Sub
+
+Private Sub Command5_Click()
+    frmJSON.Show
 End Sub
 
 Private Sub Form_Load()
