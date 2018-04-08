@@ -92,7 +92,7 @@ Public Sub Help(Optional ByVal i_Procedure As String, Optional ByVal i_IsMsg As 
         v_Help = ""
         v_Help = v_Help & vbCrLf & "过程：JSONAnalyze  JSON解析"
         v_Help = v_Help & vbCrLf & "参数：i_JSONString 待解析的JSON字符串"
-        v_Help = v_Help & vbCrLf & "参数：i_JSONKey    解析的关键字"
+        v_Help = v_Help & vbCrLf & "参数：i_JSONKey    解析的关键字 例如：body.data.username"
         
     Case "MD5"
         v_Help = ""
@@ -112,8 +112,8 @@ Public Sub Help(Optional ByVal i_Procedure As String, Optional ByVal i_IsMsg As 
     Case "RequestREST"
         v_Help = ""
         v_Help = v_Help & vbCrLf & "过程：RequestREST        请求/调用REST接口"
-        v_Help = v_Help & vbCrLf & "参数：i_RequstURL        请求地址"
-        v_Help = v_Help & vbCrLf & "参数：i_RequestParameter 请求参数"
+        v_Help = v_Help & vbCrLf & "参数：i_RequstURL        请求地址 例如：http://218.21.3.20:5076/brp/services/avplan/aAUserData/queryAAUserData"
+        v_Help = v_Help & vbCrLf & "参数：i_RequestParameter 请求参数 例如：{""sysid"": ""SYS_LogWeb"",""sidv"": ""1.0"",""body"": {""innerid"": ""568dd7cc1ba68779fe295fb9ebe3288c"",""userid"": ""czd"",""userno"": ""50271""}}"
         
     Case "SetStyleToolBar"
         v_Help = ""
@@ -488,7 +488,7 @@ End Function
 ' Date      : 2018-4-5
 ' Purpose   : JSON解析
 ' Param     : i_JSONString 待解析的JSON字符串
-'           : i_JSONKey    解析的关键字
+'           : i_JSONKey    解析的关键字 例如：body.data.username
 ' Return    : String
 ' Remark    :
 '---------------------------------------------------------------------------------------
@@ -541,8 +541,8 @@ End Function
 ' Author    : YPN
 ' Date      : 2018-4-5
 ' Purpose   : 请求/调用REST接口
-' Param     : i_RequstURL        请求地址
-'           : i_RequestParameter 请求参数
+' Param     : i_RequstURL        请求地址 例如：http://218.21.3.20:5076/brp/services/avplan/aAUserData/queryAAUserData
+'           : i_RequestParameter 请求参数 例如：{"sysid": "SYS_LogWeb","sidv": "1.0","body": {"innerid": "568dd7cc1ba68779fe295fb9ebe3288c","userid": "czd","userno": "50271"}}
 ' Return    : String
 ' Remark    :
 '---------------------------------------------------------------------------------------
