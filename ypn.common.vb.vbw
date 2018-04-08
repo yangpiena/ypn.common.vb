@@ -1,5 +1,5 @@
 ModGetHardDiskInfo = 0, 0, 632, 736, C
-ClsYPNCommonVB = 632, 368, 1264, 736, C
+ClsYPNCommonVB = 632, 368, 1264, 736, Z
 ModPublic = 82, 145, 1170, 648, C
 ModMD5 = 22, 29, 1110, 533, C
 ModStringUtils = 632, 0, 1264, 368, C

@@ -20,68 +20,107 @@ Attribute VB_Exposed = True
 Option Explicit
 
 
-Public Sub Help(Optional ByVal i_IsMsg As Boolean = False)
+Public Sub Help(Optional ByVal i_Procedure As String, Optional ByVal i_IsMsg As Boolean = False)
+    
     Dim v_Help As String
     
-    v_Help = "以下为YPNCommonVB的所有过程：" & vbCrLf
+    v_Help = "请传入过程名，显示详细描述！若i_IsMsg为True，则弹出详细描述，否则会在立即窗口打印详细描述。"
     
-    v_Help = v_Help & vbCrLf & "过程：ApendText                 追加内容到指定文件"
-    v_Help = v_Help & vbCrLf & "参数：i_TextFile     指定文件"
-    v_Help = v_Help & vbCrLf & "参数：i_ApendContent 追加内容"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：GetFileNameInPath         从指定全路径中获取文件名"
-    v_Help = v_Help & vbCrLf & "参数：i_Path       指定全路径"
-    v_Help = v_Help & vbCrLf & "参数：i_NeedSuffix 文件名是否需要后缀名，默认不需要"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：GetGUID                   生成一个GUID"
-    v_Help = v_Help & vbCrLf & "参数：i_Format(可选项) 格式：'B'、'D'"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：GetSuffixInFileName       从文件名中获取后缀名"
-    v_Help = v_Help & vbCrLf & "参数：i_FileName 文件名"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：GetHardDriveSerialNumber  取得逻辑盘序列号（非唯一）"
-    v_Help = v_Help & vbCrLf & "参数：i_DiskName 目标逻辑盘名称"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：GetHardDiskSerialNumber   获取物理盘的系列号SN（唯一）"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：GetHardDiskModel          获取物理盘的型号"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：GetInitialFirst           获取第一个汉字的首字母"
-    v_Help = v_Help & vbCrLf & "参数：i_Str 汉字字符串"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：GetInitialAll             获取所有汉字的首字母"
-    v_Help = v_Help & vbCrLf & "参数：i_Str 汉字字符串"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：GetYear2                  获取日期中的年份后2位"
-    v_Help = v_Help & vbCrLf & "参数：i_Date 日期"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：HexToText                 将16进制编码串转换为文本。没有写异常处理，但只要是用 TextToHex() 转换的结果就没问题"
-    v_Help = v_Help & vbCrLf & "参数：i_Code 要转换的16进制编码"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：TextToHex                 将文本转换为16进制编码串"
-    v_Help = v_Help & vbCrLf & "参数：i_Text 要转换的文本"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：isNull                    判断变量是否为空"
-    v_Help = v_Help & vbCrLf & "参数：i_Var 变量"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：SetStyleToolBar           设置控件ToolBar的样式"
-    v_Help = v_Help & vbCrLf & "参数：i_Color       （可选参数）指定背景颜色，默认RGB(188, 210, 233)"
-    v_Help = v_Help & vbCrLf & "参数：i_PicturePath （可选参数）指定背景图片"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：MD5                       MD5加密"
-    v_Help = v_Help & vbCrLf & "参数：i_Str 加密内容"
-    v_Help = v_Help & vbCrLf & "参数：i_Bit 加密位数：16位或32位。默认16位"
-    v_Help = v_Help & vbCrLf & "--------------------------------"
-    v_Help = v_Help & vbCrLf & "过程：QRCode                    生成QR Code码制的二维码"
-    v_Help = v_Help & vbCrLf & "参数：i_QRText    二维码内容"
-    v_Help = v_Help & vbCrLf & "参数：i_Version  （可选参数）生成版本，支持40种，从1到40，默认自动，即0"
-    v_Help = v_Help & vbCrLf & "参数：i_ECLevel  （可选参数）容错等级，支持4种：L-7%、M-15%、Q-25%、H-30%，默认M（传入首字母L、M、Q、H即可）"
-    v_Help = v_Help & vbCrLf & "参数：i_MaskType （可选参数）模糊类型，支持8种，从0到7，默认自动，即-1"
-    v_Help = v_Help & vbCrLf & "参数：i_Encoding （可选参数）字符编码，支持2种：UTF-8 和 ANSI，默认UTF-8"
+    Select Case i_Procedure
+        
+    Case "ApendText"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：ApendText      追加内容到指定文件"
+        v_Help = v_Help & vbCrLf & "参数：i_TextFile     指定文件"
+        v_Help = v_Help & vbCrLf & "参数：i_ApendContent 追加内容"
+        
+    Case "GetFileNameInPath"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：GetFileNameInPath 从指定全路径中获取文件名"
+        v_Help = v_Help & vbCrLf & "参数：i_Path            指定全路径"
+        v_Help = v_Help & vbCrLf & "参数：i_NeedSuffix      文件名是否需要后缀名，默认不需要"
+        
+    Case "GetGUID"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：GetGUID           生成一个GUID"
+        v_Help = v_Help & vbCrLf & "参数：i_Format (可选项) 格式：'B'、'D'"
+        
+    Case "GetSuffixInFileName"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：GetSuffixInFileName 从文件名中获取后缀名"
+        v_Help = v_Help & vbCrLf & "参数：i_FileName          文件名"
+        
+    Case "GetHardDriveSerialNumber"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：GetHardDriveSerialNumber 取得逻辑盘序列号（非唯一）"
+        v_Help = v_Help & vbCrLf & "参数：i_DiskName               目标逻辑盘名称"
+        
+    Case "GetHardDiskSerialNumber"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：GetHardDiskSerialNumber 获取物理盘的系列号SN（唯一）"
+        
+    Case "GetHardDiskModel"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：GetHardDiskModel 获取物理盘的型号"
+        
+    Case "GetInitialFirst"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：GetInitialFirst 获取第一个汉字的首字母"
+        v_Help = v_Help & vbCrLf & "参数：i_Str           汉字字符串"
+        
+    Case "GetInitialAll"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：GetInitialAll 获取所有汉字的首字母"
+        v_Help = v_Help & vbCrLf & "参数：i_Str         汉字字符串"
+        
+    Case "GetYear2"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：GetYear2 获取日期中的年份后2位"
+        v_Help = v_Help & vbCrLf & "参数：i_Date   日期"
+        
+    Case "HexToText"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：HexToText 将16进制编码串转换为文本。没有写异常处理，但只要是用 TextToHex() 转换的结果就没问题"
+        v_Help = v_Help & vbCrLf & "参数：i_Code    要转换的16进制编码"
+        
+    Case "TextToHex"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：TextToHex 将文本转换为16进制编码串"
+        v_Help = v_Help & vbCrLf & "参数：i_Text    要转换的文本"
+        
+    Case "isNull"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：isNull 判断变量是否为空"
+        v_Help = v_Help & vbCrLf & "参数：i_Var  变量"
+        
+    Case "SetStyleToolBar"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：SetStyleToolBar           设置控件ToolBar的样式"
+        v_Help = v_Help & vbCrLf & "参数：i_Color       （可选参数）指定背景颜色，默认RGB(188, 210, 233)"
+        v_Help = v_Help & vbCrLf & "参数：i_PicturePath （可选参数）指定背景图片"
+        
+    Case "MD5"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：MD5   MD5加密"
+        v_Help = v_Help & vbCrLf & "参数：i_Str 加密内容"
+        v_Help = v_Help & vbCrLf & "参数：i_Bit 加密位数：16位或32位。默认16位"
+        
+    Case "QRCode"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：QRCode      生成QR Code码制的二维码"
+        v_Help = v_Help & vbCrLf & "参数：i_QRText    二维码内容"
+        v_Help = v_Help & vbCrLf & "参数：i_Version  （可选参数）生成版本，支持40种，从1到40，默认自动，即0"
+        v_Help = v_Help & vbCrLf & "参数：i_ECLevel  （可选参数）容错等级，支持4种：L-7%、M-15%、Q-25%、H-30%，默认M（传入首字母L、M、Q、H即可）"
+        v_Help = v_Help & vbCrLf & "参数：i_MaskType （可选参数）模糊类型，支持8种，从0到7，默认自动，即-1"
+        v_Help = v_Help & vbCrLf & "参数：i_Encoding （可选参数）字符编码，支持2种：UTF-8 和 ANSI，默认UTF-8"
+    End Select
     
-    Debug.Print v_Help
+    If i_IsMsg Then
+        MsgBox v_Help, vbInformation, TS
+    Else
+        Debug.Print v_Help
+    End If
     
-    If i_IsMsg Then MsgBox v_Help, vbInformation, TS
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -96,7 +135,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub ApendText(ByVal i_TextFile As String, ByVal i_ApendContent As String)
+
     Call MApendText(i_TextFile, i_ApendContent)
+    
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : BarCode128
