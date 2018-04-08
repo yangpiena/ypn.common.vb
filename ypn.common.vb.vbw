@@ -1,8 +1,8 @@
 ModGetHardDiskInfo = 0, 0, 632, 736, C
-ClsYPNCommonVB = 632, 368, 1264, 736, C
+ClsYPNCommonVB = -17, 22, 615, 631, C
 ModPublic = 82, 145, 1170, 648, C
 ModMD5 = 22, 29, 1110, 533, C
-ModStringUtils = 632, 0, 1264, 368, C
+ModStringUtils = 632, 0, 1264, 659, C
 ModStyleToolBar = 591, 169, 1679, 673, C
 FrmStyleToolBar = 380, 123, 1348, 627, C, 222, 145, 1310, 649, C
 FrmProgress = 304, 86, 1392, 590, C, 499, 185, 1587, 688, C

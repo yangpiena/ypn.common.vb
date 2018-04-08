@@ -40,7 +40,7 @@ Public Function MJSONAnalyze(ByVal i_JSONString As String, ByVal i_JSONKey As St
     Set v_Json = parse(i_JSONString)
     v_JsonData = Split(i_JSONKey, ".")
     
-    If IsArray(v_JsonData) Then
+    If IsArray(v_JsonData) And Not v_Json Is Nothing Then
         Set v_JsonTmp = v_Json
         
         For i = 0 To UBound(v_JsonData) - 1
@@ -48,6 +48,8 @@ Public Function MJSONAnalyze(ByVal i_JSONString As String, ByVal i_JSONKey As St
         Next
         
         MJSONAnalyze = v_JsonTmp.Item(CStr(v_JsonData(UBound(v_JsonData))))
+    Else
+        MJSONAnalyze = psErrors
     End If
 
    On Error GoTo 0
@@ -55,7 +57,7 @@ Public Function MJSONAnalyze(ByVal i_JSONString As String, ByVal i_JSONKey As St
 
 MJSONAnalyze_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MJSONAnalyze of Module ModJSON"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MJSONAnalyze of Module ModJSON. " & psErrors
     
 End Function
 

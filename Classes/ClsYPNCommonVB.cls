@@ -403,6 +403,54 @@ Public Function GetIniValue(ByVal i_Section As String, ByVal i_Key As String, By
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : GetLocalComputerName
+' Author    : YPN
+' Date      : 2018-04-08 16:00
+' Purpose   : 获取本机电脑名称
+' Param     :
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetLocalComputerName() As String
+
+    GetLocalComputerName = ModStringUtils.MGetLocalComputerName
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : GetLocalIP
+' Author    : YPN
+' Date      : 2018-04-08 16:00
+' Purpose   : 获取本机IP地址
+' Param     :
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetLocalIP() As String
+
+    GetLocalIP = ModStringUtils.MGetLocalIP
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : GetLocalUserName
+' Author    : YPN
+' Date      : 2018-04-08 16:00
+' Purpose   : 获取本机用户名称
+' Param     :
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetLocalUserName() As String
+
+    GetLocalUserName = ModStringUtils.MGetLocalUserName
+
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : GetYear2
 ' Author    : YPN
 ' Date      : 2017-07-10 17:06

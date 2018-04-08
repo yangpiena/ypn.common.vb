@@ -20,7 +20,7 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 '
 Public Function MBase64ToText(ByVal i_Base64 As String) As String
-
+    
     Dim v_OutStr() As Byte
     Dim v_Length   As Long, v_Mods As Long
     Const B64_CHAR_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
@@ -53,7 +53,7 @@ Public Function MBase64ToText(ByVal i_Base64 As String) As String
     Exit Function
     
 Base64Decode_Error:
-
+    
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Base64Decode of Module ModStringUtils"
     
 End Function
@@ -155,6 +155,66 @@ Public Function MGetInitialFirst(ByVal i_Str As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : MGetLocalComputerName
+' Author    : YPN
+' Date      : 2018-04-08 16:00
+' Purpose   : 获取本机电脑名称
+' Param     :
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MGetLocalComputerName() As String
+    
+    MGetLocalComputerName = Environ("computername")
+    
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : MGetLocalIP
+' Author    : YPN
+' Date      : 2018-04-08 16:00
+' Purpose   : 获取本机IP地址
+' Param     :
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MGetLocalIP() As String
+    
+    Dim v_winIP As Object
+    
+    On Error GoTo MGetLocalIP_Error
+    
+    Set v_winIP = CreateObject("MSWinsock.Winsock")
+    MGetLocalIP = v_winIP.localip
+    
+    On Error GoTo 0
+    Exit Function
+    
+MGetLocalIP_Error:
+    
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalIP of Module ModStringUtils"
+    
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : MGetLocalUserName
+' Author    : YPN
+' Date      : 2018-04-08 16:00
+' Purpose   : 获取本机用户名称
+' Param     :
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MGetLocalUserName() As String
+    
+    MGetLocalUserName = Environ("username")
+    
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : MGetInitialAll
 ' Author    : YPN
 ' Date      : 2017-06-28 17:04
@@ -201,9 +261,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetMonthBegin(ByVal i_Date As String) As String
-
+    
     MGetMonthBegin = DateSerial(Year(i_Date), Month(i_Date), 1)
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -217,9 +277,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetMonthEnd(ByVal i_Date As String) As String
-
+    
     MGetMonthEnd = DateAdd("d", -1, DateSerial(Year(i_Date), Month(i_Date) + 1, 1))
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -258,10 +318,10 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MRndInt(ByVal i_Min As Long, ByVal i_Max As Long) As Integer
-
+    
     Randomize
     MRndInt = Int(Rnd() * (i_Max - i_Min + 1)) + i_Min
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -356,7 +416,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTrimText(i_Text As String) As String
-
+    
     '去除两边换行符
     i_Text = Replace(i_Text, " ", "YPN_TmpValue")
     i_Text = Replace(i_Text, vbCrLf, " ")
@@ -367,7 +427,7 @@ Public Function MTrimText(i_Text As String) As String
     i_Text = Trim(i_Text)
     
     MTrimText = i_Text
-
+    
 End Function
 
 '---------------------------------------------------------------------------------------
