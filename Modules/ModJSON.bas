@@ -30,6 +30,7 @@ Private psErrors               As String
 '---------------------------------------------------------------------------------------
 '
 Public Function MJSONAnalyze(ByVal i_JSONString As String, ByVal i_JSONKey As String) As String
+
     Dim v_Json     As Object
     Dim v_JsonData
     Dim v_JsonTmp  As Object
@@ -55,15 +56,19 @@ Public Function MJSONAnalyze(ByVal i_JSONString As String, ByVal i_JSONKey As St
 MJSONAnalyze_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MJSONAnalyze of Module ModJSON"
+    
 End Function
 
 Private Sub Class_Initialize()
+
     psErrors = ""
+    
 End Sub
 
 
 '   parse string and create JSON object
 Private Function parse(ByRef str As String) As Object
+
     Dim index As Long
     
     index = 1
@@ -80,10 +85,12 @@ Private Function parse(ByRef str As String) As Object
     Case Else
         psErrors = "Invalid JSON"
     End Select
+    
 End Function
 
 '   parse collection of key/value
 Private Function parseObject(ByRef str As String, ByRef index As Long) As Dictionary
+
     Set parseObject = New Dictionary
     Dim sKey As String
     
@@ -126,6 +133,7 @@ End Function
 
 '   parse list
 Private Function parseArray(ByRef str As String, ByRef index As Long) As Collection
+
     Set parseArray = New Collection
     
     ' "["
@@ -159,10 +167,12 @@ Private Function parseArray(ByRef str As String, ByRef index As Long) As Collect
             Exit Do
         End If
     Loop
+    
 End Function
 
 '   parse string / number / object / array / true / false / null
 Private Function parseValue(ByRef str As String, ByRef index As Long)
+
     Call skipChar(str, index)
     
     Select Case Mid(str, index, 1)
@@ -179,12 +189,14 @@ Private Function parseValue(ByRef str As String, ByRef index As Long)
     Case Else
         parseValue = parseNumber(str, index)
     End Select
+    
 End Function
 
 '
 '   parse string
 '
 Private Function parseString(ByRef str As String, ByRef index As Long) As String
+
     Dim quote   As String
     Dim Char    As String
     Dim Code    As String
@@ -242,12 +254,14 @@ Private Function parseString(ByRef str As String, ByRef index As Long) As String
     
     parseString = SB.toString
     Set SB = Nothing
+    
 End Function
 
 '
 '   parse number
 '
 Private Function parseNumber(ByRef str As String, ByRef index As Long)
+
     Dim Value   As String
     Dim Char    As String
     
@@ -262,12 +276,14 @@ Private Function parseNumber(ByRef str As String, ByRef index As Long)
             Exit Function
         End If
     Loop
+    
 End Function
 
 '
 '   parse true / false
 '
 Private Function parseBoolean(ByRef str As String, ByRef index As Long) As Boolean
+
     Call skipChar(str, index)
     If Mid(str, index, 4) = "true" Then
         parseBoolean = True
@@ -278,12 +294,14 @@ Private Function parseBoolean(ByRef str As String, ByRef index As Long) As Boole
     Else
         psErrors = psErrors & "Invalid Boolean at position " & index & " : " & Mid(str, index) & vbCrLf
     End If
+    
 End Function
 
 '
 '   parse null
 '
 Private Function parseNull(ByRef str As String, ByRef index As Long)
+
     Call skipChar(str, index)
     If Mid(str, index, 4) = "null" Then
         parseNull = Null
@@ -291,9 +309,11 @@ Private Function parseNull(ByRef str As String, ByRef index As Long)
     Else
         psErrors = psErrors & "Invalid null value at position " & index & " : " & Mid(str, index) & vbCrLf
     End If
+    
 End Function
 
 Private Function parseKey(ByRef str As String, ByRef index As Long) As String
+
     Dim dquote  As Boolean
     Dim squote  As Boolean
     Dim Char    As String
@@ -337,12 +357,14 @@ Private Function parseKey(ByRef str As String, ByRef index As Long) As String
             index = index + 1
         End Select
     Loop
+    
 End Function
 
 '
 '   skip special character
 '
 Private Sub skipChar(ByRef str As String, ByRef index As Long)
+
     Dim bComment As Boolean
     Dim bStartComment As Boolean
     Dim bLongComment As Boolean
@@ -392,9 +414,11 @@ Private Sub skipChar(ByRef str As String, ByRef index As Long)
         
         index = index + 1
     Loop
+    
 End Sub
 
 Public Function toString(ByRef obj As Variant) As String
+
     Dim SB As New ClsStringBuilder
     
     Select Case VarType(obj)
@@ -445,9 +469,11 @@ Public Function toString(ByRef obj As Variant) As String
     
     toString = SB.toString
     Set SB = Nothing
+    
 End Function
 
 Private Function Encode(str) As String
+
     Dim SB As New ClsStringBuilder
     Dim i As Long
     Dim j As Long
@@ -482,9 +508,11 @@ Private Function Encode(str) As String
     
     Encode = SB.toString
     Set SB = Nothing
+    
 End Function
 
 Private Function multiArray(aBD, iBC, sPS, ByRef sPT)   ' Array BoDy, Integer BaseCount, String PoSition
+
     Dim iDU As Long
     Dim iDL As Long
     Dim i As Long
@@ -518,4 +546,5 @@ Private Function multiArray(aBD, iBC, sPS, ByRef sPT)   ' Array BoDy, Integer Ba
     multiArray = SB.toString
     
     Set SB = Nothing
+    
 End Function

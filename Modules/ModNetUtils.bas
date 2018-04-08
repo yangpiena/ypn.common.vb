@@ -21,6 +21,7 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 '
 Public Function MRequestREST(ByVal i_RequstURL As String, ByVal i_RequestParameter As String) As String
+
     Dim v_XmlHttp
     
     On Error GoTo MRequestREST_Error
@@ -41,4 +42,5 @@ Public Function MRequestREST(ByVal i_RequstURL As String, ByVal i_RequestParamet
 MRequestREST_Error:
     
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MRequestREST of Module ModNetUtils"
+    
 End Function
