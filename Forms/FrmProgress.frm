@@ -102,6 +102,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'---------------------------------------------------------------------------------------
+' Module    : FrmProgress
+' Author    : YPN
+' Date      : 2018-04-08 20:51
+' Purpose   : 进度窗体
+'---------------------------------------------------------------------------------------
+
 Option Explicit
 Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
@@ -115,6 +122,7 @@ Private Const LWA_ALPHA = &H2
 Private Sub Form_Load()
     
     Screen.MousePointer = vbHourglass
+    
     Call formTransparent(200)
     
     With WebBrowser1
@@ -129,19 +137,20 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : formTransparent
-' Author    : 杨东
+' Author    : YPN
 ' Date      : 2015/02/15
 ' Purpose   : 窗体透明
 '---------------------------------------------------------------------------------------
 '
-Private Sub formTransparent(Alpha As Integer)
+Private Sub formTransparent(i_alpha As Integer)
     
-    If Alpha >= 0 And Alpha <= 255 Then
+    If i_alpha >= 0 And i_alpha <= 255 Then
         Dim rtn As Long
+        
         rtn = GetWindowLong(hWnd, GWL_EXSTYLE)
         rtn = rtn Or WS_EX_LAYERED
         SetWindowLong hWnd, GWL_EXSTYLE, rtn
-        SetLayeredWindowAttributes hWnd, 0, Alpha, LWA_ALPHA
+        SetLayeredWindowAttributes hWnd, 0, i_alpha, LWA_ALPHA
     End If
     
 End Sub

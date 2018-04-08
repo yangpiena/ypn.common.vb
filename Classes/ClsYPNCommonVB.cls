@@ -115,6 +115,12 @@ Public Sub Help(Optional ByVal i_Procedure As String, Optional ByVal i_IsMsg As 
         v_Help = v_Help & vbCrLf & "参数：i_RequstURL        请求地址 例如：http://218.21.3.20:5076/brp/services/avplan/aAUserData/queryAAUserData"
         v_Help = v_Help & vbCrLf & "参数：i_RequestParameter 请求参数 例如：{""sysid"": ""SYS_LogWeb"",""sidv"": ""1.0"",""body"": {""innerid"": ""568dd7cc1ba68779fe295fb9ebe3288c"",""userid"": ""czd"",""userno"": ""50271""}}"
         
+    Case "RndInt"
+        v_Help = ""
+        v_Help = v_Help & vbCrLf & "过程：RndInt 生成指定范围内的随机整数"
+        v_Help = v_Help & vbCrLf & "参数：i_Min  最小数"
+        v_Help = v_Help & vbCrLf & "参数：i_Max  最大数"
+             
     Case "SetStyleToolBar"
         v_Help = ""
         v_Help = v_Help & vbCrLf & "过程：SetStyleToolBar       设置控件ToolBar的样式"
@@ -578,9 +584,9 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function QRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_Encoding As String = "UTF-8") As StdPicture
+Public Function QRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_encoding As String = "UTF-8") As StdPicture
     
-    Set QRCode = MQRCode(i_QRText, i_Version, i_ECLevel, i_MaskType, i_Encoding)
+    Set QRCode = MQRCode(i_QRText, i_Version, i_ECLevel, i_MaskType, i_encoding)
     
 End Function
 
@@ -650,8 +656,8 @@ End Function
 '
 Public Sub SetStyleToolBar(Optional ByVal i_Color As Long = 15323836, Optional ByVal i_PicturePath As String)
 
-    FrmStyleToolBar.p_Color = i_Color
-    FrmStyleToolBar.p_PicturePath = i_PicturePath
+    FrmStyleToolBar.F_Color = i_Color
+    FrmStyleToolBar.F_PicturePath = i_PicturePath
     FrmStyleToolBar.Hide
     
 End Sub
@@ -680,7 +686,7 @@ Public Sub ShowMessage(ByVal i_MsgSource As String, ByVal i_FrmIcon As StdPictur
     FrmMessage.lbl_MsgTitle = i_MsgTitle
     FrmMessage.lbl_MsgContent = i_MsgContent
     FrmMessage.lbl_MsgSource = i_MsgSource
-    FrmMessage.f_WaitTime = i_WiteTime
+    FrmMessage.F_WaitTime = i_WiteTime
     FrmMessage.Show
     
     On Error GoTo 0

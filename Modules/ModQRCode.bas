@@ -1,16 +1,22 @@
 Attribute VB_Name = "ModQRCode"
-Option Explicit
+'---------------------------------------------------------------------------------------
+' Module    : ModQRCode
+' Author    : YPN
+' Date      : 2018-04-08 22:17
+' Purpose   : 二维码
+'---------------------------------------------------------------------------------------
 
+Option Explicit
 Private Declare Function StretchDIBits Lib "gdi32.dll" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal dx As Long, ByVal dy As Long, ByVal SrcX As Long, ByVal SrcY As Long, ByVal wSrcWidth As Long, ByVal wSrcHeight As Long, ByRef lpBits As Any, ByRef lpBitsInfo As BITMAPINFO, ByVal wUsage As Long, ByVal dwRop As Long) As Long
 Private Declare Function CreateSolidBrush Lib "gdi32.dll" (ByVal crColor As Long) As Long
 Private Declare Function FillRect Lib "user32.dll" (ByVal hdc As Long, ByRef lpRect As RECT, ByVal hBrush As Long) As Long
-Private Declare Function GetDC Lib "user32.dll" (ByVal hwnd As Long) As Long
+Private Declare Function GetDC Lib "user32.dll" (ByVal hWnd As Long) As Long
 Private Declare Function CreateCompatibleDC Lib "gdi32.dll" (ByVal hdc As Long) As Long
 Private Declare Function CreateCompatibleBitmap Lib "gdi32.dll" (ByVal hdc As Long, ByVal nWidth As Long, ByVal nHeight As Long) As Long
 Private Declare Function SelectObject Lib "gdi32.dll" (ByVal hdc As Long, ByVal hObject As Long) As Long
 Private Declare Function DeleteObject Lib "gdi32.dll" (ByVal hObject As Long) As Long
 Private Declare Function DeleteDC Lib "gdi32.dll" (ByVal hdc As Long) As Long
-Private Declare Function ReleaseDC Lib "user32.dll" (ByVal hwnd As Long, ByVal hdc As Long) As Long
+Private Declare Function ReleaseDC Lib "user32.dll" (ByVal hWnd As Long, ByVal hdc As Long) As Long
 Private Declare Function OleCreatePictureIndirect Lib "olepro32.dll" (lpPictDesc As PictDesc, riid As Guid, ByVal fPictureOwnsHandle As Long, ipic As IUnknown) As Long
 Private Declare Function WideCharToMultiByte Lib "kernel32.dll" (ByVal CodePage As Long, ByVal dwFlags As Long, ByRef lpWideCharStr As Any, ByVal cchWideChar As Long, ByRef lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByRef lpDefaultChar As Any, ByRef lpUsedDefaultChar As Any) As Long
 
@@ -72,7 +78,7 @@ End Type
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function MQRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_Encoding As String = "UTF-8") As StdPicture
+Public Function MQRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_encoding As String = "UTF-8") As StdPicture
     
     Dim v_QRC     As New ClsQRCode
     Dim v_Input() As Byte
@@ -80,7 +86,7 @@ Public Function MQRCode(ByVal i_QRText As String, Optional ByVal i_Version As Lo
     Dim v_ECLevel As Long
         
     '确定容错能力等级
-    Select Case UCase(i_Encoding)
+    Select Case UCase(i_encoding)
     Case "L"
         v_ECLevel = 1
         
@@ -98,7 +104,7 @@ Public Function MQRCode(ByVal i_QRText As String, Optional ByVal i_Version As Lo
     End Select
     
     '确定字符编码
-    Select Case UCase(i_Encoding)
+    Select Case UCase(i_encoding)
     Case "UTF-8"
         v_QRText = i_QRText
         j = Len(v_QRText)
@@ -113,7 +119,7 @@ Public Function MQRCode(ByVal i_QRText As String, Optional ByVal i_Version As Lo
     End Select
     
     '生成二维码
-    Set MQRCode = v_QRC.EnCode(v_Input, j, i_Version, v_ECLevel, i_MaskType)
+    Set MQRCode = v_QRC.Encode(v_Input, j, i_Version, v_ECLevel, i_MaskType)
     
 End Function
 

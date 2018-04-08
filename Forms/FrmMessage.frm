@@ -78,8 +78,14 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Option Explicit
+'---------------------------------------------------------------------------------------
+' Module    : FrmMessage
+' Author    : YPN
+' Date      : 2018-04-08 21:01
+' Purpose   : 屏幕右下角弹出窗
+'---------------------------------------------------------------------------------------
 
+Option Explicit
 '任务栏高度
 Private Declare Function SystemParametersInfo Lib "user32" Alias "SystemParametersInfoA" (ByVal uAction As Long, ByVal uParam As Long, ByRef lpvParam As Any, ByVal fuWinIni As Long) As Long
 Private Const SPI_GETWORKAREA = 48
@@ -125,7 +131,7 @@ Private f_X2         As Integer, f_Y2 As Integer
 Private f_OpenSpeed  As Integer
 Private f_CloseSpeed As Integer
 
-Public f_WaitTime   As Integer  '关闭前等待时间(秒)，为0则不会自动关闭
+Public F_WaitTime   As Integer  '关闭前等待时间(秒)，为0则不会自动关闭
 
 
 Private Sub Form_Load()
@@ -146,8 +152,8 @@ Private Sub Form_Load()
     v_TaskbarHeight = Screen.Height - v_RectVal.Bottom * Screen.TwipsPerPixelY
     
     '确定位置
-    'Me.Move Screen.Width * 0.75, Screen.Height * 0.75 - v_TaskbarHeight, Screen.Width \ 4, Screen.Height \ 4
-    Me.Move Screen.Width - Me.Width, Screen.Height - Me.Height - v_TaskbarHeight, Me.Width, Me.Height  '使自适应
+    'Me.Move Screen.Width * 0.75, Screen.Height * 0.75 - v_TaskbarHeight, Screen.Width \ 4, Screen.Height \ 4    '相对位置
+    Me.Move Screen.Width - Me.Width, Screen.Height - Me.Height - v_TaskbarHeight, Me.Width, Me.Height            '使自适应
     
     '永在最前
     SetWindowPos Me.hWnd, HWND_TOPMOST, Me.Left \ Screen.TwipsPerPixelX, Me.Top \ Screen.TwipsPerPixelY, Me.Width, Me.Height, 1
@@ -184,7 +190,7 @@ Private Sub Timer1_Timer()
         Timer1.Enabled = False
         
         '----------------------
-        If f_WaitTime <> 0 Then
+        If F_WaitTime <> 0 Then
             Timer2.Interval = 1000
             Timer2.Enabled = True
         End If
@@ -201,7 +207,7 @@ Private Sub Timer2_Timer()
     
     v_NL = v_NL + 1
     
-    If v_NL >= f_WaitTime Then
+    If v_NL >= F_WaitTime Then
         v_NL = 0
         Unload Me
     End If
@@ -246,8 +252,6 @@ Private Sub closeMe(Optional i_N As Integer = 1)
             f_MyRgn = SetWindowRgn(Me.hWnd, f_MyRect, True)
             Sleep f_OpenSpeed
         Wend
-    Case Else
-        
     End Select
     
 End Sub

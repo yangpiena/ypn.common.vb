@@ -191,7 +191,6 @@ Enum eumDiskNo
 End Enum
 
 
-
 '---------------------------------------------------------------------------------------
 ' Procedure : MGetHardDriveSerialNumber
 ' Author    : YPN
@@ -259,7 +258,7 @@ Public Function MGetHardDiskModel(Optional ByVal i_DiskNo As eumDiskNo = hdPrima
     
 End Function
 
-Private Function openSmart(ByVal nDrive As Byte) As Long
+Private Function openSmart(ByVal i_Drive As Byte) As Long
     
     Dim hSMARTIOCTL As Long
     Dim hd As String
@@ -275,8 +274,8 @@ Private Function openSmart(ByVal nDrive As Byte) As Long
     Case VER_PLATFORM_WIN32_WINDOWS
         hSMARTIOCTL = CreateFile("\\.\SMARTVSD", 0, 0, 0, CREATE_NEW, 0, 0)
     Case VER_PLATFORM_WIN32_NT
-        If nDrive < MAX_IDE_DRIVES Then
-            hd = "\\.\PhysicalDrive" & nDrive
+        If i_Drive < MAX_IDE_DRIVES Then
+            hd = "\\.\PhysicalDrive" & i_Drive
             hSMARTIOCTL = CreateFile(hd, GENERIC_READ Or GENERIC_WRITE, FILE_SHARE_READ Or FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0)
         End If
     End Select
@@ -285,66 +284,65 @@ Private Function openSmart(ByVal nDrive As Byte) As Long
     
 End Function
 
-Private Function doIdentify(ByVal hSMARTIOCTL As Long, pSCIP As SENDCMDINPARAMS, pSCOP() As Byte, ByVal bIDCmd As Byte, ByVal bDriveNum As Byte, lpcbBytesReturned As Long) As Boolean
+Private Function doIdentify(ByVal i_SMARTIOCTL As Long, i_SCIP As SENDCMDINPARAMS, i_SCOP() As Byte, ByVal i_IDCmd As Byte, ByVal i_DriveNum As Byte, i_lpcbBytesReturned As Long) As Boolean
     
-    pSCIP.cBufferSize = IDENTIFY_BUFFER_SIZE
-    pSCIP.irDriveRegs.bFeaturesReg = 0
-    pSCIP.irDriveRegs.bSectorCountReg = 1
-    pSCIP.irDriveRegs.bSectorNumberReg = 1
-    pSCIP.irDriveRegs.bCylLowReg = 0
-    pSCIP.irDriveRegs.bCylHighReg = 0
-    pSCIP.irDriveRegs.bDriveHeadReg = &HA0 Or ((bDriveNum And 1) * 2 ^ 4)
-    '
-    pSCIP.irDriveRegs.bCommandReg = bIDCmd
-    pSCIP.bDriveNumber = bDriveNum
-    pSCIP.cBufferSize = IDENTIFY_BUFFER_SIZE
-    doIdentify = CBool(DeviceIoControl(hSMARTIOCTL, DFP_RECEIVE_DRIVE_DATA, _
-    pSCIP, 32, _
-    pSCOP(0), 528, _
-    lpcbBytesReturned, 0))
-    
-End Function
-
-Private Function doEnableSmart(ByVal hSMARTIOCTL As Long, pSCIP As SENDCMDINPARAMS, pSCOP As SENDCMDOUTPARAMS, ByVal bDriveNum As Byte, lpcbBytesReturned As Long) As Boolean
-    
-    pSCIP.cBufferSize = 0
-    pSCIP.irDriveRegs.bFeaturesReg = SMART_ENABLE_SMART_OPERATIONS
-    pSCIP.irDriveRegs.bSectorCountReg = 1
-    pSCIP.irDriveRegs.bSectorNumberReg = 1
-    pSCIP.irDriveRegs.bCylLowReg = SMART_CYL_LOW
-    pSCIP.irDriveRegs.bCylHighReg = SMART_CYL_HI
-    pSCIP.irDriveRegs.bDriveHeadReg = &HA0 Or ((bDriveNum And 1) * 2 ^ 4)
-    pSCIP.irDriveRegs.bCommandReg = IDE_EXECUTE_SMART_FUNCTION
-    pSCIP.bDriveNumber = bDriveNum
-    doEnableSmart = CBool(DeviceIoControl(hSMARTIOCTL, DFP_SEND_DRIVE_COMMAND, _
-    pSCIP, LenB(pSCIP) - 1, _
-    pSCOP, LenB(pSCOP) - 1, _
-    lpcbBytesReturned, 0))
+    i_SCIP.cBufferSize = IDENTIFY_BUFFER_SIZE
+    i_SCIP.irDriveRegs.bFeaturesReg = 0
+    i_SCIP.irDriveRegs.bSectorCountReg = 1
+    i_SCIP.irDriveRegs.bSectorNumberReg = 1
+    i_SCIP.irDriveRegs.bCylLowReg = 0
+    i_SCIP.irDriveRegs.bCylHighReg = 0
+    i_SCIP.irDriveRegs.bDriveHeadReg = &HA0 Or ((i_DriveNum And 1) * 2 ^ 4)
+    i_SCIP.irDriveRegs.bCommandReg = i_IDCmd
+    i_SCIP.bDriveNumber = i_DriveNum
+    i_SCIP.cBufferSize = IDENTIFY_BUFFER_SIZE
+    doIdentify = CBool(DeviceIoControl(i_SMARTIOCTL, DFP_RECEIVE_DRIVE_DATA, _
+    i_SCIP, 32, _
+    i_SCOP(0), 528, _
+    i_lpcbBytesReturned, 0))
     
 End Function
 
-Private Sub changeByteOrder(szString() As Byte, ByVal uscStrSize As Integer)
+Private Function doEnableSmart(ByVal i_SMARTIOCTL As Long, i_SCIP As SENDCMDINPARAMS, i_SCOP As SENDCMDOUTPARAMS, ByVal i_DriveNum As Byte, i_lpcbBytesReturned As Long) As Boolean
+    
+    i_SCIP.cBufferSize = 0
+    i_SCIP.irDriveRegs.bFeaturesReg = SMART_ENABLE_SMART_OPERATIONS
+    i_SCIP.irDriveRegs.bSectorCountReg = 1
+    i_SCIP.irDriveRegs.bSectorNumberReg = 1
+    i_SCIP.irDriveRegs.bCylLowReg = SMART_CYL_LOW
+    i_SCIP.irDriveRegs.bCylHighReg = SMART_CYL_HI
+    i_SCIP.irDriveRegs.bDriveHeadReg = &HA0 Or ((i_DriveNum And 1) * 2 ^ 4)
+    i_SCIP.irDriveRegs.bCommandReg = IDE_EXECUTE_SMART_FUNCTION
+    i_SCIP.bDriveNumber = i_DriveNum
+    doEnableSmart = CBool(DeviceIoControl(i_SMARTIOCTL, DFP_SEND_DRIVE_COMMAND, _
+    i_SCIP, LenB(i_SCIP) - 1, _
+    i_SCOP, LenB(i_SCOP) - 1, _
+    i_lpcbBytesReturned, 0))
+    
+End Function
+
+Private Sub changeByteOrder(i_Str() As Byte, ByVal i_StrSize As Integer)
     
     Dim i As Integer
     Dim bTemp As Byte
     
-    For i = 0 To uscStrSize - 1 Step 2
-        bTemp = szString(i)
-        szString(i) = szString(i + 1)
-        szString(i + 1) = bTemp
+    For i = 0 To i_StrSize - 1 Step 2
+        bTemp = i_Str(i)
+        i_Str(i) = i_Str(i + 1)
+        i_Str(i + 1) = bTemp
     Next i
     
 End Sub
 
-Private Sub displayIdInfo(pids As IDSECTOR, pSCIP As SENDCMDINPARAMS, ByVal bIDCmd As Byte, ByVal bDfpDriveMap As Byte, ByVal bDriveNum As Byte)
+Private Sub displayIdInfo(i_Pids As IDSECTOR, i_SCIP As SENDCMDINPARAMS, ByVal i_IDCmd As Byte, ByVal i_DfpDriveMap As Byte, ByVal i_DriveNum As Byte)
     
-    changeByteOrder pids.sModelNumber, UBound(pids.sModelNumber) + 1
-    changeByteOrder pids.sFirmwareRev, UBound(pids.sFirmwareRev) + 1
-    changeByteOrder pids.sSerialNumber, UBound(pids.sSerialNumber) + 1
+    changeByteOrder i_Pids.sModelNumber, UBound(i_Pids.sModelNumber) + 1
+    changeByteOrder i_Pids.sFirmwareRev, UBound(i_Pids.sFirmwareRev) + 1
+    changeByteOrder i_Pids.sSerialNumber, UBound(i_Pids.sSerialNumber) + 1
     
 End Sub
 
-Private Function getDiskInfo(ByVal nDrive As Byte) As Long
+Private Function getDiskInfo(ByVal i_Drive As Byte) As Long
     
     Dim hSMARTIOCTL As Long
     Dim cbBytesReturned As Long
@@ -357,19 +355,19 @@ Private Function getDiskInfo(ByVal nDrive As Byte) As Long
     Dim uDisk As IDSECTOR
     
     m_DiskInfo = uDisk
-    hSMARTIOCTL = openSmart(nDrive)
+    hSMARTIOCTL = openSmart(i_Drive)
     If hSMARTIOCTL <> INVALID_HANDLE_VALUE Then
         Call DeviceIoControl(hSMARTIOCTL, DFP_GET_VERSION, ByVal 0, 0, VersionParams, Len(VersionParams), cbBytesReturned, 0)
-        If Not (VersionParams.bIDEDeviceMap \ 2 ^ nDrive And &H10) Then
-            If doEnableSmart(hSMARTIOCTL, scip, OutCmd, nDrive, cbBytesReturned) Then
-                bDfpDriveMap = bDfpDriveMap Or 2 ^ nDrive
+        If Not (VersionParams.bIDEDeviceMap \ 2 ^ i_Drive And &H10) Then
+            If doEnableSmart(hSMARTIOCTL, scip, OutCmd, i_Drive, cbBytesReturned) Then
+                bDfpDriveMap = bDfpDriveMap Or 2 ^ i_Drive
             End If
         End If
-        bIDCmd = IIf((VersionParams.bIDEDeviceMap \ 2 ^ nDrive And &H10), IDE_ATAPI_ID, IDE_ID_FUNCTION)
+        bIDCmd = IIf((VersionParams.bIDEDeviceMap \ 2 ^ i_Drive And &H10), IDE_ATAPI_ID, IDE_ID_FUNCTION)
         ReDim scop(LenB(OutCmd) + IDENTIFY_BUFFER_SIZE - 1) As Byte
-        If doIdentify(hSMARTIOCTL, scip, scop, bIDCmd, nDrive, cbBytesReturned) Then
+        If doIdentify(hSMARTIOCTL, scip, scop, bIDCmd, i_Drive, cbBytesReturned) Then
             CopyMemory m_DiskInfo, scop(LenB(OutCmd) - 4), LenB(m_DiskInfo)
-            Call displayIdInfo(m_DiskInfo, scip, bIDCmd, bDfpDriveMap, nDrive)
+            Call displayIdInfo(m_DiskInfo, scip, bIDCmd, bDfpDriveMap, i_Drive)
             CloseHandle hSMARTIOCTL
             getDiskInfo = 1
             Exit Function '>---> Bottom

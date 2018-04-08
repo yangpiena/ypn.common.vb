@@ -39,9 +39,8 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 
 Option Explicit
-Public p_Color As Long            ' 颜色值
-Public p_PicturePath As String    ' 图片路径（包括图片名称）
-
+Public F_Color       As Long      ' 颜色值
+Public F_PicturePath As String    ' 图片路径（包括图片名称）
 
 
 Private Sub Form_Load()
@@ -64,14 +63,14 @@ Private Sub applyStyle()
     
     Dim v_BG As Long
     
-    If Trim(p_PicturePath) <> "" Then
+    If Trim(F_PicturePath) <> "" Then
         ' 使用图片作为ToolBar的背景
-        FrmPublic.Picture1.Picture = LoadPicture(p_PicturePath)
+        FrmPublic.Picture1.Picture = LoadPicture(F_PicturePath)
         v_BG = CreatePatternBrush(FrmPublic.Picture1.Picture.Handle)     ' Creates the background from a Picture Handle
-        Call MChangeTBBack(Me.Toolbar1, v_BG, m_EnuTB_FLAT)              ' 两种样式：m_EnuTB_FLAT 和 m_EnuTB_STANDARD
+        Call ModStyleToolBar.MChangeTBBack(Me.Toolbar1, v_BG, m_EnuTB_FLAT)              ' 两种样式：m_EnuTB_FLAT 和 m_EnuTB_STANDARD
     Else
-        v_BG = CreateSolidBrush(p_Color)                                 ' 根据指定颜色创建一个背景 (Long)
-        Call MChangeTBBack(Me.Toolbar1, v_BG, m_EnuTB_FLAT)
+        v_BG = CreateSolidBrush(F_Color)                                 ' 根据指定颜色创建一个背景 (Long)
+        Call ModStyleToolBar.MChangeTBBack(Me.Toolbar1, v_BG, m_EnuTB_FLAT)
     End If
     
     ' 刷新屏幕以看见样式

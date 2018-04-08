@@ -19,7 +19,6 @@ Attribute VB_Exposed = True
 '---------------------------------------------------------------------------------------
 
 Option Explicit
-
 Private Declare Sub CopyMemory Lib "kernel32.dll" Alias "RtlMoveMemory" (ByRef Destination As Any, ByRef Source As Any, ByVal Length As Long)
 
 Private m_objField As New ClsFiniteField
@@ -194,7 +193,7 @@ End Function
 '          another negative number for automatic (MicroQR allowed) (currently unsupported)
 'nECLevel: 1 to 4
 'nMaskType: 0 to 7, -1 for automatic (currently unsupported)
-Friend Function EnCode(ByRef bInput() As Byte, ByVal nSize As Long, Optional ByVal nVersion As Long, Optional ByVal nECLevel As Long = 2, Optional ByVal nMaskType As Long = -1) As StdPicture
+Friend Function Encode(ByRef bInput() As Byte, ByVal nSize As Long, Optional ByVal nVersion As Long, Optional ByVal nECLevel As Long = 2, Optional ByVal nMaskType As Long = -1) As StdPicture
     
     Dim b() As Byte, b2() As Byte
     Dim bEncodedBit() As Byte
@@ -286,7 +285,7 @@ Friend Function EnCode(ByRef bInput() As Byte, ByVal nSize As Long, Optional ByV
                 If i >= nSmallBlockCount And j = nDataCodewordPerBlock - 2 Then lp2 = lp2 - nSmallBlockCount
             Next j
             '///calc EC
-            m_objRS.EnCode nPolynomial
+            m_objRS.Encode nPolynomial
             '///
             lp2 = nAvaliableDataCodewordCount + i
             For j = 0 To nECCodewordPerBlock - 1
@@ -399,7 +398,7 @@ Friend Function EnCode(ByRef bInput() As Byte, ByVal nSize As Long, Optional ByV
         bb = kk And 1
         b(8, 0) = bb: b(nModuleSize - 1, 8) = bb
         '///over
-        Set EnCode = MByteArrayToPicture(VarPtr(b(0, 0)), nModuleSize + 3, nModuleSize + 3, 4, 4, 1, 1)
+        Set Encode = MByteArrayToPicture(VarPtr(b(0, 0)), nModuleSize + 3, nModuleSize + 3, 4, 4, 1, 1)
     End If
         
 End Function

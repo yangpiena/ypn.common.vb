@@ -174,6 +174,7 @@ Private m_hFont             As Long
 Private m_hBoldFont         As Long
 
 Private WithEvents m_YPNSSTab As ClsYPNSSTab
+Attribute m_YPNSSTab.VB_VarHelpID = -1
 Private m_SSTab               As SSTab
 Private m_Style               As Integer
 
@@ -183,13 +184,14 @@ Private m_Style               As Integer
 ' Author    : YPN
 ' Date      : 2018-03-24 22:59
 ' Purpose   : 初始化SSTab（重绘SSTab）
-' Param     : i_SSTab             SSTab类型
-'             i_Style （可选参数）样式类型：0 XP样式；1 QQ样式；2 Office样式
+' Param     : i_SSTab         SSTab类型
+'             i_Style （可选）样式类型：0 XP样式；1 QQ样式；2 Office样式
 ' Return    :
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
 Public Sub FSSTabInit(ByVal i_SSTab As Object, Optional ByVal i_Style As Integer = 0)
+    
     If Not (TypeOf i_SSTab Is SSTab) Then Err.Raise 5
     
     Set m_SSTab = i_SSTab
@@ -221,9 +223,11 @@ Public Sub FSSTabInit(ByVal i_SSTab As Object, Optional ByVal i_Style As Integer
     End If
     
     m_YPNSSTab.UpdateAll
+    
 End Sub
 
 Private Function loadResDC(i_SSTab As SSTab) As Boolean
+    
     loadResDC = False
     
     Dim hTmpDC As Long
@@ -270,9 +274,11 @@ Private Function loadResDC(i_SSTab As SSTab) As Boolean
     Call SelectObject(m_hOfficeResDC, m_OfficeResBitmap.Handle)
     
     Call ReleaseDC(0, hTmpDC)
+    
 End Function
 
 Private Function destroyResDC() As Boolean
+    
     destroyResDC = False
     
     If (m_hXPResDC <> 0) Then
@@ -310,6 +316,7 @@ Private Function destroyResDC() As Boolean
     End If
     
     Set m_XPResBitmap = Nothing
+    
 End Function
 
 Private Sub m_YPNSSTab_DrawBackGround(ByVal hdc As Long, ByVal nWidth As Long, ByVal nHeight As Long)
@@ -351,17 +358,20 @@ Private Sub m_YPNSSTab_DrawBackGround(ByVal hdc As Long, ByVal nWidth As Long, B
         Call gridBlt(hdc, 0, 0, nWidth, m_SSTab.TabHeight, m_hOfficeResDC, 0, 0, 1, 27, 0, 0, 0, 1)
         Call DeleteObject(hBrush)
     End If
+    
 End Sub
 
 Private Sub m_YPNSSTab_DrawTab(ByVal nTab As Long, ByVal nState As Long, ByVal hdc As Long, ByVal nleft As Long, ByVal nTop As Long, ByVal nWidth As Long, ByVal nHeight As Long)
+    
     Dim rcTab As RECT, rcFocus As RECT
     Dim nOldBkMode As Long
     Dim hOldFont As Long
     Dim dwOldTextColor As Long
     Dim bSelected As Boolean, bFocused As Boolean, bHover As Boolean, bDisabled As Boolean
-    Call SetRect(rcTab, nleft, nTop, nleft + nWidth, nTop + nHeight)
-    nOldBkMode = SetBkMode(hdc, TRANSPARENT)
     
+    Call SetRect(rcTab, nleft, nTop, nleft + nWidth, nTop + nHeight)
+    
+    nOldBkMode = SetBkMode(hdc, TRANSPARENT)
     bSelected = (nState And STATE_SELECTED)
     bFocused = (nState And STATE_FOCUSED)
     bHover = (nState And STATE_HOVER)
@@ -420,9 +430,11 @@ Private Sub m_YPNSSTab_DrawTab(ByVal nTab As Long, ByVal nState As Long, ByVal h
     '   Call SetBkMode(hdc, nOldBkMode)
     Call SelectObject(hdc, hOldFont)
     Call SetTextColor(hdc, dwOldTextColor)
+    
 End Sub
 
 Private Sub m_YPNSSTab_DrawUpDown(ByVal bUpButton As Boolean, ByVal nState As Long, ByVal hdc As Long, ByVal nleft As Long, ByVal nTop As Long, ByVal nWidth As Long, ByVal nHeight As Long)
+    
     Dim rcUpDown As RECT
     Dim bSelected As Boolean, bFocused As Boolean, bHover As Boolean, bDisabled As Boolean
     
@@ -446,6 +458,7 @@ Private Sub m_YPNSSTab_DrawUpDown(ByVal bUpButton As Boolean, ByVal nState As Lo
             Call gridBlt(hdc, rcUpDown.Left, rcUpDown.Top, rcUpDown.Right - rcUpDown.Left, rcUpDown.Bottom - rcUpDown.Top, m_hXPResDC, IIf(bHover, 85, 69), 0, 16, 16, 1, 1, 1, 1)
         End If
     End If
+    
 End Sub
 
 '九宫格绘图 (中间伸展，边框不变)
@@ -453,11 +466,13 @@ Private Function gridBlt(ByVal hDestDC As Long, ByVal dstX As Long, ByVal dstY A
     ByVal hSrcDC As Long, ByVal SrcX As Long, ByVal SrcY As Long, ByVal srcWidth As Long, ByVal srcHeight As Long, _
     Optional ByVal gX1 As Long = 0, Optional ByVal gY1 As Long = 0, Optional ByVal gX2 As Long = 0, Optional ByVal gY2 As Long = 0, _
     Optional ByVal MaskColor As Variant) As Long
+    
     If dstWidth = 0 Or dstHeight = 0 Or srcWidth = 0 Or srcHeight = 0 Then Exit Function
     
     Dim hTmpDC As Long
     Dim hMemDC As Long
     Dim hMemBitmap As Long, hOldMemBitmap As Long
+    
     hTmpDC = GetDC(0)
     hMemDC = CreateCompatibleDC(hTmpDC)
     hMemBitmap = CreateCompatibleBitmap(hTmpDC, dstWidth, dstHeight)
@@ -503,4 +518,5 @@ Private Function gridBlt(ByVal hDestDC As Long, ByVal dstX As Long, ByVal dstY A
     Call DeleteDC(hMemDC)
     Call DeleteObject(hMemBitmap)
     Call ReleaseDC(0, hTmpDC)
+    
 End Function

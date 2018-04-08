@@ -9,94 +9,95 @@ Attribute VB_Name = "ModBarEAN8And13"
 '---------------------------------------------------------------------------------------
 
 Option Explicit
+Private Const M_CHKCHAR = 43
 
-Private Const ChkChar = 43
+Private m_LeftHand_Odd()  As Variant
+Private m_LeftHand_Even() As Variant
+Private m_Right_Hand()    As Variant
+Private m_Parity()        As Variant
+Private m_BarH            As Long
+Private m_BarText         As String
+Private m_Obj             As Object
+Private m_Pos             As Long
+Private m_Top             As Long
+Private m_HasCaption      As Boolean
+Private m_Start           As Integer
+Private m_PosCtr          As Integer
+Private m_Total           As Long
+Private m_ChkSum          As Long
 
-Private LeftHand_Odd()  As Variant
-Private LeftHand_Even() As Variant
-Private Right_Hand()    As Variant
-Private Parity()        As Variant
 
-Private BarH     As Long
-Private zBarText As String
-Private xObj     As Object
-
-Private xPos   As Long, xtop      As Long, zHasCaption As Boolean
-Private xStart As Integer, posCtr As Integer, xTotal   As Long, chkSum As Long
-
-
-
-Public Function MBarEAN13(BarText As String, zBarH As Integer, Optional ByVal HasCaption As Boolean = False) As StdPicture
-
-    Set xObj = FrmPublic.Picture1
-    init_Table
-    zBarText = BarText
-    zHasCaption = HasCaption
-    xObj.Picture = Nothing
+Public Function MBarEAN13(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
+    
+    Set m_Obj = FrmPublic.Picture1
+    Call init_Table
+    m_BarText = i_BarText
+    m_HasCaption = i_HasCaption
+    m_Obj.Picture = Nothing
     
     If Not checkCode13 Then Exit Function
     
-    BarH = zBarH * 10
-    xtop = 10
+    m_BarH = i_BarHeight * 10
+    m_Top = 10
     
-    xObj.BackColor = vbWhite
-    xObj.AutoRedraw = True
-    xObj.ScaleMode = 3
-    If HasCaption Then
-        xObj.Height = (xObj.TextHeight(zBarText) + BarH + 25) * Screen.TwipsPerPixelY
+    m_Obj.BackColor = vbWhite
+    m_Obj.AutoRedraw = True
+    m_Obj.ScaleMode = 3
+    If i_HasCaption Then
+        m_Obj.Height = (m_Obj.TextHeight(m_BarText) + m_BarH + 25) * Screen.TwipsPerPixelY
     Else
-        xObj.Height = (BarH + 20) * Screen.TwipsPerPixelY
+        m_Obj.Height = (m_BarH + 20) * Screen.TwipsPerPixelY
     End If
-    xObj.Width = (((Len(zBarText)) * 8)) * 20
+    m_Obj.Width = (((Len(m_BarText)) * 8)) * 20
     
-    Call paint_Bar13(zBarText)
+    Call paint_Bar13(m_BarText)
     
     Set MBarEAN13 = FrmPublic.Picture1.Image
     
 End Function
 
-Public Function MBarEAN8(BarText As String, zBarH As Integer, Optional ByVal HasCaption As Boolean = False) As StdPicture
-
-    Set xObj = FrmPublic.Picture1
+Public Function MBarEAN8(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
+    
+    Set m_Obj = FrmPublic.Picture1
     init_Table
-    zBarText = BarText
-    zHasCaption = HasCaption
-    xObj.Picture = Nothing
+    m_BarText = i_BarText
+    m_HasCaption = i_HasCaption
+    m_Obj.Picture = Nothing
     
     If Not checkCode8 Then Exit Function
     
-    BarH = zBarH * 10
-    xtop = 10
+    m_BarH = i_BarHeight * 10
+    m_Top = 10
     
-    xObj.BackColor = vbWhite
-    xObj.AutoRedraw = True
-    xObj.ScaleMode = 3
+    m_Obj.BackColor = vbWhite
+    m_Obj.AutoRedraw = True
+    m_Obj.ScaleMode = 3
     
-    If HasCaption Then
-        xObj.Height = (xObj.TextHeight(zBarText) + BarH + 25) * Screen.TwipsPerPixelY
+    If i_HasCaption Then
+        m_Obj.Height = (m_Obj.TextHeight(m_BarText) + m_BarH + 25) * Screen.TwipsPerPixelY
     Else
-        xObj.Height = (BarH + 20) * Screen.TwipsPerPixelY
+        m_Obj.Height = (m_BarH + 20) * Screen.TwipsPerPixelY
     End If
-    'xObj.Height = (xObj.TextHeight(zBarText) + BarH + 25) * Screen.TwipsPerPixelY
-    xObj.Width = (((Len(zBarText)) * 8) + 20) * 20 'Screen.TwipsPerPixelX
+    'm_Obj.Height = (m_Obj.TextHeight(m_BarText) + m_BarH + 25) * Screen.TwipsPerPixelY
+    m_Obj.Width = (((Len(m_BarText)) * 8) + 20) * 20 'Screen.TwipsPerPixelX
     
-    Call paint_Bar8(zBarText)
-     
+    Call paint_Bar8(m_BarText)
+    
     Set MBarEAN8 = FrmPublic.Picture1.Image
     
 End Function
 
 Private Function checkCode13() As Boolean
-
+    
     Dim ii As Integer
     
-    If Len(zBarText) <> 12 Then
+    If Len(m_BarText) <> 12 Then
         Err.Raise vbObjectError + 513, "EAN-13", _
         "Should be 12 Digit Numbers"
         GoTo Err_Found
     End If
-    For ii = 1 To Len(zBarText)
-        If InStr("0123456789", Mid(zBarText, ii, 1)) = 0 Then
+    For ii = 1 To Len(m_BarText)
+        If InStr("0123456789", Mid(m_BarText, ii, 1)) = 0 Then
             Err.Raise vbObjectError + 513, "EAN-13", _
             "An Invalid Character Found in Bar Text"
             GoTo Err_Found
@@ -110,16 +111,16 @@ Err_Found:
 End Function
 
 Private Function checkCode8() As Boolean
-
+    
     Dim ii As Integer
     
-    If Len(zBarText) <> 7 Then
+    If Len(m_BarText) <> 7 Then
         Err.Raise vbObjectError + 513, "EAN-8", _
         "Should be 7 Digit Numbers"
         GoTo Err_Found
     End If
-    For ii = 1 To Len(zBarText)
-        If InStr("0123456789", Mid(zBarText, ii, 1)) = 0 Then
+    For ii = 1 To Len(m_BarText)
+        If InStr("0123456789", Mid(m_BarText, ii, 1)) = 0 Then
             Err.Raise vbObjectError + 513, "EAN-8", _
             "An Invalid Character Found in Bar Text"
             GoTo Err_Found
@@ -132,129 +133,127 @@ Err_Found:
     checkCode8 = False
 End Function
 
-Private Sub paint_Bar13(ByVal xstr As String)
-
+Private Sub paint_Bar13(ByVal i_str As String)
+    
     Dim ii As Long, jj As Integer, ctr As Integer, xEven As Boolean, xParity As String
     
-    xTotal = 0
-    xPos = 5
+    m_Total = 0
+    m_Pos = 5
     
-    If zHasCaption Then
-        xObj.CurrentX = xPos
-        xObj.CurrentY = 5 + BarH
+    If m_HasCaption Then
+        m_Obj.CurrentX = m_Pos
+        m_Obj.CurrentY = 5 + m_BarH
         
-        xObj.Print Mid(xstr, 1, 1)
+        m_Obj.Print Mid(i_str, 1, 1)
     End If
-    draw_Bar "101", True
+    Call draw_Bar("101", True)
     
-    xObj.CurrentY = 15 + BarH
-    xParity = Parity(CInt(Mid(xstr, 1, 1)))
+    m_Obj.CurrentY = 15 + m_BarH
+    xParity = m_Parity(CInt(Mid(i_str, 1, 1)))
     
-    
-    For ii = 1 To Len(xstr)
-        If ((Len(xstr) + 1) - ii) Mod 2 = 0 Then
-            xTotal = xTotal + (CInt(Mid(xstr, ii, 1)))
+    For ii = 1 To Len(i_str)
+        If ((Len(i_str) + 1) - ii) Mod 2 = 0 Then
+            m_Total = m_Total + (CInt(Mid(i_str, ii, 1)))
         Else
-            xTotal = xTotal + CInt(Mid(xstr, ii, 1) * 3)
+            m_Total = m_Total + CInt(Mid(i_str, ii, 1) * 3)
         End If
         If ii = 8 Then
-            draw_Bar "01010", True
+            Call draw_Bar("01010", True)
         End If
-        jj = CInt(Mid(xstr, ii, 1))
+        jj = CInt(Mid(i_str, ii, 1))
         If ii > 1 And ii < 8 Then
-            draw_Bar CStr(IIf(Mid(xParity, ii - 1, 1) = "E", LeftHand_Even(jj), LeftHand_Odd(jj))), False
+            Call draw_Bar(CStr(IIf(Mid(xParity, ii - 1, 1) = "E", m_LeftHand_Even(jj), m_LeftHand_Odd(jj))), False)
         ElseIf ii > 1 And ii >= 8 Then
-            draw_Bar CStr(Right_Hand(jj)), False
+            Call draw_Bar(CStr(m_Right_Hand(jj)), False)
         End If
     Next
-    chkSum = 0
-    jj = xTotal Mod 10
+    m_ChkSum = 0
+    jj = m_Total Mod 10
     If jj <> 0 Then
-        chkSum = 10 - jj
+        m_ChkSum = 10 - jj
     End If
-    draw_Bar CStr(Right_Hand(chkSum)), False
-    draw_Bar "101", True
+    Call draw_Bar(CStr(m_Right_Hand(m_ChkSum)), False)
+    Call draw_Bar("101", True)
     
-    If zHasCaption Then
-        xObj.CurrentX = 23
-        xObj.CurrentY = 10 + BarH
-        xObj.Print Mid(xstr, 2, 6)
+    If m_HasCaption Then
+        m_Obj.CurrentX = 23
+        m_Obj.CurrentY = 10 + m_BarH
+        m_Obj.Print Mid(i_str, 2, 6)
         
-        xObj.CurrentX = 68
-        xObj.CurrentY = 10 + BarH
-        xObj.Print Mid(xstr, 8, 6) & chkSum
+        m_Obj.CurrentX = 68
+        m_Obj.CurrentY = 10 + m_BarH
+        m_Obj.Print Mid(i_str, 8, 6) & m_ChkSum
     End If
     
 End Sub
 
-Private Sub paint_Bar8(ByVal xstr As String)
-
+Private Sub paint_Bar8(ByVal i_str As String)
+    
     Dim ii As Long, jj As Integer, ctr As Integer, xEven As Boolean, xParity As String
     
-    xTotal = 0
-    xPos = 5
+    m_Total = 0
+    m_Pos = 5
     
+    Call draw_Bar("101", True)
     
-    draw_Bar "101", True
+    m_Obj.CurrentX = m_Pos
+    m_Obj.CurrentY = 15 + m_BarH
+    xParity = m_Parity(7) 'CInt(Mid(i_str, 1, 1)))
     
-    xObj.CurrentX = xPos
-    xObj.CurrentY = 15 + BarH
-    xParity = Parity(7) 'CInt(Mid(xstr, 1, 1)))
-    
-    
-    For ii = 1 To Len(xstr)
-        If ((Len(xstr) + 1) - ii) Mod 2 = 0 Then
-            xTotal = xTotal + (CInt(Mid(xstr, ii, 1)))
+    For ii = 1 To Len(i_str)
+        If ((Len(i_str) + 1) - ii) Mod 2 = 0 Then
+            m_Total = m_Total + (CInt(Mid(i_str, ii, 1)))
         Else
-            xTotal = xTotal + CInt(Mid(xstr, ii, 1) * 3)
+            m_Total = m_Total + CInt(Mid(i_str, ii, 1) * 3)
         End If
         If ii = 5 Then
-            draw_Bar "01010", True
+            Call draw_Bar("01010", True)
         End If
-        jj = CInt(Mid(xstr, ii, 1))
+        jj = CInt(Mid(i_str, ii, 1))
         If ii < 5 Then
-            draw_Bar CStr(LeftHand_Odd(jj)), False
+            Call draw_Bar(CStr(m_LeftHand_Odd(jj)), False)
         ElseIf ii >= 5 Then
-            draw_Bar CStr(Right_Hand(jj)), False
+            Call draw_Bar(CStr(m_Right_Hand(jj)), False)
         End If
     Next
-    chkSum = 0
-    jj = xTotal Mod 10
+    m_ChkSum = 0
+    jj = m_Total Mod 10
     If jj <> 0 Then
-        chkSum = 10 - jj
+        m_ChkSum = 10 - jj
     End If
-    draw_Bar CStr(Right_Hand(chkSum)), False
-    draw_Bar "101", True
+    Call draw_Bar(CStr(m_Right_Hand(m_ChkSum)), False)
+    Call draw_Bar("101", True)
     
-    If zHasCaption Then
-        xObj.CurrentX = 23
-        xObj.CurrentY = 10 + BarH
-        xObj.Print Mid(xstr, 1, 4)
+    If m_HasCaption Then
+        m_Obj.CurrentX = 23
+        m_Obj.CurrentY = 10 + m_BarH
+        m_Obj.Print Mid(i_str, 1, 4)
         
-        xObj.CurrentX = 53
-        xObj.CurrentY = 10 + BarH
-        xObj.Print Mid(xstr, 5, 4) & chkSum
+        m_Obj.CurrentX = 53
+        m_Obj.CurrentY = 10 + m_BarH
+        m_Obj.Print Mid(i_str, 5, 4) & m_ChkSum
     End If
     
 End Sub
 
-Private Sub draw_Bar(Encoding As String, Guard As Boolean)
-
+Private Sub draw_Bar(i_encoding As String, i_guard As Boolean)
+    
     Dim ii As Integer
-    For ii = 1 To Len(Encoding)
-        xPos = xPos + 1
-        xObj.Line (xPos + 10, xtop)-(xPos + 10, xtop + BarH + IIf(Guard, 5, 0)), IIf(Mid(Encoding, ii, 1), vbBlack, vbWhite)
+    
+    For ii = 1 To Len(i_encoding)
+        m_Pos = m_Pos + 1
+        m_Obj.Line (m_Pos + 10, m_Top)-(m_Pos + 10, m_Top + m_BarH + IIf(i_guard, 5, 0)), IIf(Mid(i_encoding, ii, 1), vbBlack, vbWhite)
     Next
     
 End Sub
 
 Private Sub init_Table()
-
-    LeftHand_Odd = Array("0001101", "0011001", "0010011", "0111101", "0100011", "0110001", "0101111", "0111011", "0110111", "0001011")
-    LeftHand_Even = Array("0100111", "0110011", "0011011", "0100001", "0011101", "0111001", "0000101", "0010001", "0001001", "0010111")
-    Right_Hand = Array("1110010", "1100110", "1101100", "1000010", "1011100", "1001110", "1010000", "1000100", "1001000", "1110100")
-    Parity = Array("OOOOOO", "OOEOEE", "OOEEOE", "OOEEEO", "OEOOEE", "OEEOOE", "OEEEOO", "OEOEOE", "OEOEEO", "OEEOEO")
-
+    
+    m_LeftHand_Odd = Array("0001101", "0011001", "0010011", "0111101", "0100011", "0110001", "0101111", "0111011", "0110111", "0001011")
+    m_LeftHand_Even = Array("0100111", "0110011", "0011011", "0100001", "0011101", "0111001", "0000101", "0010001", "0001001", "0010111")
+    m_Right_Hand = Array("1110010", "1100110", "1101100", "1000010", "1011100", "1001110", "1010000", "1000100", "1001000", "1110100")
+    m_Parity = Array("OOOOOO", "OOEOEE", "OOEEOE", "OOEEEO", "OEOOEE", "OEEOOE", "OEEEOO", "OEOEOE", "OEOEEO", "OEEOEO")
+    
 End Sub
 
 

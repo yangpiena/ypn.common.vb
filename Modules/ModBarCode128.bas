@@ -9,50 +9,55 @@ Attribute VB_Name = "ModBarCode128"
 '---------------------------------------------------------------------------------------
 
 Option Explicit
+Private Const M_CODEC = 99
+Private Const M_CODEB = 100
+Private Const M_CODEA = 101
+Private Const M_FNC1 = 102
+Private Const M_STARTA = 103
+Private Const M_STARTB = 104
+Private Const M_STARTC = 105
 
-Private Const CodeC = 99
-Private Const CodeB = 100
-Private Const CodeA = 101
-Private Const FNC1 = 102
-Private Const StartA = 103
-Private Const StartB = 104
-Private Const StartC = 105
-
-Private Code_A   As String
-Private Code_B() As Variant
-Private BarH     As Long
-Private zBarText As String
-Private xObj     As Object
-Private xPos     As Long, xtop      As Long, mCnt      As Integer, zHasCaption As Boolean
-Private xStart   As Integer, posCtr As Integer, xTotal As Long, chkSum         As Long
-
+Private m_Code_A     As String
+Private m_Code_B()   As Variant
+Private m_BarH       As Long
+Private m_BarText    As String
+Private m_Obj        As Object
+Private m_HasCaption As Boolean
+Private m_Pos        As Long
+Private m_Top        As Long
+Private m_Cnt        As Integer
+Private m_Start      As Integer
+Private m_PosCtr     As Integer
+Private m_Total      As Long
+Private m_ChkSum     As Long
 
 
 Public Function MBarCode128(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
     
     On Error GoTo MBarCode128_Error
     
-    Set xObj = FrmPublic.Picture1
-    init_Table
-    zBarText = Replace(Trim(i_BarText), Chr(13) + Chr(10), "")  '去空格、回车符CHAR(13)、换行符CHAR(10)
-    zHasCaption = i_HasCaption
-    xObj.Picture = Nothing
-    BarH = i_BarHeight * 10
-    xtop = 10
+    Set m_Obj = FrmPublic.Picture1
     
-    xObj.BackColor = vbWhite
-    xObj.AutoRedraw = True
-    xObj.ScaleMode = 3
+    Call init_Table
+    
+    m_Top = 10
+    m_BarH = i_BarHeight * 10
+    m_BarText = Replace(Trim(i_BarText), Chr(13) + Chr(10), "")  '去空格、回车符CHAR(13)、换行符CHAR(10)
+    m_HasCaption = i_HasCaption
+    m_Obj.Picture = Nothing
+    m_Obj.BackColor = vbWhite
+    m_Obj.AutoRedraw = True
+    m_Obj.ScaleMode = 3
+    
     If i_HasCaption Then
-        xObj.Height = (xObj.TextHeight(zBarText) + BarH + 25) * Screen.TwipsPerPixelY
+        m_Obj.Height = (m_Obj.TextHeight(m_BarText) + m_BarH + 25) * Screen.TwipsPerPixelY
     Else
-        xObj.Height = (BarH + 20) * Screen.TwipsPerPixelY
+        m_Obj.Height = (m_BarH + 20) * Screen.TwipsPerPixelY
     End If
+    'm_Obj.Height = (m_Obj.TextHeight(m_BarText) + m_BarH + 25) * Screen.TwipsPerPixelY
+    m_Obj.Width = ((test_String(m_BarText) + 3) * 11 + 25) * Screen.TwipsPerPixelX
     
-    'xObj.Height = (xObj.TextHeight(zBarText) + BarH + 25) * Screen.TwipsPerPixelY
-    xObj.Width = ((test_String(zBarText) + 3) * 11 + 25) * Screen.TwipsPerPixelX
-    
-    Call paint_Code(zBarText)
+    Call paint_Code(m_BarText)
     
     Set MBarCode128 = FrmPublic.Picture1.Image
     
@@ -65,21 +70,22 @@ MBarCode128_Error:
     
 End Function
 
-Private Function test_String(xstr As String)
+Private Function test_String(i_str As String)
     
     Dim ii As Long, jj As Integer, ctr As Integer
     
     ctr = 0
     jj = 0
-    For ii = 1 To Len(xstr)
-        If InStr("0123456789", Mid(xstr, ii, 1)) > 0 Then
+    
+    For ii = 1 To Len(i_str)
+        If InStr("0123456789", Mid(i_str, ii, 1)) > 0 Then
             ctr = ctr + 1
         Else
             jj = jj + IIf(ctr = 0, 1, ctr)
             ctr = 0
         End If
     Next
-    If (ctr >= 4 And ii >= Len(xstr)) Then
+    If (ctr >= 4 And ii >= Len(i_str)) Then
         If jj <> 0 Then jj = jj + 1
         If ctr Mod 2 <> 0 Then
             ctr = ctr - 1
@@ -88,123 +94,130 @@ Private Function test_String(xstr As String)
         End If
         jj = jj + (ctr / 2)
     End If
+    
     test_String = jj
     
 End Function
 
-Private Sub paint_Code(xstr As String)
+Private Sub paint_Code(i_str As String)
     
     Dim ii As Long, jj As Integer, ctr As Integer
     
-    xTotal = 0
-    xPos = 1
-    xStart = 0
+    m_Total = 0
+    m_Pos = 1
+    m_Start = 0
     ctr = 0
-    posCtr = 0
-    mCnt = 0
-    For ii = 1 To Len(xstr)
-        If InStr("0123456789", Mid(xstr, ii, 1)) > 0 Then
+    m_PosCtr = 0
+    m_Cnt = 0
+    
+    For ii = 1 To Len(i_str)
+        If InStr("0123456789", Mid(i_str, ii, 1)) > 0 Then
             ctr = ctr + 1
         Else
             For jj = ii - ctr To ii
-                printB Mid(xstr, jj, 1)
-                mCnt = mCnt + 1
+                Call printB(Mid(i_str, jj, 1))
+                m_Cnt = m_Cnt + 1
             Next
             ctr = 0
         End If
     Next
-    If (ctr >= 4 And ii >= Len(xstr)) Then
+    If (ctr >= 4 And ii >= Len(i_str)) Then
         If ctr Mod 2 <> 0 Then
-            mCnt = mCnt + 1
-            printB Mid(xstr, ii - ctr, 1)
+            m_Cnt = m_Cnt + 1
+            Call printB(Mid(i_str, ii - ctr, 1))
             ctr = ctr - 1
         End If
-        printC Mid(xstr, ii - ctr, ctr)
+        Call printC(Mid(i_str, ii - ctr, ctr))
     End If
-    chkSum = xTotal Mod 103
-    draw_Bar CStr(Code_B(chkSum))
-    draw_Bar "1100011101011"
+    m_ChkSum = m_Total Mod 103
+    Call draw_Bar(CStr(m_Code_B(m_ChkSum)))
+    Call draw_Bar("1100011101011")
     
-    If zHasCaption Then
-        xObj.CurrentX = ((xPos + 20) / 2) - xObj.TextWidth(xstr) / 2   ' 水平坐标
-        xObj.CurrentY = 15 + BarH    ' 垂直坐标
-        xObj.Print xstr   '　打印信息
+    If m_HasCaption Then
+        m_Obj.CurrentX = ((m_Pos + 20) / 2) - m_Obj.TextWidth(i_str) / 2   ' 水平坐标
+        m_Obj.CurrentY = 15 + m_BarH    ' 垂直坐标
+        m_Obj.Print i_str   '　打印信息
     End If
     'Picture = Me.Image
     
 End Sub
 
-Private Sub printB(xstr As String)
+Private Sub printB(i_str As String)
     
-    posCtr = posCtr + 1
-    xTotal = xTotal + ((InStr(Code_A, xstr) - 1) * posCtr)
-    If xStart <> StartB Then
-        If xStart = 0 Then
-            xTotal = xTotal + StartB
-            xStart = StartB
-            draw_Bar CStr(Code_B(StartB))
+    m_PosCtr = m_PosCtr + 1
+    m_Total = m_Total + ((InStr(m_Code_A, i_str) - 1) * m_PosCtr)
+    
+    If m_Start <> M_STARTB Then
+        If m_Start = 0 Then
+            m_Total = m_Total + M_STARTB
+            m_Start = M_STARTB
+            Call draw_Bar(CStr(m_Code_B(M_STARTB)))
         Else
-            xStart = CodeB
-            draw_Bar CStr(Code_B(CodeB))
-            posCtr = posCtr + 1
-            xTotal = xTotal + (CodeB * posCtr)
+            m_Start = M_CODEB
+            Call draw_Bar(CStr(m_Code_B(M_CODEB)))
+            m_PosCtr = m_PosCtr + 1
+            m_Total = m_Total + (M_CODEB * m_PosCtr)
         End If
     End If
-    Call draw_Bar(CStr(Code_B(InStr(Code_A, xstr) - 1)))
+    
+    Call draw_Bar(CStr(m_Code_B(InStr(m_Code_A, i_str) - 1)))
     
 End Sub
 
-Private Sub printC(xstr As String)
+Private Sub printC(i_str As String)
     
     Dim jj As Integer
     
-    If xStart <> StartC Then
-        If xStart = 0 Then
-            xTotal = xTotal + StartC
-            xStart = StartC
-            draw_Bar CStr(Code_B(StartC))
+    If m_Start <> M_STARTC Then
+        If m_Start = 0 Then
+            m_Total = m_Total + M_STARTC
+            m_Start = M_STARTC
+            draw_Bar CStr(m_Code_B(M_STARTC))
         Else
-            xStart = CodeC
-            draw_Bar CStr(Code_B(CodeC))
-            posCtr = posCtr + 1
-            xTotal = xTotal + (CodeC * posCtr)
+            m_Start = M_CODEC
+            draw_Bar CStr(m_Code_B(M_CODEC))
+            m_PosCtr = m_PosCtr + 1
+            m_Total = m_Total + (M_CODEC * m_PosCtr)
         End If
     End If
-    setC xstr
-    For jj = 1 To Len(xstr) Step 2
-        posCtr = posCtr + 1
-        xTotal = xTotal + CInt(Mid(xstr, jj, 2)) * posCtr
+    
+    Call setC(i_str)
+    
+    For jj = 1 To Len(i_str) Step 2
+        m_PosCtr = m_PosCtr + 1
+        m_Total = m_Total + CInt(Mid(i_str, jj, 2)) * m_PosCtr
     Next
     
 End Sub
 
-Private Sub setC(xstr As String)
+Private Sub setC(i_str As String)
     
     Dim ii As Integer
     
-    For ii = 1 To Len(xstr) Step 2
-        draw_Bar CStr(Code_B(CInt(Mid(xstr, ii, 2))))
-        mCnt = mCnt + 1
+    For ii = 1 To Len(i_str) Step 2
+        draw_Bar CStr(m_Code_B(CInt(Mid(i_str, ii, 2))))
+        m_Cnt = m_Cnt + 1
     Next
     
 End Sub
 
-Private Sub draw_Bar(Encoding As String)
+Private Sub draw_Bar(i_encoding As String)
     
     Dim ii As Integer
     
-    For ii = 1 To Len(Encoding)
-        xPos = xPos + 1
-        xObj.Line (xPos + 10, xtop)-(xPos + 10, xtop + BarH), IIf(Mid(Encoding, ii, 1), vbBlack, vbWhite)
+    For ii = 1 To Len(i_encoding)
+        m_Pos = m_Pos + 1
+        m_Obj.Line (m_Pos + 10, m_Top)-(m_Pos + 10, m_Top + m_BarH), IIf(Mid(i_encoding, ii, 1), vbBlack, vbWhite)
     Next
+    
     ii = 0
     
 End Sub
 
 Private Sub init_Table()
     
-    Code_A = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-    Code_B = Array( _
+    m_Code_A = " !""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+    m_Code_B = Array( _
     "11011001100", "11001101100", "11001100110", "10010011000", "10010001100", "10001001100", _
     "10011001000", "10011000100", "10001100100", "11001001000", "11001000100", "11000100100", _
     "10110011100", "10011011100", "10011001110", "10111001100", "10011101100", "10011100110", _
@@ -225,9 +238,3 @@ Private Sub init_Table()
     "11110101110", "11010000100", "11010010000", "11010011100" _
     )
 End Sub
-
-
-
-
-
-

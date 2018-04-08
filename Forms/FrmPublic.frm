@@ -29,8 +29,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'---------------------------------------------------------------------------------------
+' Module    : FrmPublic
+' Author    : YPN
+' Date      : 2018-04-08 21:01
+' Purpose   : 定义一些公共组件
+'---------------------------------------------------------------------------------------
+
 Option Explicit
 
-Private Sub Form_Load()
-
-End Sub

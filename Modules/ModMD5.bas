@@ -7,15 +7,12 @@ Attribute VB_Name = "ModMD5"
 '---------------------------------------------------------------------------------------
 
 Option Explicit
-
-
 Private Const BITS_TO_A_BYTE = 8
 Private Const BYTES_TO_A_WORD = 4
 Private Const BITS_TO_A_WORD = 32
 
 Private m_lOnBits(30)
 Private m_l2Power(30)
-
 
 
 '---------------------------------------------------------------------------------------
@@ -34,7 +31,7 @@ Public Function MMD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) A
     Dim x
     Dim k
     Dim AA
-    Dim BB
+    Dim bb
     Dim CC
     Dim DD
     Dim a
@@ -124,7 +121,7 @@ Public Function MMD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) A
     m_l2Power(30) = CLng(1073741824)
         
     
-    x = ConvertToWordArray(i_Str)
+    x = convertToWordArray(i_Str)
     
     a = &H67452301
     b = &HEFCDAB89
@@ -133,7 +130,7 @@ Public Function MMD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) A
     
     For k = 0 To UBound(x) Step 16
         AA = a
-        BB = b
+        bb = b
         CC = c
         DD = d
         
@@ -205,23 +202,21 @@ Public Function MMD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) A
         md5_II c, d, a, b, x(k + 2), S43, &H2AD7D2BB
         md5_II b, c, d, a, x(k + 9), S44, &HEB86D391
         
-        a = AddUnsigned(a, AA)
-        b = AddUnsigned(b, BB)
-        c = AddUnsigned(c, CC)
-        d = AddUnsigned(d, DD)
+        a = addUnsigned(a, AA)
+        b = addUnsigned(b, bb)
+        c = addUnsigned(c, CC)
+        d = addUnsigned(d, DD)
     Next
     
     If i_Bit = 32 Then
-        MMD5 = LCase(WordToHex(a) & WordToHex(b) & WordToHex(c) & WordToHex(d))
+        MMD5 = LCase(wordToHex(a) & wordToHex(b) & wordToHex(c) & wordToHex(d))
     Else
-        MMD5 = UCase(WordToHex(b) & WordToHex(c))                                   ' I crop this to fit 16byte database password :D
+        MMD5 = UCase(wordToHex(b) & wordToHex(c))                                   ' I crop this to fit 16byte database password :D
     End If
     
 End Function
 
-
-
-Private Function ConvertToWordArray(ByVal i_Str As String)
+Private Function convertToWordArray(ByVal i_Str As String)
     
     Dim lMessageLength
     Dim lNumberOfWords
@@ -243,35 +238,35 @@ Private Function ConvertToWordArray(ByVal i_Str As String)
     Do Until lByteCount >= lMessageLength
         lWordCount = lByteCount \ BYTES_TO_A_WORD
         lBytePosition = (lByteCount Mod BYTES_TO_A_WORD) * BITS_TO_A_BYTE
-        lWordArray(lWordCount) = lWordArray(lWordCount) Or LShift(Asc(Mid(i_Str, lByteCount + 1, 1)), lBytePosition)
+        lWordArray(lWordCount) = lWordArray(lWordCount) Or lShift(Asc(Mid(i_Str, lByteCount + 1, 1)), lBytePosition)
         lByteCount = lByteCount + 1
     Loop
     
     lWordCount = lByteCount \ BYTES_TO_A_WORD
     lBytePosition = (lByteCount Mod BYTES_TO_A_WORD) * BITS_TO_A_BYTE
     
-    lWordArray(lWordCount) = lWordArray(lWordCount) Or LShift(&H80, lBytePosition)
+    lWordArray(lWordCount) = lWordArray(lWordCount) Or lShift(&H80, lBytePosition)
     
-    lWordArray(lNumberOfWords - 2) = LShift(lMessageLength, 3)
-    lWordArray(lNumberOfWords - 1) = RShift(lMessageLength, 29)
+    lWordArray(lNumberOfWords - 2) = lShift(lMessageLength, 3)
+    lWordArray(lNumberOfWords - 1) = rShift(lMessageLength, 29)
     
-    ConvertToWordArray = lWordArray
+    convertToWordArray = lWordArray
     
 End Function
 
-Private Function WordToHex(lValue)
+Private Function wordToHex(lValue)
     
     Dim lByte
     Dim lCount
     
     For lCount = 0 To 3
-        lByte = RShift(lValue, lCount * BITS_TO_A_BYTE) And m_lOnBits(BITS_TO_A_BYTE - 1)
-        WordToHex = WordToHex & Right("0" & Hex(lByte), 2)
+        lByte = rShift(lValue, lCount * BITS_TO_A_BYTE) And m_lOnBits(BITS_TO_A_BYTE - 1)
+        wordToHex = wordToHex & Right("0" & Hex(lByte), 2)
     Next
     
 End Function
 
-Private Function AddUnsigned(lX, lY)
+Private Function addUnsigned(lX, lY)
     
     Dim lX4
     Dim lY4
@@ -298,26 +293,26 @@ Private Function AddUnsigned(lX, lY)
         lResult = lResult Xor lX8 Xor lY8
     End If
     
-    AddUnsigned = lResult
+    addUnsigned = lResult
     
 End Function
 
-Private Function RotateLeft(lValue, iShiftBits)
+Private Function rotateLeft(lValue, iShiftBits)
     
-    RotateLeft = LShift(lValue, iShiftBits) Or RShift(lValue, (32 - iShiftBits))
+    rotateLeft = lShift(lValue, iShiftBits) Or rShift(lValue, (32 - iShiftBits))
     
 End Function
 
-Private Function LShift(lValue, iShiftBits)
+Private Function lShift(lValue, iShiftBits)
     
     If iShiftBits = 0 Then
-        LShift = lValue
+        lShift = lValue
         Exit Function
     ElseIf iShiftBits = 31 Then
         If lValue And 1 Then
-            LShift = &H80000000
+            lShift = &H80000000
         Else
-            LShift = 0
+            lShift = 0
         End If
         Exit Function
     ElseIf iShiftBits < 0 Or iShiftBits > 31 Then
@@ -325,33 +320,33 @@ Private Function LShift(lValue, iShiftBits)
     End If
     
     If (lValue And m_l2Power(31 - iShiftBits)) Then
-        LShift = ((lValue And m_lOnBits(31 - (iShiftBits + 1))) * m_l2Power(iShiftBits)) Or &H80000000
+        lShift = ((lValue And m_lOnBits(31 - (iShiftBits + 1))) * m_l2Power(iShiftBits)) Or &H80000000
     Else
-        LShift = ((lValue And m_lOnBits(31 - iShiftBits)) * m_l2Power(iShiftBits))
+        lShift = ((lValue And m_lOnBits(31 - iShiftBits)) * m_l2Power(iShiftBits))
     End If
     
 End Function
 
-Private Function RShift(lValue, iShiftBits)
+Private Function rShift(lValue, iShiftBits)
     
     If iShiftBits = 0 Then
-        RShift = lValue
+        rShift = lValue
         Exit Function
     ElseIf iShiftBits = 31 Then
         If lValue And &H80000000 Then
-            RShift = 1
+            rShift = 1
         Else
-            RShift = 0
+            rShift = 0
         End If
         Exit Function
     ElseIf iShiftBits < 0 Or iShiftBits > 31 Then
         Err.Raise 6
     End If
     
-    RShift = (lValue And &H7FFFFFFE) \ m_l2Power(iShiftBits)
+    rShift = (lValue And &H7FFFFFFE) \ m_l2Power(iShiftBits)
     
     If (lValue And &H80000000) Then
-        RShift = (RShift Or (&H40000000 \ m_l2Power(iShiftBits - 1)))
+        rShift = (rShift Or (&H40000000 \ m_l2Power(iShiftBits - 1)))
     End If
     
 End Function
@@ -382,33 +377,33 @@ End Function
 
 Private Sub md5_FF(a, b, c, d, x, s, ac)
     
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_F(b, c, d), x), ac))
-    a = RotateLeft(a, s)
-    a = AddUnsigned(a, b)
+    a = addUnsigned(a, addUnsigned(addUnsigned(md5_F(b, c, d), x), ac))
+    a = rotateLeft(a, s)
+    a = addUnsigned(a, b)
     
 End Sub
 
 Private Sub md5_GG(a, b, c, d, x, s, ac)
     
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_G(b, c, d), x), ac))
-    a = RotateLeft(a, s)
-    a = AddUnsigned(a, b)
+    a = addUnsigned(a, addUnsigned(addUnsigned(md5_G(b, c, d), x), ac))
+    a = rotateLeft(a, s)
+    a = addUnsigned(a, b)
     
 End Sub
 
 Private Sub md5_HH(a, b, c, d, x, s, ac)
     
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_H(b, c, d), x), ac))
-    a = RotateLeft(a, s)
-    a = AddUnsigned(a, b)
+    a = addUnsigned(a, addUnsigned(addUnsigned(md5_H(b, c, d), x), ac))
+    a = rotateLeft(a, s)
+    a = addUnsigned(a, b)
     
 End Sub
 
 Private Sub md5_II(a, b, c, d, x, s, ac)
     
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(md5_I(b, c, d), x), ac))
-    a = RotateLeft(a, s)
-    a = AddUnsigned(a, b)
+    a = addUnsigned(a, addUnsigned(addUnsigned(md5_I(b, c, d), x), ac))
+    a = rotateLeft(a, s)
+    a = addUnsigned(a, b)
     
 End Sub
 

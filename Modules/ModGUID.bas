@@ -35,14 +35,13 @@ Attribute VB_Name = "ModGUID"
 '---------------------------------------------------------------------------------------
 
 Option Explicit
-
-Private Type GUID
+Private Type Guid
     Data1 As Long
     Data2 As Integer
     Data3 As Integer
     Data4(7) As Byte
 End Type
-Private Declare Function CoCreateGuid Lib "ole32.dll" (pGuid As GUID) As Long
+Private Declare Function CoCreateGuid Lib "ole32.dll" (pGuid As Guid) As Long
 Private Declare Function StringFromGUID2 Lib "ole32.dll" (rguid As Any, ByVal lpstrClsId As Long, ByVal cbMax As Long) As Long
 
 
@@ -58,7 +57,7 @@ Private Declare Function StringFromGUID2 Lib "ole32.dll" (rguid As Any, ByVal lp
 '
 Public Function MGetGUID() As String
     
-    Dim v_GUID As GUID
+    Dim v_GUID As Guid
     
     If (CoCreateGuid(v_GUID) = 0) Then
         MGetGUID = _
@@ -91,7 +90,7 @@ End Function
 '
 Public Function MGetGUID2(ByVal i_Format As String) As String
     
-    Dim v_GUID    As GUID
+    Dim v_GUID    As Guid
     Dim v_Str     As String
     Dim v_Byte()  As Byte
     Dim v_Len     As Long
