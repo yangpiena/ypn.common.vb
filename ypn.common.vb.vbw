@@ -22,3 +22,4 @@ FrmSSTab = 44, 58, 820, 487, C, 22, 29, 798, 458, C
 ModJSON = 44, 58, 1016, 478, C
 ModNetUtils = 44, 58, 1132, 561, C
 ClsStringBuilder = 176, 232, 1104, 735, C
+ModFTPUtils = 87, 217, 1175, 720, C

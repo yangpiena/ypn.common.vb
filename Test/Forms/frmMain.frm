@@ -10,6 +10,14 @@ Begin VB.Form frmMain
    ScaleHeight     =   8205
    ScaleWidth      =   13845
    StartUpPosition =   3  '窗口缺省
+   Begin VB.CommandButton Command6 
+      Caption         =   "FTP下载"
+      Height          =   375
+      Left            =   3240
+      TabIndex        =   36
+      Top             =   120
+      Width           =   1335
+   End
    Begin VB.CommandButton Command5 
       Caption         =   "JSON"
       Height          =   375
@@ -20,9 +28,9 @@ Begin VB.Form frmMain
    End
    Begin TabDlg.SSTab SSTab1 
       Height          =   1815
-      Left            =   7320
+      Left            =   7560
       TabIndex        =   34
-      Top             =   5160
+      Top             =   4800
       Width           =   4815
       _ExtentX        =   8493
       _ExtentY        =   3201
@@ -413,6 +421,23 @@ End Sub
 
 Private Sub Command5_Click()
     frmJSON.Show
+End Sub
+
+Private Sub Command6_Click()
+    
+    Dim e As Object
+    Dim v_fileName As String
+    
+Set e = CreateObject("MSScriptControl.ScriptControl")
+e.Language = "javascript"
+Dim d As String
+d = e.Eval("encodeURI('微软计算机')") '运行javascript脚本的函数
+MsgBox d
+MsgBox e.Eval("decodeURI('" & d & "')")
+v_fileName = e.Eval("encodeURI('1.2万吨PCE综合利用及配套技改项目/正式合同/1.2万吨PCE综合利用及配套技改项目_2版_2台_2018-04-09.xls')")
+v_fileName = e.Eval("encodeURI('1.2万吨PCE综合利用及配套技改项目/正式合同/1.2万吨PCE综合利用及配套技改项目_2版_2台_2018-04-09.xls')")
+Call ModFTPUtils.FTPFileDownload("10.1.50.45", "xx", "xx", v_fileName, "D:\WRP\菲麦森装备制造业产前数据准备系统\xsgl\XSGL\Files\1.2万吨PCE综合利用及配套技改项目_2版_2台_2018-04-09.xls", False)
+    
 End Sub
 
 Private Sub Form_Load()

@@ -334,34 +334,34 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function MTextToBase64(ByVal i_Text As String) As String
+Public Function MTextToBase64(ByVal i_text As String) As String
     
-    Dim v_Str()  As Byte, v_Buf() As Byte
+    Dim v_str()  As Byte, v_Buf() As Byte
     Dim v_Length As Long, v_Mods  As Long
     Const B64_CHAR_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
     
     On Error GoTo MTextToBase64_Error
     
-    v_Str() = StrConv(i_Text, vbFromUnicode)
-    v_Mods = (UBound(v_Str) + 1) Mod 3    '除以3的余数
-    v_Length = UBound(v_Str) + 1 - v_Mods
+    v_str() = StrConv(i_text, vbFromUnicode)
+    v_Mods = (UBound(v_str) + 1) Mod 3    '除以3的余数
+    v_Length = UBound(v_str) + 1 - v_Mods
     ReDim v_Buf(v_Length / 3 * 4 + IIf(v_Mods <> 0, 4, 0) - 1)
     
     For i = 0 To v_Length - 1 Step 3
-        v_Buf(i / 3 * 4) = (v_Str(i) And &HFC) / &H4
-        v_Buf(i / 3 * 4 + 1) = (v_Str(i) And &H3) * &H10 + (v_Str(i + 1) And &HF0) / &H10
-        v_Buf(i / 3 * 4 + 2) = (v_Str(i + 1) And &HF) * &H4 + (v_Str(i + 2) And &HC0) / &H40
-        v_Buf(i / 3 * 4 + 3) = v_Str(i + 2) And &H3F
+        v_Buf(i / 3 * 4) = (v_str(i) And &HFC) / &H4
+        v_Buf(i / 3 * 4 + 1) = (v_str(i) And &H3) * &H10 + (v_str(i + 1) And &HF0) / &H10
+        v_Buf(i / 3 * 4 + 2) = (v_str(i + 1) And &HF) * &H4 + (v_str(i + 2) And &HC0) / &H40
+        v_Buf(i / 3 * 4 + 3) = v_str(i + 2) And &H3F
     Next
     If v_Mods = 1 Then
-        v_Buf(v_Length / 3 * 4) = (v_Str(v_Length) And &HFC) / &H4
-        v_Buf(v_Length / 3 * 4 + 1) = (v_Str(v_Length) And &H3) * &H10
+        v_Buf(v_Length / 3 * 4) = (v_str(v_Length) And &HFC) / &H4
+        v_Buf(v_Length / 3 * 4 + 1) = (v_str(v_Length) And &H3) * &H10
         v_Buf(v_Length / 3 * 4 + 2) = 64
         v_Buf(v_Length / 3 * 4 + 3) = 64
     ElseIf v_Mods = 2 Then
-        v_Buf(v_Length / 3 * 4) = (v_Str(v_Length) And &HFC) / &H4
-        v_Buf(v_Length / 3 * 4 + 1) = (v_Str(v_Length) And &H3) * &H10 + (v_Str(v_Length + 1) And &HF0) / &H10
-        v_Buf(v_Length / 3 * 4 + 2) = (v_Str(v_Length + 1) And &HF) * &H4
+        v_Buf(v_Length / 3 * 4) = (v_str(v_Length) And &HFC) / &H4
+        v_Buf(v_Length / 3 * 4 + 1) = (v_str(v_Length) And &H3) * &H10 + (v_str(v_Length + 1) And &HF0) / &H10
+        v_Buf(v_Length / 3 * 4 + 2) = (v_str(v_Length + 1) And &HF) * &H4
         v_Buf(v_Length / 3 * 4 + 3) = 64
     End If
     For i = 0 To UBound(v_Buf)
@@ -387,13 +387,13 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function MTextToHex(i_Text As String) As String
+Public Function MTextToHex(i_text As String) As String
     
     Dim aBuffer() As Byte
     Dim strOut As String
     Dim i As Long, p As Long
     
-    aBuffer = StrConv(i_Text, vbFromUnicode)
+    aBuffer = StrConv(i_text, vbFromUnicode)
     i = UBound(aBuffer)
     strOut = Space$(i + i + 2)
     p = 1
@@ -402,6 +402,87 @@ Public Function MTextToHex(i_Text As String) As String
         p = p + 2
     Next
     MTextToHex = strOut
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : MTextToURL_GB2312
+' Author    : YPN
+' Date      : 2018-04-13 16:35
+' Purpose   : 文本文字转换成URL格式字符串，编码GB2312
+' Param     :
+' Return    : String
+' Remark    : 此方法用于发送封包POST中，把文字转换成密文发送。
+'---------------------------------------------------------------------------------------
+'
+Public Function MTextToURL_GB2312(i_text) As String
+
+    Dim v_txt, v_numTxt, v_str
+    
+    MTextToURL_GB2312 = ""
+    
+    For i = 1 To Len(i_text)
+        v_txt = ""
+        v_txt = Mid(i_text, i, 1)
+        v_numTxt = "-,.0123456789/"
+        If InStr(v_numTxt, v_txt) > 0 Then
+            MTextToURL_GB2312 = MTextToURL_GB2312 & v_txt
+        Else
+            If Asc(v_txt) < 0 Then
+                v_str = "%" & Right(CStr(Hex(Asc(v_txt))), 2)
+                v_str = "%" & Left(CStr(Hex(Asc(v_txt))), Len(CStr(Hex(Asc(v_txt)))) - 2) & v_str
+                MTextToURL_GB2312 = MTextToURL_GB2312 & v_str
+            ElseIf Asc(v_txt) >= 65 And Asc(v_txt) <= 90 Then
+                MTextToURL_GB2312 = MTextToURL_GB2312 & v_txt
+            ElseIf Asc(v_txt) >= 97 And Asc(v_txt) <= 122 Then
+                MTextToURL_GB2312 = MTextToURL_GB2312 & v_txt
+            Else
+                MTextToURL_GB2312 = MTextToURL_GB2312 & "%" & CStr(Hex(Asc(v_txt)))
+            End If
+        End If
+    Next
+    
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : MTextToURL_UTF8
+' Author    : YPN
+' Date      : 2018-04-13 16:36
+' Purpose   : 文本文字转换成URL格式字符串，编码UTF-8
+' Param     :
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MTextToURL_UTF8(i_text) As String
+        
+    Dim v_wch, v_uch, v_szRet
+    Dim v_asc, v_asc2, v_asc3
+    
+    If i_text = "" Then
+        MTextToURL_UTF8 = i_text
+        Exit Function
+    End If
+    
+    For i = 1 To Len(i_text)
+        v_wch = Mid(i_text, i, 1)
+        v_asc = AscW(v_wch)
+        If v_asc < 0 Then v_asc = v_asc + 65536
+        If (v_asc And &HFF80) = 0 Then
+            v_szRet = v_szRet & v_wch
+        Else
+            If (v_asc And &HF000) = 0 Then
+                v_uch = "%" & CStr(Hex(((v_asc \ 2 ^ 6)) Or &HC0)) & CStr(Hex(v_asc And &H3F Or &H80))
+                v_szRet = v_szRet & v_uch
+            Else
+                v_uch = "%" & CStr(Hex((v_asc \ 2 ^ 12) Or &HE0)) & "%" & CStr(Hex((v_asc \ 2 ^ 6) And &H3F Or &H80)) & "%" & CStr(Hex(v_asc And &H3F Or &H80))
+                v_szRet = v_szRet & v_uch
+            End If
+        End If
+    Next
+    
+    MTextToURL_UTF8 = v_szRet
     
 End Function
 
@@ -415,18 +496,18 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function MTrimText(i_Text As String) As String
+Public Function MTrimText(i_text As String) As String
     
     '去除两边换行符
-    i_Text = Replace(i_Text, " ", "YPN_TmpValue")
-    i_Text = Replace(i_Text, vbCrLf, " ")
-    i_Text = Trim(i_Text)
-    i_Text = Replace(i_Text, " ", vbCrLf)
-    i_Text = Replace(i_Text, "YPN_TmpValue", " ")
+    i_text = Replace(i_text, " ", "YPN_TmpValue")
+    i_text = Replace(i_text, vbCrLf, " ")
+    i_text = Trim(i_text)
+    i_text = Replace(i_text, " ", vbCrLf)
+    i_text = Replace(i_text, "YPN_TmpValue", " ")
     '去除两边空格
-    i_Text = Trim(i_Text)
+    i_text = Trim(i_text)
     
-    MTrimText = i_Text
+    MTrimText = i_text
     
 End Function
 

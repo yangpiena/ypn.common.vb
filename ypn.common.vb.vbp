@@ -29,6 +29,7 @@ Module=ModJSON; Modules\ModJSON.bas
 Module=ModNetUtils; Modules\ModNetUtils.bas
 Class=ClsStringBuilder; Classes\ClsStringBuilder.cls
 ResFile32="Res\YPNSSTab.res"
+Module=ModFTPUtils; Modules\ModFTPUtils.bas
 Startup="(None)"
 HelpFile=""
 Title="ypn.common.vb"
