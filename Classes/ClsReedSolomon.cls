@@ -11,6 +11,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+'---------------------------------------------------------------------------------------
+' Module    : ClsReedSolomon
+' Author    : YPN
+' Date      : 2018-04-24 11:29
+' Purpose   : 生成QRCode的二维码的相关类
+'---------------------------------------------------------------------------------------
+
 Option Explicit
 
 Private Declare Sub CopyMemory Lib "kernel32.dll" Alias "RtlMoveMemory" (ByRef Destination As Any, ByRef Source As Any, ByVal Length As Long)

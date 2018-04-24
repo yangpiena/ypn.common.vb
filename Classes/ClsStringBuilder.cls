@@ -11,6 +11,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+'---------------------------------------------------------------------------------------
+' Module    : ClsStringBuilder
+' Author    : YPN
+' Date      : 2018-04-24 11:27
+' Purpose   : 文本生成类
+'---------------------------------------------------------------------------------------
+
 ' ======================================================================================
 ' Name:     vbAccelerator cStringBuilder
 ' Author:   Steve McMahon (steve@vbaccelerator.com)

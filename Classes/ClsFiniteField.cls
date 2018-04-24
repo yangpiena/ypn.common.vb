@@ -11,6 +11,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+'---------------------------------------------------------------------------------------
+' Module    : ClsFiniteField
+' Author    : YPN
+' Date      : 2018-04-24 11:29
+' Purpose   : 生成QRCode的二维码的相关类
+'---------------------------------------------------------------------------------------
+
 Option Explicit
 
 Private Const m_nMaxOrderShift As Long = 14
@@ -280,7 +287,7 @@ End Function
 Friend Function Inverse(ByVal b As Long) As Long
 
     Dim a As Long, q As Long, t As Long
-    Dim y As Long, y1 As Long
+    Dim y As Long, Y1 As Long
     
     '///
     If b = 0 Then Exit Function
@@ -305,14 +312,14 @@ Friend Function Inverse(ByVal b As Long) As Long
             b = t
             '(x, lastx) := (lastx - quotient*x, x) 'does not need
             '(y, lasty) := (lasty - quotient*y, y)
-            t = y1 - q * y
-            y1 = y
+            t = Y1 - q * y
+            Y1 = y
             y = t
         Loop
         'return (lastx, lasty)
-        y1 = y1 Mod m_nOrder
-        If y1 < 0 Then y1 = y1 + m_nOrder
-        Inverse = y1
+        Y1 = Y1 Mod m_nOrder
+        If Y1 < 0 Then Y1 = Y1 + m_nOrder
+        Inverse = Y1
     End If
     
 End Function
@@ -331,7 +338,7 @@ End Function
 Friend Function Divide(ByVal n1 As Long, ByVal n2 As Long) As Long
 
     Dim a As Long, q As Long, t As Long
-    Dim y As Long, y1 As Long
+    Dim y As Long, Y1 As Long
     
     '///
     If n1 = 0 Or n2 = 0 Then Exit Function
@@ -356,14 +363,14 @@ Friend Function Divide(ByVal n1 As Long, ByVal n2 As Long) As Long
             n2 = t
             '(x, lastx) := (lastx - quotient*x, x) 'does not need
             '(y, lasty) := (lasty - quotient*y, y)
-            t = y1 - q * y
-            y1 = y
+            t = Y1 - q * y
+            Y1 = y
             y = t
         Loop
         'return (lastx, lasty)
-        y1 = (n1 * y1) Mod m_nOrder
-        If y1 < 0 Then y1 = y1 + m_nOrder
-        Divide = y1
+        Y1 = (n1 * Y1) Mod m_nOrder
+        If Y1 < 0 Then Y1 = Y1 + m_nOrder
+        Divide = Y1
     End If
     
 End Function

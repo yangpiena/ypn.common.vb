@@ -15,7 +15,7 @@ Attribute VB_Exposed = True
 ' Module    : ClsCommon
 ' Author    : YPN
 ' Date      : 2017-06-28 12:06
-' Purpose   : 公共类
+' Purpose   : YPN公共类
 '---------------------------------------------------------------------------------------
 Option Explicit
 
@@ -758,9 +758,9 @@ End Sub
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function TextToBase64(ByVal i_Text As String) As String
+Public Function TextToBase64(ByVal i_text As String) As String
 
-    TextToBase64 = MTextToBase64(i_Text)
+    TextToBase64 = MTextToBase64(i_text)
     
 End Function
 
@@ -774,9 +774,9 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function TextToHex(i_Text As String) As String
+Public Function TextToHex(i_text As String) As String
 
-    TextToHex = MTextToHex(i_Text)
+    TextToHex = MTextToHex(i_text)
     
 End Function
 
@@ -790,8 +790,8 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function TrimText(i_Text As String) As String
+Public Function TrimText(i_text As String) As String
 
-    TrimText = MTrimText(i_Text)
+    TrimText = MTrimText(i_text)
     
 End Function

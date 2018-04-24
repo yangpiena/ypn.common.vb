@@ -168,6 +168,12 @@ lpFindFileData As WIN32_FIND_DATA, ByVal dwFlags As Long, ByVal dwContent As Lon
 Public Declare Function InternetFindNextFile Lib "wininet.dll" Alias "InternetFindNextFileA" _
 (ByVal hFind As Long, lpvFindData As WIN32_FIND_DATA) As Long
 
+
+Public Declare Function InternetReadFileByte Lib "wininet.dll" Alias "InternetReadFile" (ByVal hFile As Long, ByRef sBuffer As Byte, ByVal lNumBytesToRead As Long, lNumberOfBytesRead As Long) As Integer
+Public Declare Function InternetReadFile Lib "wininet.dll" (ByVal hFile As Long, ByVal sBuffer As String, ByVal lNumBytesToRead As Long, lNumberOfBytesRead As Long) As Integer
+
+
+
 '===============================================
 ' 从FTP中取得指定的目录下的内容
 '===============================================
@@ -265,13 +271,14 @@ Dim ret
     lnghConnect = InternetConnect(lnghInet, strSvrIP, INTERNET_INVALID_PORT_NUMBER, strFtpUser, strFtpPass, INTERNET_SERVICE_FTP, 0, 0)
     
     '文件存在确认
-    lnghFile = FtpFindFirstFile(lnghConnect, strDownPath, udtFindData, INTERNET_FLAG_RELOAD, 0)
-    ret = Left(udtFindData.cFileName, InStr(udtFindData.cFileName, vbNullChar) - 1)
-    If ret = "" Then Exit Function
+'    lnghFile = FtpFindFirstFile(lnghConnect, strDownPath, udtFindData, INTERNET_FLAG_RELOAD, 0)
+'    ret = Left(udtFindData.cFileName, InStr(udtFindData.cFileName, vbNullChar) - 1)
+'    If ret = "" Then Exit Function
     
     '文件取得
     ret = FtpGetFile(lnghConnect, strDownPath, strNewFilePath, False, FILE_ATTRIBUTE_NORMAL, INTERNET_FLAG_RELOAD, 0&)
-'    ret = FtpOpenFile(lnghConnect, strDownPath, strNewFilePath, FILE_ATTRIBUTE_NORMAL, INTERNET_FLAG_RELOAD, 0&)
+'    ret = FtpOpenFile(lnghConnect, strDownPath, GENERIC_READ, FILE_ATTRIBUTE_NORMAL, INTERNET_FLAG_RELOAD, 0&)
+'    ret=InternetReadFile(lnghconnect,
     If ret = 0 Then Exit Function
     
     '文件删除
@@ -288,6 +295,55 @@ Dim ret
     FTPFileDownload = True
     
 End Function
+
+
+Function FileDownload(sUrl As Variant) As Boolean
+        Dim b(99) As Byte
+        Dim EndByte() As Byte
+        Dim s As String
+        Dim hOpen As Long
+        Dim hOpenUrl As Long
+        Dim bDoLoop As Boolean
+        Dim bRet As Boolean
+        Dim bbuffer As Byte
+        Dim sReadBuffer As String
+        Dim FileName As String
+        Dim lNumberOfBytesRead As Long
+        Dim F1 As Integer
+        Dim strsize As String
+        Dim size As Long
+        strsize = String$(1024, " ")
+ 
+        F1 = FreeFile
+        stTotal = vbNullString
+        FileName = "C:\21212.torrent"
+        Open FileName For Binary As F1
+        hOpen = InternetOpen(scUserAgent, INTERNET_OPEN_TYPE_PRECONFIG, vbNullString, vbNullString, 0)
+        hOpenUrl = InternetOpenUrl(hOpen, sUrl, vbNullString, 0, INTERNET_FLAG_RELOAD, 0)
+        bDoLoop = True
+        HttpQueryInfo hOpenUrl, HTTP_QUERY_CONTENT_LENGTH Or HTTP_QUERY_FLAG_NUMBER, ByVal strsize, Len(strsize), 0
+        size = CLng(Trim(strsize))
+         For j = 1 To size \ 100
+          bDoLoop = InternetReadFileByte(hOpenUrl, b(0), 100, lNumberOfBytesRead)
+ 
+          Put F1, , b
+          If Not CBool(lNumberOfBytesRead) Then Exit For
+         Next
+        If size Mod 100 <> 0 Then
+        tmp = (size Mod 100) - 1
+        ReDim EndByte(tmp)
+          bDoLoop = InternetReadFileByte(hOpenUrl, EndByte(0), tmp + 1, lNumberOfBytesRead)
+          Put F1, , EndByte
+        End If
+ 
+         If hOpenUrl <> 0 Then InternetCloseHandle (hOpenUrl)
+         If hOpen <> 0 Then InternetCloseHandle (hOpen)
+ 
+        Close #1
+        FileDownload = True
+End Function
+
+
 
 '---------------------------------------------------------------------------------
 Function FTPFileUpload(strSvrIP As String, strFtpUser As String, strFtpPass As String, strUpPath As String, strNewFilePath As String, DelFlg As Boolean) As Boolean

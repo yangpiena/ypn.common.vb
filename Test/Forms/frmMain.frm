@@ -366,14 +366,21 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Declare Function WideCharToMultiByte Lib "kernel32.dll" (ByVal CodePage As Long, ByVal dwFlags As Long, ByRef lpWideCharStr As Any, ByVal cchWideChar As Long, ByRef lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByRef lpDefaultChar As Any, ByRef lpUsedDefaultChar As Any) As Long
+'Private Declare Function WideCharToMultiByte Lib "kernel32.dll" (ByVal CodePage As Long, ByVal dwFlags As Long, ByRef lpWideCharStr As Any, ByVal cchWideChar As Long, ByRef lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByRef lpDefaultChar As Any, ByRef lpUsedDefaultChar As Any) As Long
 Private Const CP_UTF8 As Long = 65001
 
 
+Private Declare Function MultiByteToWideChar Lib "kernel32" (ByVal CodePage As Long, ByVal dwFlags As Long, ByRef lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByVal lpWideCharStr As Long, ByVal cchWideChar As Long) As Long
+Private Declare Function WideCharToMultiByte Lib "kernel32" (ByVal CodePage As Long, ByVal dwFlags As Long, ByVal lpWideCharStr As Long, ByVal cchWideChar As Long, ByRef lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByVal lpDefaultChar As Long, ByVal lpUsedDefaultChar As Long) As Long
+'常用的代码页：
+Const cpUTF8 = 65001
+Const cpGB2312 = 936
+Const cpGB18030 = 54936
+Const cpUTF7 = 65000
 
 
 Private Sub Command1_Click()
-
+    
     'test
     Dim b2() As Byte
     Dim s As String
@@ -396,23 +403,23 @@ Private Sub Command1_Click()
         m = LenB(s)
     End Select
     '///
-'    Set Image1.Picture = v_QRC.Encode(Text10.Text, m, cmb1(0).ListIndex, cmb1(1).ListIndex + 1, cmb1(2).ListIndex - 1)
+    '    Set Image1.Picture = v_QRC.Encode(Text10.Text, m, cmb1(0).ListIndex, cmb1(1).ListIndex + 1, cmb1(2).ListIndex - 1)
     '//YPN.QRCode("",21,0,2,-1)
     Set Image1.Picture = YPN.QRCode(Text10.Text, cmb1(0).ListIndex, cmb1(1).ListIndex + 1, cmb1(2).ListIndex - 1, cmb1(3).Text)
     Set Image2.Picture = YPN.BarCode128(Text10.Text, 6, True)
-
+    
 End Sub
 
 Private Sub Command2_Click()
-
+    
     Call YPN.ShowMessage("WRP-PDP", Me.Icon, "产前数据准备系统消息", "合同评审", "您有新的合同需要评审！" & vbCrLf & "请及时进入【合同内容评审】进行评审。" & vbCrLf & vbCrLf & "待评审新增：2 份" & vbCrLf & "待评审共计：5 份", 5)
-
+    
 End Sub
 
 Private Sub Command3_Click()
-
+    
     Text11.Text = YPN.TrimText(Text11.Text)
-
+    
 End Sub
 
 Private Sub Command4_Click()
@@ -428,20 +435,72 @@ Private Sub Command6_Click()
     Dim e As Object
     Dim v_fileName As String
     
-Set e = CreateObject("MSScriptControl.ScriptControl")
-e.Language = "javascript"
-Dim d As String
-d = e.Eval("encodeURI('微软计算机')") '运行javascript脚本的函数
-MsgBox d
-MsgBox e.Eval("decodeURI('" & d & "')")
-v_fileName = e.Eval("encodeURI('1.2万吨PCE综合利用及配套技改项目/正式合同/1.2万吨PCE综合利用及配套技改项目_2版_2台_2018-04-09.xls')")
-v_fileName = e.Eval("encodeURI('1.2万吨PCE综合利用及配套技改项目/正式合同/1.2万吨PCE综合利用及配套技改项目_2版_2台_2018-04-09.xls')")
-Call ModFTPUtils.FTPFileDownload("10.1.50.45", "xx", "xx", v_fileName, "D:\WRP\菲麦森装备制造业产前数据准备系统\xsgl\XSGL\Files\1.2万吨PCE综合利用及配套技改项目_2版_2台_2018-04-09.xls", False)
+    v_fileName = "1.2万吨PCE综合利用及配套技改项目/正式合同/1.2万吨PCE综合利用及配套技改项目_2版_2台_2018-04-09.xls"
+    
+'    Set e = CreateObject("MSScriptControl.ScriptControl")
+'    e.Language = "javascript"
+'    Dim d As String
+'    d = e.Eval("encodeURI('微软计算机')") '运行javascript脚本的函数
+'    MsgBox d
+'    MsgBox e.Eval("decodeURI('" & d & "')")
+    
+'    MsgBox v_fileName
+'    v_fileName = e.Eval("encodeURI('" & v_fileName & "')")
+'    MsgBox v_fileName
+    
+    MsgBox MultiByteToUTF16(UTF16ToMultiByte(v_fileName, cpUTF8), cpUTF8)
+    MsgBox UTF16ToMultiByte(v_fileName, cpUTF8)
+    
+    
+    Call ModFTPUtils.FTPFileDownload("10.1.50.45", "xx", "xx", LoadAsUTF8(v_fileName), "D:\WRP\菲麦森装备制造业产前数据准备系统\xsgl\XSGL\Files\1.2万吨PCE综合利用及配套技改项目_2版_2台_2018-04-09.xls", False)
     
 End Sub
 
-Private Sub Form_Load()
+'工程要引用  Microsoft ActiveX Data Objects 2.8，下面两个通用方法建议放在模块中
+Public Sub SaveAsUTF8(ByVal Text As String, ByVal FileName As String)
+  Dim oStream As ADODB.Stream
 
+  Set oStream = New ADODB.Stream
+  oStream.Open
+  oStream.Charset = "UTF-8"
+  oStream.Type = adTypeText
+  oStream.WriteText Text
+  oStream.SaveToFile FileName, adSaveCreateOverWrite
+  oStream.Close
+End Sub
+
+Public Function LoadAsUTF8(ByVal FileName As String) As String
+  Dim oStream As ADODB.Stream
+
+  Set oStream = New ADODB.Stream
+  oStream.Open
+  oStream.Charset = "UTF-8"
+  oStream.LoadFromFile FileName
+
+  LoadAsUTF8 = oStream.ReadText()
+
+  oStream.Close
+End Function
+
+Function MultiByteToUTF16(UTF8() As Byte, CodePage As Long) As String
+    Dim bufSize As Long
+    bufSize = MultiByteToWideChar(CodePage, 0&, UTF8(0), UBound(UTF8) + 1, 0, 0)
+    MultiByteToUTF16 = Space(bufSize)
+    MultiByteToWideChar CodePage, 0&, UTF8(0), UBound(UTF8) + 1, StrPtr(MultiByteToUTF16), bufSize
+End Function
+
+Function UTF16ToMultiByte(UTF16 As String, CodePage As Long) As Byte()
+    Dim bufSize As Long
+    Dim arr() As Byte
+    bufSize = WideCharToMultiByte(CodePage, 0&, StrPtr(UTF16), Len(UTF16), 0, 0, 0, 0)
+    ReDim arr(bufSize - 1)
+    WideCharToMultiByte CodePage, 0&, StrPtr(UTF16), Len(UTF16), arr(0), bufSize, 0, 0
+    UTF16ToMultiByte = arr
+End Function
+
+
+Private Sub Form_Load()
+    
     Me.Text1.Text = YPN.GetHardDriveSerialNumber("D")
     Me.Text2.Text = YPN.GetHardDiskSerialNumber
     Me.Text3.Text = YPN.GetHardDiskModel
@@ -454,9 +513,9 @@ Private Sub Form_Load()
     Me.Text9.Text = YPN.GetGUID()
     Me.Text12.Text = YPN.GetMonthBegin(Left(Label11.Caption, 10))
     Me.Text13.Text = YPN.GetMonthEnd(Left(Label12.Caption, 10))
-            
-            
-            
+    
+    
+    
     Dim i As Long
     cmb1(0).AddItem "Automatic"
     For i = 1 To 40
@@ -483,7 +542,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub Image1_Click()
-
+    
     If Not Image1.Picture Is Nothing Then
         Clipboard.Clear
         Clipboard.SetData Image1.Picture

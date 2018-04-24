@@ -166,7 +166,17 @@ End Function
 '
 Public Function MGetLocalComputerName() As String
     
+    On Error GoTo MGetLocalComputerName_Error
+    
     MGetLocalComputerName = Environ("computername")
+    
+    On Error GoTo 0
+    Exit Function
+    
+MGetLocalComputerName_Error:
+    
+    ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalComputerName of Module ModStringUtils"
+    MGetLocalComputerName = "获取错误"
     
 End Function
 
@@ -194,7 +204,8 @@ Public Function MGetLocalIP() As String
     
 MGetLocalIP_Error:
     
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalIP of Module ModStringUtils"
+    ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalIP of Module ModStringUtils"
+    MGetLocalIP = "获取错误"
     
 End Function
 
@@ -210,7 +221,17 @@ End Function
 '
 Public Function MGetLocalUserName() As String
     
+    On Error GoTo MGetLocalUserName_Error
+    
     MGetLocalUserName = Environ("username")
+    
+    On Error GoTo 0
+    Exit Function
+    
+MGetLocalUserName_Error:
+    
+    ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalUserName of Module ModStringUtils"
+    MGetLocalUserName = "获取错误"
     
 End Function
 
@@ -336,32 +357,32 @@ End Function
 '
 Public Function MTextToBase64(ByVal i_text As String) As String
     
-    Dim v_str()  As Byte, v_Buf() As Byte
+    Dim v_Str()  As Byte, v_Buf() As Byte
     Dim v_Length As Long, v_Mods  As Long
     Const B64_CHAR_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
     
     On Error GoTo MTextToBase64_Error
     
-    v_str() = StrConv(i_text, vbFromUnicode)
-    v_Mods = (UBound(v_str) + 1) Mod 3    '除以3的余数
-    v_Length = UBound(v_str) + 1 - v_Mods
+    v_Str() = StrConv(i_text, vbFromUnicode)
+    v_Mods = (UBound(v_Str) + 1) Mod 3    '除以3的余数
+    v_Length = UBound(v_Str) + 1 - v_Mods
     ReDim v_Buf(v_Length / 3 * 4 + IIf(v_Mods <> 0, 4, 0) - 1)
     
     For i = 0 To v_Length - 1 Step 3
-        v_Buf(i / 3 * 4) = (v_str(i) And &HFC) / &H4
-        v_Buf(i / 3 * 4 + 1) = (v_str(i) And &H3) * &H10 + (v_str(i + 1) And &HF0) / &H10
-        v_Buf(i / 3 * 4 + 2) = (v_str(i + 1) And &HF) * &H4 + (v_str(i + 2) And &HC0) / &H40
-        v_Buf(i / 3 * 4 + 3) = v_str(i + 2) And &H3F
+        v_Buf(i / 3 * 4) = (v_Str(i) And &HFC) / &H4
+        v_Buf(i / 3 * 4 + 1) = (v_Str(i) And &H3) * &H10 + (v_Str(i + 1) And &HF0) / &H10
+        v_Buf(i / 3 * 4 + 2) = (v_Str(i + 1) And &HF) * &H4 + (v_Str(i + 2) And &HC0) / &H40
+        v_Buf(i / 3 * 4 + 3) = v_Str(i + 2) And &H3F
     Next
     If v_Mods = 1 Then
-        v_Buf(v_Length / 3 * 4) = (v_str(v_Length) And &HFC) / &H4
-        v_Buf(v_Length / 3 * 4 + 1) = (v_str(v_Length) And &H3) * &H10
+        v_Buf(v_Length / 3 * 4) = (v_Str(v_Length) And &HFC) / &H4
+        v_Buf(v_Length / 3 * 4 + 1) = (v_Str(v_Length) And &H3) * &H10
         v_Buf(v_Length / 3 * 4 + 2) = 64
         v_Buf(v_Length / 3 * 4 + 3) = 64
     ElseIf v_Mods = 2 Then
-        v_Buf(v_Length / 3 * 4) = (v_str(v_Length) And &HFC) / &H4
-        v_Buf(v_Length / 3 * 4 + 1) = (v_str(v_Length) And &H3) * &H10 + (v_str(v_Length + 1) And &HF0) / &H10
-        v_Buf(v_Length / 3 * 4 + 2) = (v_str(v_Length + 1) And &HF) * &H4
+        v_Buf(v_Length / 3 * 4) = (v_Str(v_Length) And &HFC) / &H4
+        v_Buf(v_Length / 3 * 4 + 1) = (v_Str(v_Length) And &H3) * &H10 + (v_Str(v_Length + 1) And &HF0) / &H10
+        v_Buf(v_Length / 3 * 4 + 2) = (v_Str(v_Length + 1) And &HF) * &H4
         v_Buf(v_Length / 3 * 4 + 3) = 64
     End If
     For i = 0 To UBound(v_Buf)
@@ -417,8 +438,8 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTextToURL_GB2312(i_text) As String
-
-    Dim v_txt, v_numTxt, v_str
+    
+    Dim v_txt, v_numTxt, v_Str
     
     MTextToURL_GB2312 = ""
     
@@ -430,9 +451,9 @@ Public Function MTextToURL_GB2312(i_text) As String
             MTextToURL_GB2312 = MTextToURL_GB2312 & v_txt
         Else
             If Asc(v_txt) < 0 Then
-                v_str = "%" & Right(CStr(Hex(Asc(v_txt))), 2)
-                v_str = "%" & Left(CStr(Hex(Asc(v_txt))), Len(CStr(Hex(Asc(v_txt)))) - 2) & v_str
-                MTextToURL_GB2312 = MTextToURL_GB2312 & v_str
+                v_Str = "%" & Right(CStr(Hex(Asc(v_txt))), 2)
+                v_Str = "%" & Left(CStr(Hex(Asc(v_txt))), Len(CStr(Hex(Asc(v_txt)))) - 2) & v_Str
+                MTextToURL_GB2312 = MTextToURL_GB2312 & v_Str
             ElseIf Asc(v_txt) >= 65 And Asc(v_txt) <= 90 Then
                 MTextToURL_GB2312 = MTextToURL_GB2312 & v_txt
             ElseIf Asc(v_txt) >= 97 And Asc(v_txt) <= 122 Then
@@ -456,7 +477,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTextToURL_UTF8(i_text) As String
-        
+    
     Dim v_wch, v_uch, v_szRet
     Dim v_asc, v_asc2, v_asc3
     
