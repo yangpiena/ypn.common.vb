@@ -10,6 +10,14 @@ Begin VB.Form frmMain
    ScaleHeight     =   8205
    ScaleWidth      =   13845
    StartUpPosition =   3  '窗口缺省
+   Begin VB.CommandButton Command7 
+      Caption         =   "发送邮件"
+      Height          =   375
+      Left            =   4680
+      TabIndex        =   37
+      Top             =   120
+      Width           =   1335
+   End
    Begin VB.CommandButton Command6 
       Caption         =   "FTP下载"
       Height          =   375
@@ -498,6 +506,17 @@ Function UTF16ToMultiByte(UTF16 As String, CodePage As Long) As Byte()
     UTF16ToMultiByte = arr
 End Function
 
+
+Private Sub Command7_Click()
+
+    Dim v_body As String
+    
+    v_body = "<table border=0>" + "<tr><td>项目名称：</td><td>" + App.Path + "</td></tr><tr><td>行业类别：</td><td>" + App.EXEName + "</td></tr></table>"
+    
+    Call ModPublic.MSendEmail("smtp.qiye.163.com", "system@wzyb.com.cn", "WZYBwzyb9114", "yd@wzyb.com.cn", "YPN测试VB发送邮件", v_body)
+    Call ModPublic.MSendHTMLEmail("smtp.qiye.163.com", "system@wzyb.com.cn", "WZYBwzyb9114", "yd@wzyb.com.cn", "YPN测试VB发送邮件", v_body, "D:\YPNCloud\YPN.Git\ypn.common.vb\Test\TestDLL.vbg")
+    
+End Sub
 
 Private Sub Form_Load()
     

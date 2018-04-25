@@ -12,6 +12,7 @@ End Type
 Private Declare Function CoCreateGuid Lib "ole32.dll" (pguid As GUID) As Long
 Private Declare Function StringFromGUID2 Lib "ole32.dll" (rguid As Any, ByVal lpstrClsId As Long, ByVal cbMax As Long) As Long
 
+
 Public Function GUIDGen() As String 'Éú³ÉGUID
     
     Dim uGUID As GUID
@@ -47,3 +48,4 @@ Public Function CreateGUID() As String
     CreateGUID = sGUID
     
 End Function
+

@@ -2,6 +2,7 @@ Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\stdole2.tlb#OLE Automation
 Reference=*\G{0FB7894B-5524-4906-B09D-6A2FEB45D631}#3.0#0#C:\WINDOWS\system32\ypn.common.vb.dll#
 Reference=*\G{2A75196C-D9EB-4129-B803-931327F72D5C}#2.8#0#C:\Program Files\Common Files\System\ado\msado28.tlb#Microsoft ActiveX Data Objects 2.8 Library
+Reference=*\G{CD000000-8B95-11D1-82DB-00C04FB1625D}#1.0#0#C:\WINDOWS\system32\cdosys.dll#Microsoft CDO for Windows 2000 Library
 Reference=*\G{B84B182A-14BC-41FC-856A-D22D2973E52D}#1.0#0#C:\WINDOWS\system32\ypn.common.ocx.ocx#YPNCommonOCX
 Object={BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0; TABCTL32.OCX
 Object={3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0; richtx32.ocx
