@@ -50,8 +50,14 @@ End Function
 ' Author    : YPN
 ' Date      : 2018-04-25 17:29
 ' Purpose   : 发送电子邮件，按文本格式发送
-' Param     :
-' Return    : String
+' Param     : i_smtpServer SMTP服务器地址
+'             i_from       发信人邮箱地址
+'             i_password   发信人邮箱密码
+'             i_to         收信人邮箱地址
+'             i_subject    邮件主题
+'             i_body       邮件正文，文本格式
+'             i_attachment 附件地址，例如："D:\1.txt"
+' Return    : String       发送成功则返回success，失败则返回failure加失败原因
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
@@ -71,7 +77,7 @@ Public Function MSendEmail(ByVal i_smtpServer As String, ByVal i_from As String,
     v_email.To = i_to                      '收信人邮箱地址
     v_email.Subject = i_subject            '邮件主题
     v_email.TextBody = i_body              '邮件正文，使用文本格式发送邮件
-    If Not YPN.IsNull(i_attachment) Then
+    If Not ModStringUtils.MIsNull(i_attachment) Then
         v_email.AddAttachment i_attachment '附件地址，例如："D:\1.txt"
     End If
     
@@ -103,8 +109,14 @@ End Function
 ' Author    : YPN
 ' Date      : 2018-04-25 17:29
 ' Purpose   : 发送电子邮件，按HTML格式发送
-' Param     :
-' Return    : String
+' Param     : i_smtpServer SMTP服务器地址
+'             i_from       发信人邮箱地址
+'             i_password   发信人邮箱密码
+'             i_to         收信人邮箱地址
+'             i_subject    邮件主题
+'             i_body       邮件正文，HTML格式
+'             i_attachment 附件地址，例如："D:\1.txt"
+' Return    : String       发送成功则返回success，失败则返回failure加失败原因
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
@@ -121,7 +133,7 @@ Public Function MSendHTMLEmail(ByVal i_smtpServer As String, ByVal i_from As Str
     v_email.To = i_to                      '收信人邮箱地址
     v_email.Subject = i_subject            '邮件主题
     v_email.HTMLBody = i_body              '邮件正文，使用html格式发送邮件
-    If Not YPN.IsNull(i_attachment) Then
+    If Not ModStringUtils.MIsNull(i_attachment) Then
         v_email.AddAttachment i_attachment '附件地址，例如："D:\1.txt"
     End If
     
