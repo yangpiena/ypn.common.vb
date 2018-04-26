@@ -59,6 +59,23 @@ Base64Decode_Error:
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : MFormatDate
+' Author    : YPN
+' Date      : 2018-04-26
+' Purpose   : 按指定分隔符格式化日期
+' Param     : i_Date      目标日期
+'             i_Delimiter 指定分隔符
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MFormatDate(ByVal i_Date As String, ByVal i_Delimiter As String) As String
+    
+    MFormatDate = Format(i_Date, "yyyy") & i_Delimiter & Format(i_Date, "mm") & i_Delimiter & Format(i_Date, "dd")
+    
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : MIsNull
 ' Author    : YPN
 ' Date      : 2017-06-29 14:51

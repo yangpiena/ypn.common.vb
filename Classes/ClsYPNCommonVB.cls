@@ -238,6 +238,23 @@ Public Function Base64ToText(ByVal i_Base64 As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : FormatDate
+' Author    : YPN
+' Date      : 2018-04-26
+' Purpose   : 按指定分隔符格式化日期
+' Param     : i_Date      目标日期
+'             i_Delimiter 指定分隔符
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function FormatDate(ByVal i_Date As String, ByVal i_Delimiter As String) As String
+    
+    FormatDate = ModStringUtils.MFormatDate(i_Date, i_Delimiter)
+    
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : GetFileNameInPath
 ' Author    : YPN
 ' Date      : 2017-06-28 17:45
