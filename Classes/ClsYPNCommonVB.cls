@@ -44,6 +44,9 @@ Public Sub Help(Optional ByVal i_Procedure As String, Optional ByVal i_IsMsg As 
         v_Help = ""
         v_Help = v_Help & vbCrLf & "过程：GetGUID         生成一个GUID"
         v_Help = v_Help & vbCrLf & "参数：i_Format (可选) 格式：'B'、'D'"
+        v_Help = v_Help & vbCrLf & "GetGUID()默认: bf8b9c642ea5426f82499bb60681671b"
+        v_Help = v_Help & vbCrLf & "GetGUID('B'): {903c1236-fe24-43c2-b9b5-bec35d9a43a8}"
+        v_Help = v_Help & vbCrLf & "GetGUID('D'): 17e316f4-3f5b-46a0-ad68-58abb816a969"
         
     Case "GetSuffixInFileName"
         v_Help = ""

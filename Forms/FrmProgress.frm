@@ -8,7 +8,6 @@ Begin VB.Form FrmProgress
    ClientTop       =   330
    ClientWidth     =   7185
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   5760
@@ -23,9 +22,9 @@ Begin VB.Form FrmProgress
       Left            =   960
       TabIndex        =   4
       Top             =   4440
-      Width           =   5055
+      Width           =   5895
       Begin VB.Label LblContent 
-         AutoSize        =   -1  'True
+         Alignment       =   2  'Center
          BackColor       =   &H00FFFFFF&
          Caption         =   "≈¨¡¶º”‘ÿ÷–......"
          BeginProperty Font 
@@ -38,20 +37,11 @@ Begin VB.Form FrmProgress
             Strikethrough   =   0   'False
          EndProperty
          Height          =   300
-         Left            =   2640
+         Left            =   0
          TabIndex        =   5
          Top             =   0
-         Width           =   1335
+         Width           =   5775
       End
-   End
-   Begin VB.Frame Frame4 
-      BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'None
-      Height          =   3855
-      Left            =   240
-      TabIndex        =   3
-      Top             =   840
-      Width           =   735
    End
    Begin VB.Frame Frame2 
       BackColor       =   &H00FFFFFF&
@@ -59,6 +49,15 @@ Begin VB.Form FrmProgress
       Height          =   3855
       Left            =   6000
       TabIndex        =   2
+      Top             =   840
+      Width           =   735
+   End
+   Begin VB.Frame Frame4 
+      BackColor       =   &H00FFFFFF&
+      BorderStyle     =   0  'None
+      Height          =   3855
+      Left            =   240
+      TabIndex        =   3
       Top             =   840
       Width           =   735
    End
@@ -181,3 +180,4 @@ Private Sub Form_Unload(Cancel As Integer)
     Screen.MousePointer = vbDefault
     
 End Sub
+
