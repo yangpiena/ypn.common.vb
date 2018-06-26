@@ -775,7 +775,7 @@ End Sub
 
 Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As String)
     
-    On Error GoTo ShowProgress_Error
+    On Error Resume Next
     
     If Not i_Form Is Nothing Then
         
@@ -787,13 +787,6 @@ Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As
     Else
         Unload FrmProgress
     End If
-    
-    On Error GoTo 0
-    Exit Sub
-    
-ShowProgress_Error:
-    
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowProgress of Class Module ClsYPNCommonVB"
     
 End Sub
 
