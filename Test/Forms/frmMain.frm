@@ -513,8 +513,8 @@ Private Sub Command7_Click()
     
     v_body = "<table border=0>" + "<tr><td>ÏîÄ¿Ãû³Æ£º</td><td>" + App.Path + "</td></tr><tr><td>ÐÐÒµÀà±ð£º</td><td>" + App.EXEName + "</td></tr></table>"
     
-    Call ModPublic.MSendEmail("smtp.qiye.163.com", "system@wzyb.com.cn", "WZYBwzyb9114", "yd@wzyb.com.cn", "YPN²âÊÔVB·¢ËÍÓÊ¼þ", v_body)
-    Call ModPublic.MSendHTMLEmail("smtp.qiye.163.com", "system@wzyb.com.cn", "WZYBwzyb9114", "yd@wzyb.com.cn", "YPN²âÊÔVB·¢ËÍÓÊ¼þ", v_body, "D:\YPNCloud\YPN.Git\ypn.common.vb\Test\TestDLL.vbg")
+    Call YPN.SendEmail("smtp.qiye.163.com", "system@wzyb.com.cn", "WZYBwzyb9114", "yd@wzyb.com.cn", "YPN²âÊÔVB·¢ËÍÓÊ¼þ", v_body)
+    Call YPN.SendHTMLEmail("smtp.qiye.163.com", "system@wzyb.com.cn", "WZYBwzyb9114", "yd@wzyb.com.cn", "YPN²âÊÔVB·¢ËÍÓÊ¼þ", v_body, "D:\YPNCloud\YPN.Git\ypn.common.vb\Test\TestDLL.vbg")
     
 End Sub
 

@@ -649,7 +649,7 @@ End Function
 ' Author    : YPN
 ' Date      : 2018-04-25 17:29
 ' Purpose   : 发送电子邮件，按文本格式发送
-' Param     : i_smtpServer SMTP服务器地址
+' Param     : i_smtpServer SMTP服务器地址，例如：smtp.qiye.163.com
 '             i_from       发信人邮箱地址
 '             i_password   发信人邮箱密码
 '             i_to         收信人邮箱地址
@@ -672,7 +672,7 @@ End Function
 ' Author    : YPN
 ' Date      : 2018-04-25 17:29
 ' Purpose   : 发送电子邮件，按HTML格式发送
-' Param     : i_smtpServer SMTP服务器地址
+' Param     : i_smtpServer SMTP服务器地址，例如：smtp.qiye.163.com
 '             i_from       发信人邮箱地址
 '             i_password   发信人邮箱密码
 '             i_to         收信人邮箱地址
