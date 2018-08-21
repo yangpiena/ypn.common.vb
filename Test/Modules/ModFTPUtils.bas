@@ -312,6 +312,7 @@ Function FileDownload(sUrl As Variant) As Boolean
         Dim F1 As Integer
         Dim strsize As String
         Dim size As Long
+        Dim stTotal As String
         strsize = String$(1024, " ")
  
         F1 = FreeFile

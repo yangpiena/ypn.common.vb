@@ -525,6 +525,22 @@ Public Function GetMonthEnd(ByVal i_Date As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : GetVersion
+' Author    : YPN
+' Date      : 2018/08/21 17:14
+' Purpose   : 获取App的版本号
+' Param     : i_App 指定App
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetVersion(Optional ByVal i_App As Object) As String
+
+    GetVersion = ModApp.MGetVersion(i_App)
+
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : HexToText
 ' Author    : YPN
 ' Date      : 2017-07-05 15:55

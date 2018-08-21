@@ -10,6 +10,14 @@ Begin VB.Form frmMain
    ScaleHeight     =   8205
    ScaleWidth      =   13845
    StartUpPosition =   3  '窗口缺省
+   Begin VB.TextBox Text14 
+      Height          =   375
+      Left            =   2160
+      TabIndex        =   39
+      Text            =   "Text1"
+      Top             =   5760
+      Width           =   2775
+   End
    Begin VB.CommandButton Command7 
       Caption         =   "发送邮件"
       Height          =   375
@@ -235,6 +243,15 @@ Begin VB.Form frmMain
       Top             =   510
       Width           =   2775
    End
+   Begin VB.Label Label13 
+      AutoSize        =   -1  'True
+      Caption         =   "DLL的版本："
+      Height          =   180
+      Left            =   240
+      TabIndex        =   38
+      Top             =   5880
+      Width           =   990
+   End
    Begin VB.Label Label12 
       AutoSize        =   -1  'True
       Caption         =   "2018-04-20的月末："
@@ -459,9 +476,7 @@ Private Sub Command6_Click()
     MsgBox MultiByteToUTF16(UTF16ToMultiByte(v_fileName, cpUTF8), cpUTF8)
     MsgBox UTF16ToMultiByte(v_fileName, cpUTF8)
     
-    
-    Call ModFTPUtils.FTPFileDownload("10.1.50.45", "xx", "xx", LoadAsUTF8(v_fileName), "D:\WRP\菲麦森装备制造业产前数据准备系统\xsgl\XSGL\Files\1.2万吨PCE综合利用及配套技改项目_2版_2台_2018-04-09.xls", False)
-    
+     
 End Sub
 
 '工程要引用  Microsoft ActiveX Data Objects 2.8，下面两个通用方法建议放在模块中
@@ -532,6 +547,7 @@ Private Sub Form_Load()
     Me.Text9.Text = YPN.GetGUID()
     Me.Text12.Text = YPN.GetMonthBegin(Left(Label11.Caption, 10))
     Me.Text13.Text = YPN.GetMonthEnd(Left(Label12.Caption, 10))
+    Me.Text14.Text = YPN.getVersion(App)
     
     
     
@@ -560,6 +576,10 @@ Private Sub Form_Load()
     Call YPN.SSTabInit(Me.SSTab1, 2)
 End Sub
 
+Private Function getVersion(v_obj As Object) As String
+    getVersion = v_obj.Major & "." & v_obj.Minor & "." & v_obj.Revision
+End Function
+
 Private Sub Image1_Click()
     
     If Not Image1.Picture Is Nothing Then
@@ -576,6 +596,3 @@ Private Sub Text10_GotFocus()
     Text10.SelLength = Len(Text1.Text)
 End Sub
 
-Private Sub ypnButton_Shape1_Click()
-    Form2.Show
-End Sub
