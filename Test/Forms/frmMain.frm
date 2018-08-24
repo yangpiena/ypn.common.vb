@@ -10,6 +10,14 @@ Begin VB.Form frmMain
    ScaleHeight     =   8205
    ScaleWidth      =   13845
    StartUpPosition =   3  '窗口缺省
+   Begin VB.CommandButton Command8 
+      Caption         =   "自动消失的消息框"
+      Height          =   375
+      Left            =   6120
+      TabIndex        =   40
+      Top             =   120
+      Width           =   1815
+   End
    Begin VB.TextBox Text14 
       Height          =   375
       Left            =   2160
@@ -531,6 +539,12 @@ Private Sub Command7_Click()
     Call YPN.SendEmail("smtp.qiye.163.com", "system@wzyb.com.cn", "WZYBwzyb9114", "yd@wzyb.com.cn", "YPN测试VB发送邮件", v_body)
     Call YPN.SendHTMLEmail("smtp.qiye.163.com", "system@wzyb.com.cn", "WZYBwzyb9114", "yd@wzyb.com.cn", "YPN测试VB发送邮件", v_body, "D:\YPNCloud\YPN.Git\ypn.common.vb\Test\TestDLL.vbg")
     
+End Sub
+
+Private Sub Command8_Click()
+
+    YPN.MsgBoxTimeout Me, "3秒后自动消失", vbInformation, "消息框", 3000
+
 End Sub
 
 Private Sub Form_Load()

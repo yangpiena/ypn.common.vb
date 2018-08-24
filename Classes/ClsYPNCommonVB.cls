@@ -607,6 +607,26 @@ Public Function MD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) As
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : MsgBoxTimeout
+' Author    : YPN
+' Date      : 2018/08/24 12:18
+' Purpose   : 弹出指定时间后消失的消息框
+' Param     : i_Form     要弹出消息框的窗体
+'             i_Msg      消息框内容
+'             i_Type     消息框类型
+'             i_Tip      消息框标题
+'             i_Timeout  消息框显示时间
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Sub MsgBoxTimeout(ByVal i_Form As Object, ByVal i_Msg As String, ByVal i_Type As Long, ByVal i_Tip As String, ByVal i_Timeout As Long)
+
+    ModControl.MMsgBoxTimeout i_Form, i_Msg, i_Type, i_Tip, i_Timeout
+
+End Sub
+
+'---------------------------------------------------------------------------------------
 ' Procedure : QRCode
 ' Author    : YPN
 ' Date      : 2017-09-25 14:33
@@ -795,7 +815,7 @@ Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As
     
     If Not i_Form Is Nothing Then
         
-        If Not (TypeOf i_Form Is Form) Then Err.Raise 1, "ypn.common.by", "该类型不是Form类型"
+        If Not (TypeOf i_Form Is Form) Then Err.Raise 1, "ypn.common.vb", "该类型不是Form类型"
         
         If i_Tip <> "" Then FrmProgress.LblContent.Caption = i_Tip
         FrmProgress.Show vbModeless, i_Form
