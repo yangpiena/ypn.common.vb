@@ -23,5 +23,5 @@ ModJSON = 44, 58, 1016, 478, C
 ModNetUtils = 309, 83, 1397, 586, C
 ClsStringBuilder = 176, 232, 1104, 735, C
 ModFTPUtils = 87, 217, 1175, 720, C
-ModApp = 92, 68, 1043, 497, C
+ModApp = 534, 121, 1485, 550, C
 ModControl = 0, 0, 1319, 368, C

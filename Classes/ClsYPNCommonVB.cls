@@ -167,6 +167,12 @@ Public Function Help(Optional ByVal i_SubName As String, Optional ByVal i_IsMsg 
         v_Help = v_Help & vbCrLf & "过程：GetInitialAll 获取所有汉字的首字母"
         v_Help = v_Help & vbCrLf & "参数：i_Str         汉字字符串"
         v_Help = v_Help & vbCrLf & "-----------------------------"
+        v_Help = v_Help & vbCrLf & "过程：GetVersion 获取App的版本号"
+        v_Help = v_Help & vbCrLf & "参数：i_App      指定App"
+        v_Help = v_Help & vbCrLf & "-----------------------------"
+        v_Help = v_Help & vbCrLf & "过程：GetVersionFile 获取文件的版本号"
+        v_Help = v_Help & vbCrLf & "参数：i_Path         文件的全路径，包括文件名"
+        v_Help = v_Help & vbCrLf & "-----------------------------"
         v_Help = v_Help & vbCrLf & "过程：GetYear2 获取日期中的年份后2位"
         v_Help = v_Help & vbCrLf & "参数：i_Date   日期"
         v_Help = v_Help & vbCrLf & "-----------------------------"
@@ -605,6 +611,22 @@ End Function
 Public Function GetVersion(Optional ByVal i_App As Object) As String
 
     GetVersion = ModApp.MGetVersion(i_App)
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : GetVersionFile
+' Author    : YPN
+' Date      : 2019-01-08 17:25
+' Purpose   : 获取文件的版本号
+' Param     : i_Path 文件的全路径，包括文件名
+' Return    : String
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function GetVersionFile(ByVal i_Path As String) As String
+
+    GetVersionFile = ModApp.MGetVersionFile(i_Path)
 
 End Function
 
