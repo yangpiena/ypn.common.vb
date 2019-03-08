@@ -29,7 +29,7 @@ End Type
 ' Purpose   : 获取App的版本号
 ' Param     :
 ' Return    : String
-' Remark    :
+' Remark    : YPN Edit 2019-01-16 原方法仅能获取3位版本号，现统一为4为版本号
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetVersion(Optional ByVal i_App As Object) As String
@@ -37,10 +37,12 @@ Public Function MGetVersion(Optional ByVal i_App As Object) As String
     On Error GoTo MGetVersion_Error
     
     If i_App Is Nothing Then
-        MGetVersion = App.Major & "." & App.Minor & "." & App.Revision
+        ' MGetVersion = App.Major & "." & App.Minor & "." & App.Revision
+        MGetVersion = MGetVersionFile(App.Path & "\" & App.EXEName & ".dll")
     Else
         If Not (TypeOf i_App Is App) Then Err.Raise 5
-        MGetVersion = i_App.Major & "." & i_App.Minor & "." & i_App.Revision
+        ' MGetVersion = i_App.Major & "." & i_App.Minor & "." & i_App.Revision
+        MGetVersion = MGetVersionFile(i_App.Path & "\" & i_App.EXEName & ".dll")
     End If
     
     On Error GoTo 0

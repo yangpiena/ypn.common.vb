@@ -14,9 +14,36 @@ Public Const INVALID_BOOLEAN   As Long = 4
 Public Const INVALID_NULL      As Long = 5
 Public Const INVALID_KEY       As Long = 6
 Public Const INVALID_RPC_CALL  As Long = 7
-
 Private m_Errors               As String
 
+
+'---------------------------------------------------------------------------------------
+' Procedure : MJSONParse
+' Author    : YPN
+' Date      : 2019/03/08 11:39
+' Purpose   : JSON解析
+' Param     : i_JSONString JSON格式源数据
+'             i_JSONPath   数据访问路径
+' Return    : Variant
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MJSONParse(ByVal i_JSONString As String, ByVal i_JSONPath As String) As Variant
+    Dim v_JSON As Object
+    On Error GoTo MJSONParse_Error
+    
+    Set v_JSON = CreateObject("MSScriptControl.ScriptControl")
+    v_JSON.Language = "JScript"
+    MJSONParse = v_JSON.eval("JSON=" & i_JSONString & ";JSON." & i_JSONPath & ";")
+    Set v_JSON = Nothing
+    
+    On Error GoTo 0
+    Exit Function
+    
+MJSONParse_Error:
+    
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MJSONParse of Module ModJSON"
+End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : MJSONAnalyze
@@ -31,17 +58,17 @@ Private m_Errors               As String
 '
 Public Function MJSONAnalyze(ByVal i_JSONString As String, ByVal i_JSONKey As String) As String
     
-    Dim v_Json     As Object
+    Dim v_JSON     As Object
     Dim v_JsonData
     Dim v_JsonTmp  As Object
     
     On Error GoTo MJSONAnalyze_Error
     
-    Set v_Json = parse(i_JSONString)
+    Set v_JSON = parse(i_JSONString)
     v_JsonData = Split(i_JSONKey, ".")
     
-    If IsArray(v_JsonData) And Not v_Json Is Nothing Then
-        Set v_JsonTmp = v_Json
+    If IsArray(v_JsonData) And Not v_JSON Is Nothing Then
+        Set v_JsonTmp = v_JSON
         
         For i = 0 To UBound(v_JsonData) - 1
             Set v_JsonTmp = v_JsonTmp.Item(CStr(v_JsonData(i)))
@@ -69,7 +96,7 @@ End Sub
 
 
 '   parse string and create JSON object
-Private Function parse(ByRef i_Str As String) As Object
+Private Function parse(ByRef i_str As String) As Object
     
     Dim index As Long
     
@@ -78,12 +105,12 @@ Private Function parse(ByRef i_Str As String) As Object
     
     On Error Resume Next
     
-    Call skipChar(i_Str, index)
-    Select Case Mid(i_Str, index, 1)
+    Call skipChar(i_str, index)
+    Select Case Mid(i_str, index, 1)
     Case "{"
-        Set parse = parseObject(i_Str, index)
+        Set parse = parseObject(i_str, index)
     Case "["
-        Set parse = parseArray(i_Str, index)
+        Set parse = parseArray(i_str, index)
     Case Else
         m_Errors = "Invalid JSON"
     End Select
@@ -91,39 +118,39 @@ Private Function parse(ByRef i_Str As String) As Object
 End Function
 
 '   parse collection of key/value
-Private Function parseObject(ByRef i_Str As String, ByRef i_Index As Long) As Dictionary
+Private Function parseObject(ByRef i_str As String, ByRef i_Index As Long) As Dictionary
     
     Set parseObject = New Dictionary
     Dim sKey As String
     
     ' "{"
-    Call skipChar(i_Str, i_Index)
-    If Mid(i_Str, i_Index, 1) <> "{" Then
-        m_Errors = m_Errors & "Invalid Object at position " & i_Index & " : " & Mid(i_Str, i_Index) & vbCrLf
+    Call skipChar(i_str, i_Index)
+    If Mid(i_str, i_Index, 1) <> "{" Then
+        m_Errors = m_Errors & "Invalid Object at position " & i_Index & " : " & Mid(i_str, i_Index) & vbCrLf
         Exit Function
     End If
     
     i_Index = i_Index + 1
     
     Do
-        Call skipChar(i_Str, i_Index)
-        If "}" = Mid(i_Str, i_Index, 1) Then
+        Call skipChar(i_str, i_Index)
+        If "}" = Mid(i_str, i_Index, 1) Then
             i_Index = i_Index + 1
             Exit Do
-        ElseIf "," = Mid(i_Str, i_Index, 1) Then
+        ElseIf "," = Mid(i_str, i_Index, 1) Then
             i_Index = i_Index + 1
-            Call skipChar(i_Str, i_Index)
-        ElseIf i_Index > Len(i_Str) Then
-            m_Errors = m_Errors & "Missing '}': " & Right(i_Str, 20) & vbCrLf
+            Call skipChar(i_str, i_Index)
+        ElseIf i_Index > Len(i_str) Then
+            m_Errors = m_Errors & "Missing '}': " & Right(i_str, 20) & vbCrLf
             Exit Do
         End If
         
         
         ' add key/value pair
-        sKey = parseKey(i_Str, i_Index)
+        sKey = parseKey(i_str, i_Index)
         On Error Resume Next
         
-        parseObject.Add sKey, parseValue(i_Str, i_Index)
+        parseObject.Add sKey, parseValue(i_str, i_Index)
         If Err.Number <> 0 Then
             m_Errors = m_Errors & Err.Description & ": " & sKey & vbCrLf
             Exit Do
@@ -134,37 +161,37 @@ eh:
 End Function
 
 '   parse list
-Private Function parseArray(ByRef i_Str As String, ByRef i_Index As Long) As Collection
+Private Function parseArray(ByRef i_str As String, ByRef i_Index As Long) As Collection
     
     Set parseArray = New Collection
     
     ' "["
-    Call skipChar(i_Str, i_Index)
-    If Mid(i_Str, i_Index, 1) <> "[" Then
-        m_Errors = m_Errors & "Invalid Array at position " & i_Index & " : " + Mid(i_Str, i_Index, 20) & vbCrLf
+    Call skipChar(i_str, i_Index)
+    If Mid(i_str, i_Index, 1) <> "[" Then
+        m_Errors = m_Errors & "Invalid Array at position " & i_Index & " : " + Mid(i_str, i_Index, 20) & vbCrLf
         Exit Function
     End If
     
     i_Index = i_Index + 1
     
     Do
-        Call skipChar(i_Str, i_Index)
-        If "]" = Mid(i_Str, i_Index, 1) Then
+        Call skipChar(i_str, i_Index)
+        If "]" = Mid(i_str, i_Index, 1) Then
             i_Index = i_Index + 1
             Exit Do
-        ElseIf "," = Mid(i_Str, i_Index, 1) Then
+        ElseIf "," = Mid(i_str, i_Index, 1) Then
             i_Index = i_Index + 1
-            Call skipChar(i_Str, i_Index)
-        ElseIf i_Index > Len(i_Str) Then
-            m_Errors = m_Errors & "Missing ']': " & Right(i_Str, 20) & vbCrLf
+            Call skipChar(i_str, i_Index)
+        ElseIf i_Index > Len(i_str) Then
+            m_Errors = m_Errors & "Missing ']': " & Right(i_str, 20) & vbCrLf
             Exit Do
         End If
         
         ' add value
         On Error Resume Next
-        parseArray.Add parseValue(i_Str, i_Index)
+        parseArray.Add parseValue(i_str, i_Index)
         If Err.Number <> 0 Then
-            m_Errors = m_Errors & Err.Description & ": " & Mid(i_Str, i_Index, 20) & vbCrLf
+            m_Errors = m_Errors & Err.Description & ": " & Mid(i_str, i_Index, 20) & vbCrLf
             Exit Do
         End If
     Loop
@@ -172,23 +199,23 @@ Private Function parseArray(ByRef i_Str As String, ByRef i_Index As Long) As Col
 End Function
 
 '   parse string / number / object / array / true / false / null
-Private Function parseValue(ByRef i_Str As String, ByRef i_Index As Long)
+Private Function parseValue(ByRef i_str As String, ByRef i_Index As Long)
     
-    Call skipChar(i_Str, i_Index)
+    Call skipChar(i_str, i_Index)
     
-    Select Case Mid(i_Str, i_Index, 1)
+    Select Case Mid(i_str, i_Index, 1)
     Case "{"
-        Set parseValue = parseObject(i_Str, i_Index)
+        Set parseValue = parseObject(i_str, i_Index)
     Case "["
-        Set parseValue = parseArray(i_Str, i_Index)
+        Set parseValue = parseArray(i_str, i_Index)
     Case """", "'"
-        parseValue = parseString(i_Str, i_Index)
+        parseValue = parseString(i_str, i_Index)
     Case "t", "f"
-        parseValue = parseBoolean(i_Str, i_Index)
+        parseValue = parseBoolean(i_str, i_Index)
     Case "n"
-        parseValue = parseNull(i_Str, i_Index)
+        parseValue = parseNull(i_str, i_Index)
     Case Else
-        parseValue = parseNumber(i_Str, i_Index)
+        parseValue = parseNumber(i_str, i_Index)
     End Select
     
 End Function
@@ -196,7 +223,7 @@ End Function
 '
 '   parse string
 '
-Private Function parseString(ByRef i_Str As String, ByRef i_Index As Long) As String
+Private Function parseString(ByRef i_str As String, ByRef i_Index As Long) As String
     
     Dim quote   As String
     Dim Char    As String
@@ -204,16 +231,16 @@ Private Function parseString(ByRef i_Str As String, ByRef i_Index As Long) As St
     
     Dim SB As New ClsStringBuilder
     
-    Call skipChar(i_Str, i_Index)
-    quote = Mid(i_Str, i_Index, 1)
+    Call skipChar(i_str, i_Index)
+    quote = Mid(i_str, i_Index, 1)
     i_Index = i_Index + 1
     
-    Do While i_Index > 0 And i_Index <= Len(i_Str)
-        Char = Mid(i_Str, i_Index, 1)
+    Do While i_Index > 0 And i_Index <= Len(i_str)
+        Char = Mid(i_str, i_Index, 1)
         Select Case (Char)
         Case "\"
             i_Index = i_Index + 1
-            Char = Mid(i_Str, i_Index, 1)
+            Char = Mid(i_str, i_Index, 1)
             Select Case (Char)
             Case """", "\", "/", "'"
                 SB.Append Char
@@ -235,7 +262,7 @@ Private Function parseString(ByRef i_Str As String, ByRef i_Index As Long) As St
                 i_Index = i_Index + 1
             Case "u"
                 i_Index = i_Index + 1
-                Code = Mid(i_Str, i_Index, 4)
+                Code = Mid(i_str, i_Index, 4)
                 SB.Append ChrW(Val("&h" + Code))
                 i_Index = i_Index + 4
             End Select
@@ -261,14 +288,14 @@ End Function
 '
 '   parse number
 '
-Private Function parseNumber(ByRef i_Str As String, ByRef i_Index As Long)
+Private Function parseNumber(ByRef i_str As String, ByRef i_Index As Long)
     
     Dim Value   As String
     Dim Char    As String
     
-    Call skipChar(i_Str, i_Index)
-    Do While i_Index > 0 And i_Index <= Len(i_Str)
-        Char = Mid(i_Str, i_Index, 1)
+    Call skipChar(i_str, i_Index)
+    Do While i_Index > 0 And i_Index <= Len(i_str)
+        Char = Mid(i_str, i_Index, 1)
         If InStr("+-0123456789.eE", Char) Then
             Value = Value & Char
             i_Index = i_Index + 1
@@ -283,17 +310,17 @@ End Function
 '
 '   parse true / false
 '
-Private Function parseBoolean(ByRef i_Str As String, ByRef i_Index As Long) As Boolean
+Private Function parseBoolean(ByRef i_str As String, ByRef i_Index As Long) As Boolean
     
-    Call skipChar(i_Str, i_Index)
-    If Mid(i_Str, i_Index, 4) = "true" Then
+    Call skipChar(i_str, i_Index)
+    If Mid(i_str, i_Index, 4) = "true" Then
         parseBoolean = True
         i_Index = i_Index + 4
-    ElseIf Mid(i_Str, i_Index, 5) = "false" Then
+    ElseIf Mid(i_str, i_Index, 5) = "false" Then
         parseBoolean = False
         i_Index = i_Index + 5
     Else
-        m_Errors = m_Errors & "Invalid Boolean at position " & i_Index & " : " & Mid(i_Str, i_Index) & vbCrLf
+        m_Errors = m_Errors & "Invalid Boolean at position " & i_Index & " : " & Mid(i_str, i_Index) & vbCrLf
     End If
     
 End Function
@@ -301,34 +328,34 @@ End Function
 '
 '   parse null
 '
-Private Function parseNull(ByRef i_Str As String, ByRef i_Index As Long)
+Private Function parseNull(ByRef i_str As String, ByRef i_Index As Long)
     
-    Call skipChar(i_Str, i_Index)
-    If Mid(i_Str, i_Index, 4) = "null" Then
+    Call skipChar(i_str, i_Index)
+    If Mid(i_str, i_Index, 4) = "null" Then
         parseNull = Null
         i_Index = i_Index + 4
     Else
-        m_Errors = m_Errors & "Invalid null value at position " & i_Index & " : " & Mid(i_Str, i_Index) & vbCrLf
+        m_Errors = m_Errors & "Invalid null value at position " & i_Index & " : " & Mid(i_str, i_Index) & vbCrLf
     End If
     
 End Function
 
-Private Function parseKey(ByRef i_Str As String, ByRef i_Index As Long) As String
+Private Function parseKey(ByRef i_str As String, ByRef i_Index As Long) As String
     
     Dim dquote  As Boolean
     Dim squote  As Boolean
     Dim Char    As String
     
-    Call skipChar(i_Str, i_Index)
-    Do While i_Index > 0 And i_Index <= Len(i_Str)
-        Char = Mid(i_Str, i_Index, 1)
+    Call skipChar(i_str, i_Index)
+    Do While i_Index > 0 And i_Index <= Len(i_str)
+        Char = Mid(i_str, i_Index, 1)
         Select Case (Char)
         Case """"
             dquote = Not dquote
             i_Index = i_Index + 1
             If Not dquote Then
-                Call skipChar(i_Str, i_Index)
-                If Mid(i_Str, i_Index, 1) <> ":" Then
+                Call skipChar(i_str, i_Index)
+                If Mid(i_str, i_Index, 1) <> ":" Then
                     m_Errors = m_Errors & "Invalid Key at position " & i_Index & " : " & parseKey & vbCrLf
                     Exit Do
                 End If
@@ -337,8 +364,8 @@ Private Function parseKey(ByRef i_Str As String, ByRef i_Index As Long) As Strin
             squote = Not squote
             i_Index = i_Index + 1
             If Not squote Then
-                Call skipChar(i_Str, i_Index)
-                If Mid(i_Str, i_Index, 1) <> ":" Then
+                Call skipChar(i_str, i_Index)
+                If Mid(i_str, i_Index, 1) <> ":" Then
                     m_Errors = m_Errors & "Invalid Key at position " & i_Index & " : " & parseKey & vbCrLf
                     Exit Do
                 End If
@@ -364,14 +391,14 @@ End Function
 '
 '   skip special character
 '
-Private Sub skipChar(ByRef i_Str As String, ByRef i_Index As Long)
+Private Sub skipChar(ByRef i_str As String, ByRef i_Index As Long)
     
     Dim bComment As Boolean
     Dim bStartComment As Boolean
     Dim bLongComment As Boolean
     
-    Do While i_Index > 0 And i_Index <= Len(i_Str)
-        Select Case Mid(i_Str, i_Index, 1)
+    Do While i_Index > 0 And i_Index <= Len(i_str)
+        Select Case Mid(i_str, i_Index, 1)
         Case vbCr, vbLf
             If Not bLongComment Then
                 bStartComment = False
@@ -473,7 +500,7 @@ Public Function toString(ByRef i_Obj As Variant) As String
     
 End Function
 
-Private Function Encode(i_Str) As String
+Private Function Encode(i_str) As String
     
     Dim SB As New ClsStringBuilder
     Dim i As Long
@@ -485,9 +512,9 @@ Private Function Encode(i_Str) As String
     
     aL1 = Array(&H22, &H5C, &H2F, &H8, &HC, &HA, &HD, &H9)
     aL2 = Array(&H22, &H5C, &H2F, &H62, &H66, &H6E, &H72, &H74)
-    For i = 1 To Len(i_Str)
+    For i = 1 To Len(i_str)
         p = True
-        c = Mid(i_Str, i, 1)
+        c = Mid(i_str, i, 1)
         For j = 0 To 7
             If c = Chr(aL1(j)) Then
                 SB.Append "\" & Chr(aL2(j))
