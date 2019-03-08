@@ -21,7 +21,6 @@ Option Explicit
 
 
 Public Function Help(Optional ByVal i_SubName As String, Optional ByVal i_IsMsg As Boolean = False) As String
-    
     Dim v_Help As String
     
     v_Help = "传入过程名，显示详细描述！若i_IsMsg为True，则弹出详细描述，否则返回所有过程的详细描述。"
@@ -95,6 +94,12 @@ Public Function Help(Optional ByVal i_SubName As String, Optional ByVal i_IsMsg 
         v_Help = v_Help & vbCrLf & "过程：JSONAnalyze  JSON解析"
         v_Help = v_Help & vbCrLf & "参数：i_JSONString 待解析的JSON字符串"
         v_Help = v_Help & vbCrLf & "参数：i_JSONKey    解析的关键字 例如：body.data.username"
+        
+    Case "JSONParse"
+        v_Help = v_Help & vbCrLf & "-----------------------------"
+        v_Help = v_Help & vbCrLf & "过程：JSONParse    JSON解析"
+        v_Help = v_Help & vbCrLf & "参数：i_JSONString JSON格式源数据"
+        v_Help = v_Help & vbCrLf & "参数：i_JSONPath   数据访问路径 例如：body.data.username。获取datas的长度，使用：body.datas.length"
         
     Case "MD5"
         v_Help = v_Help & vbCrLf & "-----------------------------"
@@ -215,7 +220,6 @@ Public Function Help(Optional ByVal i_SubName As String, Optional ByVal i_IsMsg 
     
     Help = v_Help
     If i_IsMsg Then MsgBox v_Help, vbInformation, TS
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -230,9 +234,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Sub ApendText(ByVal i_TextFile As String, ByVal i_ApendContent As String)
-    
     Call MApendText(i_TextFile, i_ApendContent)
-    
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : BarCode128
@@ -245,9 +247,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Function BarCode128(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
-    
     Set BarCode128 = MBarCode128(i_BarText, i_BarHeight, i_HasCaption)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -261,9 +261,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function BarCode39(i_BarText As String, i_BarHeight As Integer, Optional i_WithCheckSum As Boolean = False, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
-    
     Set BarCode39 = MBarCode39(i_BarText, i_BarHeight, i_WithCheckSum, i_HasCaption)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -277,9 +275,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function BarEAN13(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
-    
     Set BarEAN13 = MBarEAN13(i_BarText, i_BarHeight, i_HasCaption)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -293,9 +289,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function BarEAN8(i_BarText As String, i_BarHeight As Integer, Optional ByVal i_HasCaption As Boolean = False) As StdPicture
-    
     Set BarEAN8 = MBarEAN8(i_BarText, i_BarHeight, i_HasCaption)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -309,9 +303,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function Base64ToText(ByVal i_Base64 As String) As String
-    
     Base64ToText = MBase64ToText(i_Base64)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -326,9 +318,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function FormatDate(ByVal i_Date As String, ByVal i_Delimiter As String) As String
-    
     FormatDate = ModStringUtils.MFormatDate(i_Date, i_Delimiter)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -343,9 +333,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetFileNameInPath(ByVal i_Path As String, Optional ByVal i_NeedSuffix As Boolean = False) As String
-    
     GetFileNameInPath = MGetFileNameInPath(i_Path, i_NeedSuffix)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -361,7 +349,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetGUID(Optional ByVal i_Format As String) As String
-    
     If UCase$(Trim(i_Format)) = "B" Then
         GetGUID = MGetGUID2("B")
     ElseIf UCase$(Trim(i_Format)) = "D" Then
@@ -369,7 +356,6 @@ Public Function GetGUID(Optional ByVal i_Format As String) As String
     Else
         GetGUID = MGetGUID
     End If
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -383,9 +369,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetSuffixInFileName(ByVal i_FileName As String) As String
-    
     GetSuffixInFileName = MGetSuffixInFileName(i_FileName)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -399,9 +383,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetTextMaxLine(ByVal i_TextFile As String) As Long
-    
     GetTextMaxLine = MGetTextMaxLine(i_TextFile)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -415,9 +397,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetHardDriveSerialNumber(Optional ByVal i_DiskName = "C") As String
-    
     GetHardDriveSerialNumber = MGetHardDriveSerialNumber(i_DiskName)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -431,9 +411,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetHardDiskSerialNumber() As String
-    
     GetHardDiskSerialNumber = MGetHardDiskSerialNumber
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -447,9 +425,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetHardDiskModel() As String
-    
     GetHardDiskModel = MGetHardDiskModel
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -462,10 +438,8 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function GetInitialAll(ByVal i_Str As String) As String
-    
-    GetInitialAll = MGetInitialAll(i_Str)
-    
+Public Function GetInitialAll(ByVal i_str As String) As String
+    GetInitialAll = MGetInitialAll(i_str)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -478,10 +452,8 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function GetInitialFirst(ByVal i_Str As String) As String
-    
-    GetInitialFirst = MGetInitialFirst(i_Str)
-    
+Public Function GetInitialFirst(ByVal i_str As String) As String
+    GetInitialFirst = MGetInitialFirst(i_str)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -497,9 +469,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetIniValue(ByVal i_Section As String, ByVal i_Key As String, ByVal i_FileName As String) As String
-    
     GetIniValue = MGetIniValue(i_Section, i_Key, i_FileName)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -513,9 +483,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetLocalComputerName() As String
-    
     GetLocalComputerName = ModStringUtils.MGetLocalComputerName
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -529,9 +497,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetLocalIP() As String
-    
     GetLocalIP = ModStringUtils.MGetLocalIP
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -545,9 +511,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetLocalUserName() As String
-    
     GetLocalUserName = ModStringUtils.MGetLocalUserName
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -561,9 +525,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetYear2(ByVal i_Date As String) As Integer
-    
     GetYear2 = MGetYear2(i_Date)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -577,9 +539,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetMonthBegin(ByVal i_Date As String) As String
-    
     GetMonthBegin = MGetMonthBegin(i_Date)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -593,9 +553,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetMonthEnd(ByVal i_Date As String) As String
-    
     GetMonthEnd = MGetMonthEnd(i_Date)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -609,9 +567,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetVersion(Optional ByVal i_App As Object) As String
-
     GetVersion = ModApp.MGetVersion(i_App)
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -625,9 +581,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function GetVersionFile(ByVal i_Path As String) As String
-
     GetVersionFile = ModApp.MGetVersionFile(i_Path)
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -641,9 +595,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function HexToText(i_Code As String) As String
-    
     HexToText = MHexToText(i_Code)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -657,9 +609,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function IsNull(ByVal i_Var As Variant) As Boolean
-    
     IsNull = MIsNull(i_Var)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -674,9 +624,22 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function JSONAnalyze(ByVal i_JSONString As String, ByVal i_JSONKey As String) As String
-    
     JSONAnalyze = ModJSON.MJSONAnalyze(i_JSONString, i_JSONKey)
-    
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : JSONParse
+' Author    : YPN
+' Date      : 2019/03/08 11:39
+' Purpose   : JSON解析
+' Param     : i_JSONString JSON格式源数据
+'             i_JSONPath   数据访问路径
+' Return    : Variant
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function JSONParse(ByVal i_JSONString As String, ByVal i_JSONPath As String) As Variant
+    JSONParse = ModJSON.MJSONParse(i_JSONString, i_JSONPath)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -690,10 +653,8 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function MD5(ByVal i_Str As String, Optional ByVal i_Bit As Long = 16) As String
-    
-    MD5 = MMD5(i_Str, i_Bit)
-    
+Public Function MD5(ByVal i_str As String, Optional ByVal i_Bit As Long = 16) As String
+    MD5 = MMD5(i_str, i_Bit)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -711,9 +672,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Sub MsgBoxTimeout(ByVal i_Form As Object, ByVal i_Msg As String, ByVal i_Type As Long, ByVal i_Tip As String, ByVal i_Timeout As Long)
-
     ModControl.MMsgBoxTimeout i_Form, i_Msg, i_Type, i_Tip, i_Timeout
-
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -731,9 +690,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Function QRCode(ByVal i_QRText As String, Optional ByVal i_Version As Long = 0, Optional ByVal i_ECLevel As String = "M", Optional ByVal i_MaskType As Long = -1, Optional ByVal i_encoding As String = "UTF-8") As StdPicture
-    
     Set QRCode = MQRCode(i_QRText, i_Version, i_ECLevel, i_MaskType, i_encoding)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -748,9 +705,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function RequestREST(ByVal i_RequstURL As String, ByVal i_RequestParameter As String) As String
-    
     RequestREST = ModNetUtils.MRequestREST(i_RequstURL, i_RequestParameter)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -765,9 +720,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function RndInt(ByVal i_Min As Long, ByVal i_Max As Long) As Integer
-    
     RndInt = MRndInt(i_Min, i_Max)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -788,9 +741,7 @@ End Function
 '
 Public Function SendEmail(ByVal i_smtpServer As String, ByVal i_from As String, ByVal i_password As String, ByVal i_to As String, _
     ByVal i_subject As String, ByVal i_body As String, Optional ByVal i_attachment As String) As String
-    
     SendEmail = ModNetUtils.MSendEmail(i_smtpServer, i_from, i_password, i_to, i_subject, i_body, i_attachment)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -811,9 +762,7 @@ End Function
 '
 Public Function SendHTMLEmail(ByVal i_smtpServer As String, ByVal i_from As String, ByVal i_password As String, ByVal i_to As String, _
     ByVal i_subject As String, ByVal i_body As String, Optional ByVal i_attachment As String) As String
-    
     SendHTMLEmail = ModNetUtils.MSendHTMLEmail(i_smtpServer, i_from, i_password, i_to, i_subject, i_body, i_attachment)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -830,9 +779,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function SetIniValue(ByVal i_Section As String, ByVal i_Key As String, ByVal i_Value As String, ByVal i_FileName As String) As Boolean
-    
     SetIniValue = MSetIniValue(i_Section, i_Key, i_Value, i_FileName)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -847,11 +794,9 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Sub SetStyleToolBar(Optional ByVal i_Color As Long = 15323836, Optional ByVal i_PicturePath As String)
-    
     FrmStyleToolBar.F_Color = i_Color
     FrmStyleToolBar.F_PicturePath = i_PicturePath
     FrmStyleToolBar.Hide
-    
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -870,7 +815,6 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub ShowMessage(ByVal i_MsgSource As String, ByVal i_FrmIcon As StdPicture, ByVal i_FrmCaption As String, ByVal i_MsgTitle As String, ByVal i_MsgContent As String, Optional ByVal i_WiteTime As Integer)
-    
     On Error GoTo ShowMessage_Error
     
     FrmMessage.Icon = i_FrmIcon
@@ -886,8 +830,7 @@ Public Sub ShowMessage(ByVal i_MsgSource As String, ByVal i_FrmIcon As StdPictur
     
 ShowMessage_Error:
     
-    ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowMessage of Class Module ClsYPNCommonVB"
-    
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ShowMessage of Class Module ClsYPNCommonVB"
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -900,7 +843,6 @@ End Sub
 '---------------------------------------------------------------------------------------
 
 Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As String)
-    
     On Error Resume Next
     
     If Not i_Form Is Nothing Then
@@ -913,7 +855,6 @@ Public Sub ShowProgress(Optional ByVal i_Form As Object, Optional ByVal i_Tip As
     Else
         Unload FrmProgress
     End If
-    
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -928,9 +869,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub SSTabInit(ByVal i_SSTab As Object, Optional ByVal i_Style As Integer = 0)
-    
     Call FrmSSTab.FSSTabInit(i_SSTab, i_Style)
-    
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -944,9 +883,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Function TextToBase64(ByVal i_text As String) As String
-    
     TextToBase64 = MTextToBase64(i_text)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -960,9 +897,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function TextToHex(i_text As String) As String
-    
     TextToHex = MTextToHex(i_text)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -976,7 +911,5 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function TrimText(i_text As String) As String
-    
     TrimText = MTrimText(i_text)
-    
 End Function

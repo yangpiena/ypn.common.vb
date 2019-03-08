@@ -22,7 +22,6 @@ Attribute VB_Exposed = False
 ' Purpose   : 用于定义SSTab的初始化
 '             因为需要定义WithEvents类型的类变量，故只能放到Form中，不能在Module中定义
 '---------------------------------------------------------------------------------------
-
 Option Explicit
 Private Type RECT
     Left As Long
@@ -30,7 +29,6 @@ Private Type RECT
     Right As Long
     Bottom As Long
 End Type
-
 Private Const LF_FACESIZE = 32
 Private Const FW_NORMAL = 400
 Private Const FW_BOLD = 700
@@ -50,7 +48,6 @@ Private Type LOGFONT
     lfPitchAndFamily As Byte
     lfFaceName(1 To LF_FACESIZE) As Byte
 End Type
-
 Public Enum EMDTSTYLE
     DT_ACCEPT_DBCS = (&H20)
     DT_AGENT = (&H3)
@@ -111,20 +108,16 @@ Public Enum EMDTSTYLE
     DT_WORD_ELLIPSIS_CON = &H40000
     DT_WORDBREAK = &H10
 End Enum
-
 Private Const OPAQUE        As Long = 2
 Private Const TRANSPARENT   As Long = 1
 Private Const PS_SOLID      As Long = 0
-
 Private Declare Function lstrcpy Lib "kernel32" Alias "lstrcpyA" (ByVal lpString1 As String, ByVal lpString2 As String) As Long
-
 Private Type tagINITCOMMONCONTROLSEX
     lngSize As Long
     lngICC As Long
 End Type
 Private Const ICC_USEREX_CLASSES = &H200
 Private Declare Function InitCommonControlsEx Lib "comctl32.dll" (iccex As tagINITCOMMONCONTROLSEX) As Boolean
-
 Private Declare Function FillRect Lib "user32" (ByVal hdc As Long, lpRect As RECT, ByVal hBrush As Long) As Long
 Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
 Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hdc As Long) As Long
@@ -150,29 +143,23 @@ Private Declare Function CreateFontIndirect Lib "gdi32" Alias "CreateFontIndirec
 Private Declare Function SetTextColor Lib "gdi32" (ByVal hdc As Long, ByVal crColor As Long) As Long
 Private Declare Function GetTextColor Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function TransparentBlt Lib "msimg32.dll" (ByVal hdcDest As Long, ByVal nXOriginDest As Long, ByVal nYOriginDest As Long, ByVal nWidthDest As Long, ByVal nHeightDest As Long, ByVal hdcSrc As Long, ByVal nXOriginSrc As Long, ByVal nYOriginSrc As Long, ByVal nWidthSrc As Long, ByVal nHeightSrc As Long, ByVal crTransparent As Long) As Long
-
 Private Const STATE_NORMAL      As Long = &H0
 Private Const STATE_SELECTED    As Long = &H1
 Private Const STATE_HOVER       As Long = &H2
 Private Const STATE_PUSHED      As Long = &H4
 Private Const STATE_FOCUSED     As Long = &H8
 Private Const STATE_DISABLED    As Long = &H10
-
 Private m_XPResBitmap     As IPictureDisp
 Private m_hXPResDC        As Long
 Private m_nXPResSaveDC    As Long
-
 Private m_QQResBitmap     As IPictureDisp
 Private m_hQQResDC        As Long
 Private m_nQQResSaveDC    As Long
-
 Private m_OfficeResBitmap     As IPictureDisp
 Private m_hOfficeResDC        As Long
 Private m_nOfficeResSaveDC    As Long
-
 Private m_hFont             As Long
 Private m_hBoldFont         As Long
-
 Private WithEvents m_YPNSSTab As ClsYPNSSTab
 Attribute m_YPNSSTab.VB_VarHelpID = -1
 Private m_SSTab               As SSTab
@@ -191,7 +178,7 @@ Private m_Style               As Integer
 '---------------------------------------------------------------------------------------
 '
 Public Sub FSSTabInit(ByVal i_SSTab As Object, Optional ByVal i_Style As Integer = 0)
-    
+
     If Not (TypeOf i_SSTab Is SSTab) Then Err.Raise 5
     
     Set m_SSTab = i_SSTab
@@ -223,11 +210,10 @@ Public Sub FSSTabInit(ByVal i_SSTab As Object, Optional ByVal i_Style As Integer
     End If
     
     m_YPNSSTab.UpdateAll
-    
 End Sub
 
 Private Function loadResDC(i_SSTab As SSTab) As Boolean
-    
+
     loadResDC = False
     
     Dim hTmpDC As Long
@@ -274,11 +260,9 @@ Private Function loadResDC(i_SSTab As SSTab) As Boolean
     Call SelectObject(m_hOfficeResDC, m_OfficeResBitmap.Handle)
     
     Call ReleaseDC(0, hTmpDC)
-    
 End Function
 
 Private Function destroyResDC() As Boolean
-    
     destroyResDC = False
     
     If (m_hXPResDC <> 0) Then
@@ -316,11 +300,10 @@ Private Function destroyResDC() As Boolean
     End If
     
     Set m_XPResBitmap = Nothing
-    
 End Function
 
 Private Sub m_YPNSSTab_DrawBackGround(ByVal hdc As Long, ByVal nWidth As Long, ByVal nHeight As Long)
-    
+
     Dim hBrush As Long, hOldBrush  As Long
     
     Dim rcBackground As RECT
@@ -358,7 +341,6 @@ Private Sub m_YPNSSTab_DrawBackGround(ByVal hdc As Long, ByVal nWidth As Long, B
         Call gridBlt(hdc, 0, 0, nWidth, m_SSTab.TabHeight, m_hOfficeResDC, 0, 0, 1, 27, 0, 0, 0, 1)
         Call DeleteObject(hBrush)
     End If
-    
 End Sub
 
 Private Sub m_YPNSSTab_DrawTab(ByVal nTab As Long, ByVal nState As Long, ByVal hdc As Long, ByVal nleft As Long, ByVal nTop As Long, ByVal nWidth As Long, ByVal nHeight As Long)
@@ -430,7 +412,6 @@ Private Sub m_YPNSSTab_DrawTab(ByVal nTab As Long, ByVal nState As Long, ByVal h
     '   Call SetBkMode(hdc, nOldBkMode)
     Call SelectObject(hdc, hOldFont)
     Call SetTextColor(hdc, dwOldTextColor)
-    
 End Sub
 
 Private Sub m_YPNSSTab_DrawUpDown(ByVal bUpButton As Boolean, ByVal nState As Long, ByVal hdc As Long, ByVal nleft As Long, ByVal nTop As Long, ByVal nWidth As Long, ByVal nHeight As Long)
@@ -458,7 +439,6 @@ Private Sub m_YPNSSTab_DrawUpDown(ByVal bUpButton As Boolean, ByVal nState As Lo
             Call gridBlt(hdc, rcUpDown.Left, rcUpDown.Top, rcUpDown.Right - rcUpDown.Left, rcUpDown.Bottom - rcUpDown.Top, m_hXPResDC, IIf(bHover, 85, 69), 0, 16, 16, 1, 1, 1, 1)
         End If
     End If
-    
 End Sub
 
 '九宫格绘图 (中间伸展，边框不变)
@@ -518,5 +498,4 @@ Private Function gridBlt(ByVal hDestDC As Long, ByVal dstX As Long, ByVal dstY A
     Call DeleteDC(hMemDC)
     Call DeleteObject(hMemBitmap)
     Call ReleaseDC(0, hTmpDC)
-    
 End Function

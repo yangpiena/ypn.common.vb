@@ -37,16 +37,13 @@ Attribute VB_Exposed = False
 ' Date      : 2017-06-30 14:36
 ' Purpose   : ToolBar样式
 '---------------------------------------------------------------------------------------
-
 Option Explicit
 Public F_Color       As Long      ' 颜色值
 Public F_PicturePath As String    ' 图片路径（包括图片名称）
 
 
 Private Sub Form_Load()
-    
     Call applyStyle
-    
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -75,5 +72,4 @@ Private Sub applyStyle()
     
     ' 刷新屏幕以看见样式
     InvalidateRect 0&, 0&, False
-    
 End Sub

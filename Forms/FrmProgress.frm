@@ -93,7 +93,7 @@ Begin VB.Form FrmProgress
       NoFolders       =   0   'False
       Transparent     =   0   'False
       ViewID          =   "{0057D0E0-3573-11CF-AE69-08002B2E1262}"
-      Location        =   "http:///"
+      Location        =   ""
    End
 End
 Attribute VB_Name = "FrmProgress"
@@ -107,23 +107,18 @@ Attribute VB_Exposed = False
 ' Date      : 2018-04-08 20:51
 ' Purpose   : 进度窗体
 '---------------------------------------------------------------------------------------
-
 Option Explicit
 Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
-
 Private Const WS_EX_LAYERED = &H80000
 Private Const GWL_EXSTYLE = (-20)
 Private Const LWA_ALPHA = &H2
 
 
 Private Sub Form_Load()
-    
     Screen.MousePointer = vbHourglass
-    
     Call formTransparent(200)
-    
     With WebBrowser1
         .AddressBar = False
         .MenuBar = False
@@ -131,7 +126,6 @@ Private Sub Form_Load()
         .TheaterMode = False
         .Navigate ("C:\WINDOWS\system32\loading.gif")        '播放gif动画
     End With
-    
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -142,7 +136,6 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub formTransparent(i_alpha As Integer)
-    
     If i_alpha >= 0 And i_alpha <= 255 Then
         Dim rtn As Long
         
@@ -151,11 +144,9 @@ Private Sub formTransparent(i_alpha As Integer)
         SetWindowLong hWnd, GWL_EXSTYLE, rtn
         SetLayeredWindowAttributes hWnd, 0, i_alpha, LWA_ALPHA
     End If
-    
 End Sub
 
 Private Sub Form_Resize()
-    
     On Error Resume Next
     
     WebBrowser1.Top = Screen.Height / 4
@@ -172,12 +163,9 @@ Private Sub Form_Resize()
     
     Frame4.Top = WebBrowser1.Top
     Frame4.Left = WebBrowser1.Left - 150
-    
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-
     Screen.MousePointer = vbDefault
-    
 End Sub
 
