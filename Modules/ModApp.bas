@@ -5,7 +5,6 @@ Attribute VB_Name = "ModApp"
 ' Date      : 2018/08/21 12:11
 ' Purpose   : 主应用程序方法类
 '---------------------------------------------------------------------------------------
-
 Option Explicit
 Private Declare Function GetFileVersionInfo Lib "Version.dll" Alias "GetFileVersionInfoA" (ByVal lptstrFilename As String, ByVal dwhandle As Long, ByVal dwlen As Long, lpData As Any) As Long
 Private Declare Function GetFileVersionInfoSize Lib "Version.dll" Alias "GetFileVersionInfoSizeA" (ByVal lptstrFilename As String, lpdwHandle As Long) As Long
@@ -52,7 +51,6 @@ MGetVersion_Error:
     
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetVersion of Module ModApp"
     MGetVersion = ""
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -94,5 +92,4 @@ Public Function MGetVersionFile(ByVal i_Path As String) As String
 MGetVersionFile_Error:
     
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetVersionFile of Module ModApp"
-    
 End Function
