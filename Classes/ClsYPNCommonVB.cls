@@ -84,6 +84,11 @@ Public Function Help(Optional ByVal i_SubName As String, Optional ByVal i_IsMsg 
         v_Help = v_Help & vbCrLf & "过程：HexToText 将16进制编码串转换为文本。没有写异常处理，但只要是用 TextToHex() 转换的结果就没问题"
         v_Help = v_Help & vbCrLf & "参数：i_Code    要转换的16进制编码"
         
+    Case "IsIncludeChinese"
+        v_Help = v_Help & vbCrLf & "-----------------------------"
+        v_Help = v_Help & vbCrLf & "过程：IsIncludeChinese 判断是否包含中文"
+        v_Help = v_Help & vbCrLf & "参数：i_Var            目标变量"
+        
     Case "IsNull"
         v_Help = v_Help & vbCrLf & "-----------------------------"
         v_Help = v_Help & vbCrLf & "过程：IsNull 判断变量是否为空"
@@ -596,6 +601,20 @@ End Function
 '
 Public Function HexToText(i_Code As String) As String
     HexToText = MHexToText(i_Code)
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : IsIncludeChinese
+' Author    : YPN
+' Date      : 2019/03/28 16:15
+' Purpose   : 判断是否包含中文
+' Param     : i_Var 目标变量
+' Return    : Boolean
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function IsIncludeChinese(ByVal i_Var As Variant) As Boolean
+    IsIncludeChinese = ModStringUtils.MIsIncludeChinese(i_Var)
 End Function
 
 '---------------------------------------------------------------------------------------

@@ -5,7 +5,6 @@ Attribute VB_Name = "ModStringUtils"
 ' Date      : 2017-06-29 14:46
 ' Purpose   : 字符串工具类
 '---------------------------------------------------------------------------------------
-
 Option Explicit
 
 
@@ -20,7 +19,6 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 '
 Public Function MBase64ToText(ByVal i_Base64 As String) As String
-    
     Dim v_OutStr() As Byte
     Dim v_Length   As Long, v_Mods As Long
     Const B64_CHAR_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
@@ -55,7 +53,6 @@ Public Function MBase64ToText(ByVal i_Base64 As String) As String
 Base64Decode_Error:
     
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Base64Decode of Module ModStringUtils"
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -70,9 +67,31 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MFormatDate(ByVal i_Date As String, ByVal i_Delimiter As String) As String
-    
     MFormatDate = Format(i_Date, "yyyy") & i_Delimiter & Format(i_Date, "mm") & i_Delimiter & Format(i_Date, "dd")
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : MIsIncludeChinese
+' Author    : YPN
+' Date      : 2019/03/28 16:15
+' Purpose   : 是否包含中文
+' Param     :
+' Return    : Boolean
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function MIsIncludeChinese(ByVal i_Var As Variant) As Boolean
+    Dim v_Len As Long
     
+    v_Len = Len(i_Var)
+    For i = 1 To v_Len
+        If Asc(Mid(CStr(i_Var), i, 1)) < 0 Then
+            MIsIncludeChinese = True
+            Exit Function
+        End If
+    Next i
+    
+    MIsIncludeChinese = False
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -86,7 +105,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MIsNull(ByVal i_Var As Variant) As Boolean
-    
     If IsNull(i_Var) Then
         MIsNull = True
         Exit Function
@@ -98,7 +116,6 @@ Public Function MIsNull(ByVal i_Var As Variant) As Boolean
     End If
     
     MIsNull = False
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -113,7 +130,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetFileNameInPath(ByVal i_Path As String, Optional ByVal i_NeedSuffix As Boolean = False) As String
-    
     Dim v_FileName As String, v_FileNameNoSuffix As String
     
     i_Path = Trim(i_Path)
@@ -134,7 +150,6 @@ Public Function MGetFileNameInPath(ByVal i_Path As String, Optional ByVal i_Need
     Else
         MGetFileNameInPath = v_FileNameNoSuffix
     End If
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -148,9 +163,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetSuffixInFileName(ByVal i_FileName As String) As String
-    
     MGetSuffixInFileName = IIf(InStr(i_FileName, "."), Right(i_FileName, Len(i_FileName) - InStrRev(i_FileName, ".")), vbNullString)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -163,12 +176,10 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function MGetInitialFirst(ByVal i_Str As String) As String
+Public Function MGetInitialFirst(ByVal i_str As String) As String
+    If i_str = "" Then Exit Function
     
-    If i_Str = "" Then Exit Function
-    
-    MGetInitialFirst = getPinyin(Left(i_Str, 1))
-    
+    MGetInitialFirst = getPinyin(Left(i_str, 1))
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -182,7 +193,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetLocalComputerName() As String
-    
     On Error GoTo MGetLocalComputerName_Error
     
     MGetLocalComputerName = Environ("computername")
@@ -194,7 +204,6 @@ MGetLocalComputerName_Error:
     
     ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalComputerName of Module ModStringUtils"
     MGetLocalComputerName = "获取错误"
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -208,7 +217,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetLocalIP() As String
-    
     Dim v_winIP As Object
     
     On Error GoTo MGetLocalIP_Error
@@ -223,7 +231,6 @@ MGetLocalIP_Error:
     
     ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalIP of Module ModStringUtils"
     MGetLocalIP = "获取错误"
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -249,7 +256,6 @@ MGetLocalUserName_Error:
     
     ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalUserName of Module ModStringUtils"
     MGetLocalUserName = "获取错误"
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -262,14 +268,12 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Public Function MGetInitialAll(ByVal i_Str As String) As String
+Public Function MGetInitialAll(ByVal i_str As String) As String
+    If i_str = "" Then Exit Function
     
-    If i_Str = "" Then Exit Function
-    
-    For i = 1 To Len(i_Str)
-        MGetInitialAll = MGetInitialAll & getPinyin(Mid(i_Str, i, 1))
+    For i = 1 To Len(i_str)
+        MGetInitialAll = MGetInitialAll & getPinyin(Mid(i_str, i, 1))
     Next i
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -283,9 +287,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetYear2(ByVal i_Date As String) As Integer
-    
     MGetYear2 = Right(CStr(Year(i_Date)), 2)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -299,9 +301,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetMonthBegin(ByVal i_Date As String) As String
-    
     MGetMonthBegin = DateSerial(Year(i_Date), Month(i_Date), 1)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -315,9 +315,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetMonthEnd(ByVal i_Date As String) As String
-    
     MGetMonthEnd = DateAdd("d", -1, DateSerial(Year(i_Date), Month(i_Date) + 1, 1))
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -331,7 +329,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MHexToText(i_Code As String) As String
-    
     Dim aBuffer() As Byte
     Dim i As Long, n As Long
     
@@ -341,7 +338,6 @@ Public Function MHexToText(i_Code As String) As String
         aBuffer(i) = CByte("&H" & Mid$(i_Code, i + i + 1, 2))
     Next
     MHexToText = StrConv(aBuffer, vbUnicode)
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -356,10 +352,8 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MRndInt(ByVal i_Min As Long, ByVal i_Max As Long) As Integer
-    
     Randomize
     MRndInt = Int(Rnd() * (i_Max - i_Min + 1)) + i_Min
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -373,7 +367,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTextToBase64(ByVal i_text As String) As String
-    
     Dim v_Str()  As Byte, v_Buf() As Byte
     Dim v_Length As Long, v_Mods  As Long
     Const B64_CHAR_DICT = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
@@ -412,7 +405,6 @@ Public Function MTextToBase64(ByVal i_text As String) As String
 MTextToBase64_Error:
     
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MTextToBase64 of Module ModStringUtils"
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -426,7 +418,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTextToHex(i_text As String) As String
-    
     Dim aBuffer() As Byte
     Dim strOut As String
     Dim i As Long, p As Long
@@ -440,9 +431,7 @@ Public Function MTextToHex(i_text As String) As String
         p = p + 2
     Next
     MTextToHex = strOut
-    
 End Function
-
 
 '---------------------------------------------------------------------------------------
 ' Procedure : MTextToURL_GB2312
@@ -455,7 +444,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTextToURL_GB2312(i_text) As String
-    
     Dim v_txt, v_numTxt, v_Str
     
     MTextToURL_GB2312 = ""
@@ -480,7 +468,6 @@ Public Function MTextToURL_GB2312(i_text) As String
             End If
         End If
     Next
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -494,7 +481,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTextToURL_UTF8(i_text) As String
-    
     Dim v_wch, v_uch, v_szRet
     Dim v_asc, v_asc2, v_asc3
     
@@ -521,7 +507,6 @@ Public Function MTextToURL_UTF8(i_text) As String
     Next
     
     MTextToURL_UTF8 = v_szRet
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -535,7 +520,6 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTrimText(i_text As String) As String
-    
     '去除两边换行符
     i_text = Replace(i_text, " ", "YPN_TmpValue")
     i_text = Replace(i_text, vbCrLf, " ")
@@ -546,7 +530,6 @@ Public Function MTrimText(i_text As String) As String
     i_text = Trim(i_text)
     
     MTrimText = i_text
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -559,13 +542,12 @@ End Function
 ' Remark    :
 '---------------------------------------------------------------------------------------
 '
-Private Function getPinyin(ByVal i_Str As String) As String
-    
+Private Function getPinyin(ByVal i_str As String) As String
     Dim v_Pinyin As String
     
-    i_Str = Hex(Asc(i_Str))  ' 将汉字转换为其内码的十六进制字符串
+    i_str = Hex(Asc(i_str))  ' 将汉字转换为其内码的十六进制字符串
     
-    Select Case i_Str
+    Select Case i_str
     Case "B0A1" To "B0C4": v_Pinyin = "A"
     Case "B0C5" To "B2C0": v_Pinyin = "B"
     Case "B2C1" To "B4ED": v_Pinyin = "C"
@@ -594,6 +576,4 @@ Private Function getPinyin(ByVal i_Str As String) As String
     End Select
     
     getPinyin = v_Pinyin
-    
 End Function
-

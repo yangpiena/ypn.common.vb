@@ -57,7 +57,6 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub applyStyle()
-    
     Dim v_BG As Long
     
     If Trim(F_PicturePath) <> "" Then
