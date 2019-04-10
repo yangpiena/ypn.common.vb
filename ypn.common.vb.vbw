@@ -1,5 +1,5 @@
 ModGetHardDiskInfo = 0, 0, 632, 736, C
-ClsYPNCommonVB = 0, 0, 1271, 368, C
+ClsYPNCommonVB = 671, 0, 1342, 705, C
 ModPublic = 5, 33, 1093, 536, C
 ModMD5 = 22, 29, 1110, 533, C
 ModStringUtils = 421, -8, 1053, 651, C
@@ -20,7 +20,7 @@ FrmMessage = 102, 220, 1366, 588, C, 2, 116, 1090, 620, C
 ClsYPNSSTab = 22, 29, 798, 459, C
 FrmSSTab = 44, 58, 820, 487, C, 22, 29, 798, 458, C
 ModJSON = 0, 368, 1271, 736, C
-ModNetUtils = 23, 77, 1111, 580, C
+ModNetUtils = 0, 0, 671, 705, C
 ClsStringBuilder = 176, 232, 1104, 735, C
 ModFTPUtils = 87, 217, 1175, 720, C
 ModApp = 534, 121, 1485, 550, C

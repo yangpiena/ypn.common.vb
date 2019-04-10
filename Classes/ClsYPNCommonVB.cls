@@ -22,207 +22,187 @@ Option Explicit
 
 Public Function Help(Optional ByVal i_SubName As String, Optional ByVal i_IsMsg As Boolean = False) As String
     Dim v_Help As String
+    Dim ApendText, GetFileNameInPath, GetGUID, GetSuffixInFileName, GetHardDriveSerialNumber, GetHardDiskSerialNumber, GetHardDiskModel
+    Dim GetInitialFirst, GetInitialAll, GetYear2, HexToText, IsIncludeChinese, IsNull, JSONAnalyze, JSONParse, MD5, QRCode, RequestREST
+    Dim RndInt, SendEmail, SendEmail2, SendHTMLEmail, SendHTMLEmail2, SetStyleToolBar, TextToHex
     
     v_Help = "传入过程名，显示详细描述！若i_IsMsg为True，则弹出详细描述，否则返回所有过程的详细描述。"
     
+    ApendText = vbCrLf & "----------------------------- " _
+    & vbCrLf & "过程：ApendText      追加内容到指定文件" _
+    & vbCrLf & "参数：i_TextFile     指定文件" _
+    & vbCrLf & "参数：i_ApendContent 追加内容"
+    GetFileNameInPath = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：GetFileNameInPath 从指定全路径中获取文件名" _
+    & vbCrLf & "参数：i_Path            指定全路径" _
+    & vbCrLf & "参数：i_NeedSuffix      文件名是否需要后缀名，默认不需要"
+    GetGUID = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：GetGUID         生成一个GUID" _
+    & vbCrLf & "参数：i_Format (可选) 格式：'B'、'D'" _
+    & vbCrLf & "GetGUID()默认: bf8b9c642ea5426f82499bb60681671b" _
+    & vbCrLf & "GetGUID('B'): {903c1236-fe24-43c2-b9b5-bec35d9a43a8}" _
+    & vbCrLf & "GetGUID('D'): 17e316f4-3f5b-46a0-ad68-58abb816a969"
+    GetSuffixInFileName = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：GetSuffixInFileName 从文件名中获取后缀名" _
+    & vbCrLf & "参数：i_FileName          文件名"
+    GetHardDriveSerialNumber = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：GetHardDriveSerialNumber 取得逻辑盘序列号（非唯一）" _
+    & vbCrLf & "参数：i_DiskName               目标逻辑盘名称"
+    GetHardDiskSerialNumber = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：GetHardDiskSerialNumber 获取物理盘的系列号SN（唯一）"
+    GetHardDiskModel = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：GetHardDiskModel 获取物理盘的型号"
+    GetInitialFirst = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：GetInitialFirst 获取第一个汉字的首字母" _
+    & vbCrLf & "参数：i_Str           汉字字符串"
+    GetInitialAll = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：GetInitialAll 获取所有汉字的首字母" _
+    & vbCrLf & "参数：i_Str         汉字字符串"
+    GetYear2 = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：GetYear2 获取日期中的年份后2位" _
+    & vbCrLf & "参数：i_Date   日期"
+    HexToText = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：HexToText 将16进制编码串转换为文本。没有写异常处理，但只要是用 TextToHex() 转换的结果就没问题" _
+    & vbCrLf & "参数：i_Code    要转换的16进制编码"
+    IsIncludeChinese = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：IsIncludeChinese 判断是否包含中文" _
+    & vbCrLf & "参数：i_Var            目标变量"
+    IsNull = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：IsNull 判断变量是否为空" _
+    & vbCrLf & "参数：i_Var  变量"
+    JSONAnalyze = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：JSONAnalyze  JSON解析" _
+    & vbCrLf & "参数：i_JSONString 待解析的JSON字符串" _
+    & vbCrLf & "参数：i_JSONKey    解析的关键字 例如：body.data.username"
+    JSONParse = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：JSONParse    JSON解析" _
+    & vbCrLf & "参数：i_JSONString JSON格式源数据" _
+    & vbCrLf & "参数：i_JSONPath   数据访问路径 例如：body.data.username。获取datas的长度，使用：body.datas.length"
+    MD5 = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：MD5   MD5加密" _
+    & vbCrLf & "参数：i_Str 加密内容" _
+    & vbCrLf & "参数：i_Bit 加密位数：16位或32位。默认16位"
+    QRCode = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：QRCode      生成QR Code码制的二维码" _
+    & vbCrLf & "参数：i_QRText    二维码内容" _
+    & vbCrLf & "参数：i_Version  （可选）生成版本，支持40种，从1到40，默认自动，即0" _
+    & vbCrLf & "参数：i_ECLevel  （可选）容错等级，支持4种：L-7%、M-15%、Q-25%、H-30%，默认M（传入首字母L、M、Q、H即可）" _
+    & vbCrLf & "参数：i_MaskType （可选）模糊类型，支持8种，从0到7，默认自动，即-1" _
+    & vbCrLf & "参数：i_Encoding （可选）字符编码，支持2种：UTF-8 和 ANSI，默认UTF-8"
+    RequestREST = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：RequestREST        请求/调用REST接口" _
+    & vbCrLf & "参数：i_RequstURL        请求地址 例如：http://218.21.3.20:5076/brp/services/avplan/aAUserData/queryAAUserData" _
+    & vbCrLf & "参数：i_RequestParameter 请求参数 例如：{""sysid"": ""SYS_LogWeb"",""sidv"": ""1.0"",""body"": {""innerid"": ""568dd7cc1ba68779fe295fb9ebe3288c"",""userid"": ""czd"",""userno"": ""50271""}}"
+    RndInt = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：RndInt 生成指定范围内的随机整数" _
+    & vbCrLf & "参数：i_Min  最小数" _
+    & vbCrLf & "参数：i_Max  最大数"
+    SendEmail = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：SendEmail     发送电子邮件，按文本格式发送" _
+    & vbCrLf & "参数：i_smtpServer  SMTP服务器地址" _
+    & vbCrLf & "参数：i_from        发信人邮箱地址" _
+    & vbCrLf & "参数：i_password    发信人邮箱密码" _
+    & vbCrLf & "参数：i_to          收信人邮箱地址，多个地址间用英文分号;隔开" _
+    & vbCrLf & "参数：i_subject     邮件主题" _
+    & vbCrLf & "参数：i_body        邮件正文，文本格式" _
+    & vbCrLf & "参数：i_attachment （可选）附件地址，例如：D:\1.txt"
+    SendEmail2 = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：SendEmail2    发送电子邮件，按文本格式发送" _
+    & vbCrLf & "参数：i_smtpServer  SMTP服务器地址" _
+    & vbCrLf & "参数：i_from        发信人邮箱地址" _
+    & vbCrLf & "参数：i_password    发信人邮箱密码" _
+    & vbCrLf & "参数：i_to          收信人邮箱地址，多个地址间用英文分号;隔开" _
+    & vbCrLf & "参数：i_subject     邮件主题" _
+    & vbCrLf & "参数：i_body        邮件正文，文本格式" _
+    & vbCrLf & "参数：i_attachment （可选）附件地址，例如：D:\1.txt" _
+    & vbCrLf & "参数：i_cc         （可选）抄送人邮箱地址" _
+    & vbCrLf & "参数：i_bcc        （可选）加密抄送人邮箱地址"
+    SendHTMLEmail = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：SendHTMLEmail 发送电子邮件，按HTML格式发送" _
+    & vbCrLf & "参数：i_smtpServer  SMTP服务器地址" _
+    & vbCrLf & "参数：i_from        发信人邮箱地址" _
+    & vbCrLf & "参数：i_password    发信人邮箱密码" _
+    & vbCrLf & "参数：i_to          收信人邮箱地址，多个地址间用英文分号;隔开" _
+    & vbCrLf & "参数：i_subject     邮件主题" _
+    & vbCrLf & "参数：i_body        邮件正文，文本格式" _
+    & vbCrLf & "参数：i_attachment （可选）附件地址，例如：D:\1.txt"
+    SendHTMLEmail2 = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：SendHTMLEmail2 发送电子邮件，按HTML格式发送，支持抄送和加密抄送" _
+    & vbCrLf & "参数：i_smtpServer   SMTP服务器地址" _
+    & vbCrLf & "参数：i_from         发信人邮箱地址" _
+    & vbCrLf & "参数：i_password     发信人邮箱密码" _
+    & vbCrLf & "参数：i_to           收信人邮箱地址，多个地址间用英文分号;隔开" _
+    & vbCrLf & "参数：i_subject      邮件主题" _
+    & vbCrLf & "参数：i_body         邮件正文，文本格式" _
+    & vbCrLf & "参数：i_attachment  （可选）附件地址，例如：D:\1.txt" _
+    & vbCrLf & "参数：i_cc          （可选）抄送人邮箱地址" _
+    & vbCrLf & "参数：i_bcc         （可选）加密抄送人邮箱地址"
+    SetStyleToolBar = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：SetStyleToolBar 设置控件ToolBar的样式" _
+    & vbCrLf & "参数：i_Color        （可选）指定背景颜色，默认RGB(188, 210, 233)" _
+    & vbCrLf & "参数：i_PicturePath  （可选）指定背景图片"
+    TextToHex = vbCrLf & "-----------------------------" _
+    & vbCrLf & "过程：TextToHex 将文本转换为16进制编码串" _
+    & vbCrLf & "参数：i_Text    要转换的文本"
+    
     Select Case i_SubName
     Case "ApendText"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：ApendText      追加内容到指定文件"
-        v_Help = v_Help & vbCrLf & "参数：i_TextFile     指定文件"
-        v_Help = v_Help & vbCrLf & "参数：i_ApendContent 追加内容"
-        
+        v_Help = v_Help & ApendText
     Case "GetFileNameInPath"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetFileNameInPath 从指定全路径中获取文件名"
-        v_Help = v_Help & vbCrLf & "参数：i_Path            指定全路径"
-        v_Help = v_Help & vbCrLf & "参数：i_NeedSuffix      文件名是否需要后缀名，默认不需要"
-        
+        v_Help = v_Help & GetFileNameInPath
     Case "GetGUID"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetGUID         生成一个GUID"
-        v_Help = v_Help & vbCrLf & "参数：i_Format (可选) 格式：'B'、'D'"
-        v_Help = v_Help & vbCrLf & "GetGUID()默认: bf8b9c642ea5426f82499bb60681671b"
-        v_Help = v_Help & vbCrLf & "GetGUID('B'): {903c1236-fe24-43c2-b9b5-bec35d9a43a8}"
-        v_Help = v_Help & vbCrLf & "GetGUID('D'): 17e316f4-3f5b-46a0-ad68-58abb816a969"
-        
+        v_Help = v_Help & GetGUID
     Case "GetSuffixInFileName"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetSuffixInFileName 从文件名中获取后缀名"
-        v_Help = v_Help & vbCrLf & "参数：i_FileName          文件名"
-        
+        v_Help = v_Help & GetSuffixInFileName
     Case "GetHardDriveSerialNumber"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetHardDriveSerialNumber 取得逻辑盘序列号（非唯一）"
-        v_Help = v_Help & vbCrLf & "参数：i_DiskName               目标逻辑盘名称"
-        
+        v_Help = v_Help & GetHardDriveSerialNumber
     Case "GetHardDiskSerialNumber"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetHardDiskSerialNumber 获取物理盘的系列号SN（唯一）"
-        
+        v_Help = v_Help & GetHardDiskSerialNumber
     Case "GetHardDiskModel"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetHardDiskModel 获取物理盘的型号"
-        
+        v_Help = v_Help & GetHardDiskModel
     Case "GetInitialFirst"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetInitialFirst 获取第一个汉字的首字母"
-        v_Help = v_Help & vbCrLf & "参数：i_Str           汉字字符串"
-        
+        v_Help = v_Help & GetInitialFirst
     Case "GetInitialAll"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetInitialAll 获取所有汉字的首字母"
-        v_Help = v_Help & vbCrLf & "参数：i_Str         汉字字符串"
-        
+        v_Help = v_Help & GetInitialAll
     Case "GetYear2"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetYear2 获取日期中的年份后2位"
-        v_Help = v_Help & vbCrLf & "参数：i_Date   日期"
-        
+        v_Help = v_Help & GetYear2
     Case "HexToText"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：HexToText 将16进制编码串转换为文本。没有写异常处理，但只要是用 TextToHex() 转换的结果就没问题"
-        v_Help = v_Help & vbCrLf & "参数：i_Code    要转换的16进制编码"
-        
+        v_Help = v_Help & HexToText
     Case "IsIncludeChinese"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：IsIncludeChinese 判断是否包含中文"
-        v_Help = v_Help & vbCrLf & "参数：i_Var            目标变量"
-        
+        v_Help = v_Help & IsIncludeChinese
     Case "IsNull"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：IsNull 判断变量是否为空"
-        v_Help = v_Help & vbCrLf & "参数：i_Var  变量"
-        
+        v_Help = v_Help & IsNull
     Case "JSONAnalyze"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：JSONAnalyze  JSON解析"
-        v_Help = v_Help & vbCrLf & "参数：i_JSONString 待解析的JSON字符串"
-        v_Help = v_Help & vbCrLf & "参数：i_JSONKey    解析的关键字 例如：body.data.username"
-        
+        v_Help = v_Help & JSONAnalyze
     Case "JSONParse"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：JSONParse    JSON解析"
-        v_Help = v_Help & vbCrLf & "参数：i_JSONString JSON格式源数据"
-        v_Help = v_Help & vbCrLf & "参数：i_JSONPath   数据访问路径 例如：body.data.username。获取datas的长度，使用：body.datas.length"
-        
+        v_Help = v_Help & JSONParse
     Case "MD5"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：MD5   MD5加密"
-        v_Help = v_Help & vbCrLf & "参数：i_Str 加密内容"
-        v_Help = v_Help & vbCrLf & "参数：i_Bit 加密位数：16位或32位。默认16位"
-        
+        v_Help = v_Help & MD5
     Case "QRCode"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：QRCode      生成QR Code码制的二维码"
-        v_Help = v_Help & vbCrLf & "参数：i_QRText    二维码内容"
-        v_Help = v_Help & vbCrLf & "参数：i_Version  （可选）生成版本，支持40种，从1到40，默认自动，即0"
-        v_Help = v_Help & vbCrLf & "参数：i_ECLevel  （可选）容错等级，支持4种：L-7%、M-15%、Q-25%、H-30%，默认M（传入首字母L、M、Q、H即可）"
-        v_Help = v_Help & vbCrLf & "参数：i_MaskType （可选）模糊类型，支持8种，从0到7，默认自动，即-1"
-        v_Help = v_Help & vbCrLf & "参数：i_Encoding （可选）字符编码，支持2种：UTF-8 和 ANSI，默认UTF-8"
-        
+        v_Help = v_Help & QRCode
     Case "RequestREST"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：RequestREST        请求/调用REST接口"
-        v_Help = v_Help & vbCrLf & "参数：i_RequstURL        请求地址 例如：http://218.21.3.20:5076/brp/services/avplan/aAUserData/queryAAUserData"
-        v_Help = v_Help & vbCrLf & "参数：i_RequestParameter 请求参数 例如：{""sysid"": ""SYS_LogWeb"",""sidv"": ""1.0"",""body"": {""innerid"": ""568dd7cc1ba68779fe295fb9ebe3288c"",""userid"": ""czd"",""userno"": ""50271""}}"
-        
+        v_Help = v_Help & RequestREST
     Case "RndInt"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：RndInt 生成指定范围内的随机整数"
-        v_Help = v_Help & vbCrLf & "参数：i_Min  最小数"
-        v_Help = v_Help & vbCrLf & "参数：i_Max  最大数"
-        
+        v_Help = v_Help & RndInt
+    Case "SendEmail"
+        v_Help = v_Help & SendEmail
+    Case "SendEmail2"
+        v_Help = v_Help & SendEmail2
+    Case "SendHTMLEmail"
+        v_Help = v_Help & SendHTMLEmail
+    Case "SendHTMLEmail2"
+        v_Help = v_Help & SendHTMLEmail2
     Case "SetStyleToolBar"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：SetStyleToolBar       设置控件ToolBar的样式"
-        v_Help = v_Help & vbCrLf & "参数：i_Color       （可选）指定背景颜色，默认RGB(188, 210, 233)"
-        v_Help = v_Help & vbCrLf & "参数：i_PicturePath （可选）指定背景图片"
-        
+        v_Help = v_Help & SetStyleToolBar
     Case "TextToHex"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：TextToHex 将文本转换为16进制编码串"
-        v_Help = v_Help & vbCrLf & "参数：i_Text    要转换的文本"
-        
+        v_Help = v_Help & TextToHex
     Case Else
-        v_Help = "以下为YPNCommonVB的所有过程：" & vbCrLf
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：ApendText      追加内容到指定文件"
-        v_Help = v_Help & vbCrLf & "参数：i_TextFile     指定文件"
-        v_Help = v_Help & vbCrLf & "参数：i_ApendContent 追加内容"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetFileNameInPath 从指定全路径中获取文件名"
-        v_Help = v_Help & vbCrLf & "参数：i_Path            指定全路径"
-        v_Help = v_Help & vbCrLf & "参数：i_NeedSuffix      文件名是否需要后缀名，默认不需要"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetGUID         生成一个GUID"
-        v_Help = v_Help & vbCrLf & "参数：i_Format (可选) 格式：'B'、'D'"
-        v_Help = v_Help & vbCrLf & "GetGUID()默认: bf8b9c642ea5426f82499bb60681671b"
-        v_Help = v_Help & vbCrLf & "GetGUID('B'): {903c1236-fe24-43c2-b9b5-bec35d9a43a8}"
-        v_Help = v_Help & vbCrLf & "GetGUID('D'): 17e316f4-3f5b-46a0-ad68-58abb816a969"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetSuffixInFileName 从文件名中获取后缀名"
-        v_Help = v_Help & vbCrLf & "参数：i_FileName          文件名"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetHardDriveSerialNumber 取得逻辑盘序列号（非唯一）"
-        v_Help = v_Help & vbCrLf & "参数：i_DiskName               目标逻辑盘名称"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetHardDiskSerialNumber 获取物理盘的系列号SN（唯一）"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetHardDiskModel 获取物理盘的型号"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetInitialFirst 获取第一个汉字的首字母"
-        v_Help = v_Help & vbCrLf & "参数：i_Str           汉字字符串"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetInitialAll 获取所有汉字的首字母"
-        v_Help = v_Help & vbCrLf & "参数：i_Str         汉字字符串"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetVersion 获取App的版本号"
-        v_Help = v_Help & vbCrLf & "参数：i_App      指定App"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetVersionFile 获取文件的版本号"
-        v_Help = v_Help & vbCrLf & "参数：i_Path         文件的全路径，包括文件名"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：GetYear2 获取日期中的年份后2位"
-        v_Help = v_Help & vbCrLf & "参数：i_Date   日期"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：HexToText 将16进制编码串转换为文本。没有写异常处理，但只要是用 TextToHex() 转换的结果就没问题"
-        v_Help = v_Help & vbCrLf & "参数：i_Code    要转换的16进制编码"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：IsNull 判断变量是否为空"
-        v_Help = v_Help & vbCrLf & "参数：i_Var  变量"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：JSONAnalyze  JSON解析"
-        v_Help = v_Help & vbCrLf & "参数：i_JSONString 待解析的JSON字符串"
-        v_Help = v_Help & vbCrLf & "参数：i_JSONKey    解析的关键字 例如：body.data.username"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：MD5   MD5加密"
-        v_Help = v_Help & vbCrLf & "参数：i_Str 加密内容"
-        v_Help = v_Help & vbCrLf & "参数：i_Bit 加密位数：16位或32位。默认16位"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：QRCode      生成QR Code码制的二维码"
-        v_Help = v_Help & vbCrLf & "参数：i_QRText    二维码内容"
-        v_Help = v_Help & vbCrLf & "参数：i_Version  （可选）生成版本，支持40种，从1到40，默认自动，即0"
-        v_Help = v_Help & vbCrLf & "参数：i_ECLevel  （可选）容错等级，支持4种：L-7%、M-15%、Q-25%、H-30%，默认M（传入首字母L、M、Q、H即可）"
-        v_Help = v_Help & vbCrLf & "参数：i_MaskType （可选）模糊类型，支持8种，从0到7，默认自动，即-1"
-        v_Help = v_Help & vbCrLf & "参数：i_Encoding （可选）字符编码，支持2种：UTF-8 和 ANSI，默认UTF-8"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：RequestREST        请求/调用REST接口"
-        v_Help = v_Help & vbCrLf & "参数：i_RequstURL        请求地址 例如：http://218.21.3.20:5076/brp/services/avplan/aAUserData/queryAAUserData"
-        v_Help = v_Help & vbCrLf & "参数：i_RequestParameter 请求参数 例如：{""sysid"": ""SYS_LogWeb"",""sidv"": ""1.0"",""body"": {""innerid"": ""568dd7cc1ba68779fe295fb9ebe3288c"",""userid"": ""czd"",""userno"": ""50271""}}"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：RndInt 生成指定范围内的随机整数"
-        v_Help = v_Help & vbCrLf & "参数：i_Min  最小数"
-        v_Help = v_Help & vbCrLf & "参数：i_Max  最大数"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：SetStyleToolBar       设置控件ToolBar的样式"
-        v_Help = v_Help & vbCrLf & "参数：i_Color       （可选）指定背景颜色，默认RGB(188, 210, 233)"
-        v_Help = v_Help & vbCrLf & "参数：i_PicturePath （可选）指定背景图片"
-        v_Help = v_Help & vbCrLf & "-----------------------------"
-        v_Help = v_Help & vbCrLf & "过程：TextToHex 将文本转换为16进制编码串"
-        v_Help = v_Help & vbCrLf & "参数：i_Text    要转换的文本"
+        v_Help = "以下为YPNCommonVB的所有过程："
+        v_Help = v_Help & ApendText & GetFileNameInPath & GetGUID & GetSuffixInFileName & GetHardDriveSerialNumber & GetHardDiskSerialNumber _
+        & GetHardDiskModel & GetInitialFirst & GetInitialAll & GetYear2 & HexToText & IsIncludeChinese & IsNull & JSONAnalyze & JSONParse _
+        & MD5 & QRCode & RequestREST & RndInt & SendEmail & SendEmail2 & SendHTMLEmail & SendHTMLEmail2 & SetStyleToolBar & TextToHex
+        v_Help = v_Help & vbCrLf & "-----------------------------" & "《结束》"
     End Select
-    
     Help = v_Help
     If i_IsMsg Then MsgBox v_Help, vbInformation, TS
 End Function
@@ -750,10 +730,10 @@ End Function
 ' Param     : i_smtpServer SMTP服务器地址，例如：smtp.qiye.163.com
 '             i_from       发信人邮箱地址
 '             i_password   发信人邮箱密码
-'             i_to         收信人邮箱地址
+'             i_to         收信人邮箱地址，多个地址间用英文分号;隔开
 '             i_subject    邮件主题
 '             i_body       邮件正文，文本格式
-'             i_attachment 附件地址，例如："D:\1.txt"
+'             i_attachment （可选）附件地址，例如："D:\1.txt"
 ' Return    : String       发送成功则返回success，失败则返回failure加失败原因
 ' Remark    :
 '---------------------------------------------------------------------------------------
@@ -764,6 +744,29 @@ Public Function SendEmail(ByVal i_smtpServer As String, ByVal i_from As String, 
 End Function
 
 '---------------------------------------------------------------------------------------
+' Procedure : SendEmail2
+' Author    : YPN
+' Date      : 2019/04/10 14:35
+' Purpose   : 发送电子邮件，按文本格式发送，支持抄送和加密抄送
+' Param     : i_smtpServer SMTP服务器地址
+'             i_from       发信人邮箱地址
+'             i_password   发信人邮箱密码
+'             i_to         收信人邮箱地址，多个地址间用英文分号;隔开
+'             i_subject    邮件主题
+'             i_body       邮件正文，文本格式
+'             i_attachment （可选）附件地址，例如："D:\1.txt"
+'             i_cc         （可选）抄送人邮箱地址
+'             i_bcc        （可选）加密抄送人邮箱地址
+' Return    : String       发送成功则返回success，失败则返回failure加失败原因
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function SendEmail2(ByVal i_smtpServer As String, ByVal i_from As String, ByVal i_password As String, ByVal i_to As String, _
+    ByVal i_subject As String, ByVal i_body As String, Optional ByVal i_attachment As String, Optional ByVal i_cc As String, Optional ByVal i_bcc As String) As String
+    SendEmail2 = ModNetUtils.MSendEmail2(i_smtpServer, i_from, i_password, i_to, i_subject, i_body, i_attachment, i_cc, i_bcc)
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Procedure : SendHTMLEmail
 ' Author    : YPN
 ' Date      : 2018-04-25 17:29
@@ -771,10 +774,10 @@ End Function
 ' Param     : i_smtpServer SMTP服务器地址，例如：smtp.qiye.163.com
 '             i_from       发信人邮箱地址
 '             i_password   发信人邮箱密码
-'             i_to         收信人邮箱地址
+'             i_to         收信人邮箱地址，多个地址间用英文分号;隔开
 '             i_subject    邮件主题
 '             i_body       邮件正文，HTML格式
-'             i_attachment 附件地址，例如："D:\1.txt"
+'             i_attachment （可选）附件地址，例如："D:\1.txt"
 ' Return    : String       发送成功则返回success，失败则返回failure加失败原因
 ' Remark    :
 '---------------------------------------------------------------------------------------
@@ -782,6 +785,29 @@ End Function
 Public Function SendHTMLEmail(ByVal i_smtpServer As String, ByVal i_from As String, ByVal i_password As String, ByVal i_to As String, _
     ByVal i_subject As String, ByVal i_body As String, Optional ByVal i_attachment As String) As String
     SendHTMLEmail = ModNetUtils.MSendHTMLEmail(i_smtpServer, i_from, i_password, i_to, i_subject, i_body, i_attachment)
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : SendHTMLEmail2
+' Author    : YPN
+' Date      : 2019/04/10 14:29
+' Purpose   : 发送电子邮件，按HTML格式发送，支持抄送和加密抄送
+' Param     : i_smtpServer SMTP服务器地址
+'             i_from       发信人邮箱地址
+'             i_password   发信人邮箱密码
+'             i_to         收信人邮箱地址，多个地址间用英文分号;隔开
+'             i_subject    邮件主题
+'             i_body       邮件正文，HTML格式
+'             i_attachment （可选）附件地址，例如："D:\1.txt"
+'             i_cc         （可选）抄送人邮箱地址
+'             i_bcc        （可选）加密抄送人邮箱地址
+' Return    : String       发送成功则返回success，失败则返回failure加失败原因
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Function SendHTMLEmail2(ByVal i_smtpServer As String, ByVal i_from As String, ByVal i_password As String, ByVal i_to As String, _
+    ByVal i_subject As String, ByVal i_body As String, Optional ByVal i_attachment As String, Optional ByVal i_cc As String, Optional ByVal i_bcc As String) As String
+    SendHTMLEmail2 = ModNetUtils.MSendHTMLEmail2(i_smtpServer, i_from, i_password, i_to, i_subject, i_body, i_attachment, i_cc, i_bcc)
 End Function
 
 '---------------------------------------------------------------------------------------
