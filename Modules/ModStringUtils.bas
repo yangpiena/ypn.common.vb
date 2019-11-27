@@ -194,14 +194,12 @@ End Function
 '
 Public Function MGetLocalComputerName() As String
     On Error GoTo MGetLocalComputerName_Error
-    
     MGetLocalComputerName = Environ("computername")
     
     On Error GoTo 0
     Exit Function
     
 MGetLocalComputerName_Error:
-    
     ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalComputerName of Module ModStringUtils"
     MGetLocalComputerName = "获取错误"
 End Function
@@ -220,7 +218,6 @@ Public Function MGetLocalIP() As String
     Dim v_winIP As Object
     
     On Error GoTo MGetLocalIP_Error
-    
     Set v_winIP = CreateObject("MSWinsock.Winsock")
     MGetLocalIP = v_winIP.localip
     
@@ -228,7 +225,6 @@ Public Function MGetLocalIP() As String
     Exit Function
     
 MGetLocalIP_Error:
-    
     ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalIP of Module ModStringUtils"
     MGetLocalIP = "获取错误"
 End Function
@@ -244,16 +240,13 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MGetLocalUserName() As String
-    
     On Error GoTo MGetLocalUserName_Error
-    
     MGetLocalUserName = Environ("username")
     
     On Error GoTo 0
     Exit Function
     
 MGetLocalUserName_Error:
-    
     ' MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MGetLocalUserName of Module ModStringUtils"
     MGetLocalUserName = "获取错误"
 End Function
@@ -520,15 +513,45 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTrimText(i_text As String) As String
+    '去除两边回车符
+    i_text = Replace(i_text, " ", "YPN_TmpValue")
+    i_text = Replace(i_text, vbCr, " ")
+    i_text = Trim(i_text)
+    i_text = Replace(i_text, " ", vbCr)
+    i_text = Replace(i_text, "YPN_TmpValue", " ")
     '去除两边换行符
+    i_text = Replace(i_text, " ", "YPN_TmpValue")
+    i_text = Replace(i_text, vbLf, " ")
+    i_text = Trim(i_text)
+    i_text = Replace(i_text, " ", vbLf)
+    i_text = Replace(i_text, "YPN_TmpValue", " ")
+    '去除两边回车符与换行符
     i_text = Replace(i_text, " ", "YPN_TmpValue")
     i_text = Replace(i_text, vbCrLf, " ")
     i_text = Trim(i_text)
     i_text = Replace(i_text, " ", vbCrLf)
     i_text = Replace(i_text, "YPN_TmpValue", " ")
+    '去除两边Tab符
+    i_text = Replace(i_text, " ", "YPN_TmpValue")
+    i_text = Replace(i_text, vbTab, " ")
+    i_text = Trim(i_text)
+    i_text = Replace(i_text, " ", vbTab)
+    i_text = Replace(i_text, "YPN_TmpValue", " ")
+    '去除两边新行字符
+    i_text = Replace(i_text, " ", "YPN_TmpValue")
+    i_text = Replace(i_text, vbNewLine, " ")
+    i_text = Trim(i_text)
+    i_text = Replace(i_text, " ", vbNewLine)
+    i_text = Replace(i_text, "YPN_TmpValue", " ")
+    '去除两边退格字符
+    i_text = Replace(i_text, " ", "YPN_TmpValue")
+    i_text = Replace(i_text, vbBack, " ")
+    i_text = Trim(i_text)
+    i_text = Replace(i_text, " ", vbBack)
+    i_text = Replace(i_text, "YPN_TmpValue", " ")
     '去除两边空格
     i_text = Trim(i_text)
-    
+                    
     MTrimText = i_text
 End Function
 
