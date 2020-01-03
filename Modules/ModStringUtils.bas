@@ -513,6 +513,14 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function MTrimText(i_text As String) As String
+    '去除两边空格
+    i_text = Trim(i_text)
+    '去除两边回车符与换行符
+    i_text = Replace(i_text, " ", "YPN_TmpValue")
+    i_text = Replace(i_text, vbCrLf, " ")
+    i_text = Trim(i_text)
+    i_text = Replace(i_text, " ", vbCrLf)
+    i_text = Replace(i_text, "YPN_TmpValue", " ")
     '去除两边回车符
     i_text = Replace(i_text, " ", "YPN_TmpValue")
     i_text = Replace(i_text, vbCr, " ")
@@ -524,12 +532,6 @@ Public Function MTrimText(i_text As String) As String
     i_text = Replace(i_text, vbLf, " ")
     i_text = Trim(i_text)
     i_text = Replace(i_text, " ", vbLf)
-    i_text = Replace(i_text, "YPN_TmpValue", " ")
-    '去除两边回车符与换行符
-    i_text = Replace(i_text, " ", "YPN_TmpValue")
-    i_text = Replace(i_text, vbCrLf, " ")
-    i_text = Trim(i_text)
-    i_text = Replace(i_text, " ", vbCrLf)
     i_text = Replace(i_text, "YPN_TmpValue", " ")
     '去除两边Tab符
     i_text = Replace(i_text, " ", "YPN_TmpValue")
@@ -551,7 +553,7 @@ Public Function MTrimText(i_text As String) As String
     i_text = Replace(i_text, "YPN_TmpValue", " ")
     '去除两边空格
     i_text = Trim(i_text)
-                    
+    
     MTrimText = i_text
 End Function
 
