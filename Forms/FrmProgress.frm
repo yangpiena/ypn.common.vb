@@ -40,7 +40,7 @@ Begin VB.Form FrmProgress
          Left            =   0
          TabIndex        =   5
          Top             =   0
-         Width           =   5775
+         Width           =   5895
       End
    End
    Begin VB.Frame Frame2 

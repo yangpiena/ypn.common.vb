@@ -675,6 +675,20 @@ Public Sub MsgBoxTimeout(ByVal i_Form As Object, ByVal i_Msg As String, ByVal i_
 End Sub
 
 '---------------------------------------------------------------------------------------
+' Procedure : OpenBrowser
+' Author    : YPN
+' Date      : 2020-07-09 11:47
+' Purpose   : 调用默认浏览器，显示URL
+' Param     :
+' Return    :
+' Remark    :
+'---------------------------------------------------------------------------------------
+'
+Public Sub OpenBrowser(i_URL As String)
+    ModControl.MOpenBrowser (i_URL)
+End Sub
+
+'---------------------------------------------------------------------------------------
 ' Procedure : QRCode
 ' Author    : YPN
 ' Date      : 2017-09-25 14:33
